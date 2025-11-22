@@ -1,3 +1,4 @@
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Pulp.Pulpifier;
@@ -14,6 +15,9 @@ public static class Compiler {
 	}
 
 	public static string BuildHtml(string rawText, string pulpText) {
+		StringBuilder sb = new StringBuilder();
+		sb.Append("<div><div id='text'></div><button onclick=\"document.getElementById('text').innerHTML = htmlArr[i++];\">Next</button><script>let i = 0; const htmlArr = [");
+
 		string[] rawLines = rawText.Split('\n');
 		string[] pulpLines = pulpText.Split('\n');
 
@@ -30,6 +34,11 @@ public static class Compiler {
 					if (!rawLine.StartsWith(constructedLine)) throw new Exception("Mismatched pulp line.");
 
 					pulpLine = pulpLines[p];
+
+					sb.Append('`');
+					sb.Append(pulpLine);
+					sb.Append("`, ");
+
 					constructedLine += pulpLine + ' ';
 					if (pulpLines[p + 2] != string.Empty) throw new Exception("Missing pulp line break.");
 
@@ -47,7 +56,8 @@ public static class Compiler {
 			};
 		}
 
-		return "";
+		sb.Append("];</script></div>");
+		return sb.ToString();
 	}
 
 	private static readonly char[] InvalidChars = ['`', '“', '”', '‘', '’'];

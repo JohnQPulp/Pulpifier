@@ -14,6 +14,7 @@ public class CompilerTests {
 	}
 
 	[TestMethod]
+	[DataRow("Foo\n", "foo\n\n")]
 	[DataRow("Foo`\n", "Foo`\n\n")]
 	[DataRow("Foo\x0005\n", "Foo\x0005\n\n")]
 	[DataRow("Foo\r\n", "Foo\n\n")]
