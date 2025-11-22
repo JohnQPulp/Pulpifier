@@ -2,4 +2,4 @@
 
 Console.WriteLine("Pulpifier");
 
-Console.WriteLine(Compiler.BuildHTML(args[0], args[1]));
+Console.WriteLine(Compiler.BuildHtml(args[0], args[1]));

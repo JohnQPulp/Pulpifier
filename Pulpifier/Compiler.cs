@@ -3,9 +3,9 @@ using System.Text.RegularExpressions;
 namespace Pulp.Pulpifier;
 
 public static class Compiler {
-	public static bool TryBuildHTML(string rawText, string pulpText, out string html) {
+	public static bool TryBuildHtml(string rawText, string pulpText, out string html) {
 		try {
-			html = BuildHTML(rawText, pulpText);
+			html = BuildHtml(rawText, pulpText);
 			return true;
 		} catch (Exception e) {
 			html = "";
@@ -13,24 +13,48 @@ public static class Compiler {
 		}
 	}
 
-	public static string BuildHTML(string rawText, string pulpText) {
-		rawText = Regex.Replace(rawText, @"[\r\n]+", " ");
-		string[] allLines = pulpText.Split(["\r\n", "\n"], StringSplitOptions.None);
+	public static string BuildHtml(string rawText, string pulpText) {
+		string[] rawLines = rawText.Split('\n');
+		string[] pulpLines = pulpText.Split('\n');
 
-		List<string> htmlSnippets = new();
+		int r = 0, p = 0;
+		string rawLine = "", pulpLine = "";
+		try {
+			while (r < rawLines.Length) {
+				ThrowIfContainsInvalidChars(rawLines[r]);
+				rawLine = rawLines[r] + ' ';
+				if (rawLines[r + 1] != string.Empty) throw new Exception("Missing raw line break.");
 
-		int rawIndex = 0;
-		for (int i = 0; i < allLines.Length; i += 3) {
-			string line = allLines[i];
-			int endIndex = rawIndex + line.Length;
-			if (rawText[rawIndex..endIndex] != line) {
-				throw new Exception("Line mismatch at line " + i);
+				string constructedLine = string.Empty;
+				while (rawLine != constructedLine) {
+					if (!rawLine.StartsWith(constructedLine)) throw new Exception("Mismatched pulp line.");
+
+					pulpLine = pulpLines[p];
+					constructedLine += pulpLine + ' ';
+					if (pulpLines[p + 2] != string.Empty) throw new Exception("Missing pulp line break.");
+
+					p += 3;
+				}
+
+				r += 2;
 			}
-
-			rawIndex = endIndex + 1;
-			htmlSnippets.Add("<p>" + allLines[i] + "</p>");
+		} catch (Exception e) {
+			throw new Exception($"Parsing error at raw line {r} and pulp line {p}.", e) {
+				Data = {
+					["rawLine"] = rawLine,
+					["pulpLine"] = pulpLine
+				}
+			};
 		}
 
-		return string.Join('\n', htmlSnippets);
+		return "";
+	}
+
+	private static readonly char[] InvalidChars = ['`', '“', '”', '‘', '’'];
+	private static void ThrowIfContainsInvalidChars(string line) {
+		if (line.Any(char.IsControl)) throw new Exception("Contains control char.");
+		if (line.ContainsAny(InvalidChars)) throw new Exception("Contains invalid char.");
+		if (line.Contains("...") || line.Contains("--")) throw new Exception("Contains invalid sequence.");
+		if (line != line.Trim()) throw new Exception("Contains leading/trailing whitespace.");
 	}
 }
