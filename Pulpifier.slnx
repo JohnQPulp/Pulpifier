@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Pulpifier.Tests/Pulpifier.Tests.csproj" />
+  <Project Path="Pulpifier/Pulpifier.csproj" />
+  <Project Path="PulpifierCLI/PulpifierCLI.csproj" />
+</Solution>
