@@ -1,32 +1,32 @@
 Fizz.
-
+b=room; n:fizz=Fizz; n:buzz=Buzz; e:fizz=happy; e:buzz=happy; c=fizz
 
 Buzz.
-
+c=buzz
 
 Fizz buzz.
-
+c=fizz,buzz
 
 Fizz fizz.
-
+c=
 
 Buzz buzz.
 
 
 "Fizz?" buzzed Buzz.
-
+c=fizz,buzz; e:buzz=confused; s=buzz
 
 "Fizz fizz," fizzed Fizz.
-
+s=fizz
 
 "Fizz fizz fizz fizz buzz."
-
+e:buzz=happy
 
 Buzz.
-
+c=buzz; s=
 
 Fizz.
-
+c=fizz
 
 Buzz. Fizz.
-
+c=

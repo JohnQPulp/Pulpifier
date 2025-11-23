@@ -8,6 +8,17 @@ public class CompilerTests {
 	[DataRow("Foo\n\nFizz\n\nBuzz\n", "Foo\n\n\nFizz\n\n\nBuzz\n\n")]
 	[DataRow("\"Foo\"\n", "\"Foo\"\n\n")]
 	[DataRow("Foo. Fizz\n\nBuzz\n", "Foo.\n\n\nFizz\n\n\nBuzz\n\n")]
+	[DataRow("Foo\n", "Foo\nb=back\n")]
+	[DataRow("Foo\n", "Foo\nn:foo=Foo\n")]
+	[DataRow("Foo\n", "Foo\nn:foo=Foo;c=foo\n")]
+	[DataRow("Foo\n", "Foo\nn:foo=Foo;n:bar=Bar;c=foo,bar\n")]
+	[DataRow("Foo\n\nBar\n", "Foo\nn:foo=Foo\n\nBar\nn:foo=FOO\n")]
+	[DataRow("Foo\n\nBar\n", "Foo\nn:foo=Foo;c=foo\n\nBar\nc=\n")]
+	[DataRow("Foo\n\nBar\n", "Foo\nn:foo=Foo\n\nBar\nc=foo\n")]
+	[DataRow("Foo\n\nBar\n", "Foo\nn:foo=Foo\n\nBar\ns=foo\n")]
+	[DataRow("Foo\n\nBar\n", "Foo\nn:foo=Foo\n\nBar\ne:foo=boo\n")]
+	[DataRow("Foo\n\nBar\n", "Foo\nn:foo=Foo\n\nBar\ns=foo;c=foo;e:foo=boo\n")]
+	[DataRow("Foo\n\nBar1. Bar2.\n", "Foo\nn:foo=Foo\n\nBar1.\ns=foo\n\nBar2.\ns=\n")]
 	public void Compiler_BuildHtml_GoodText(string rawText, string pulpText) {
 		Compiler.BuildHtml(rawText, pulpText);
 		Assert.IsTrue(Compiler.TryBuildHtml(rawText, pulpText, out string _));
@@ -31,6 +42,12 @@ public class CompilerTests {
 	[DataRow("Foo\n\nFizz\n\nBuzz\n", "Foo\n\n\nFizz\n\n\nFuzz\n\n")]
 	[DataRow("Foo\n\nFizz\n\nBuzz\n", "FooFizz\n\n\nBuzz\n\n")]
 	[DataRow("Foo\n\nFizz\n\nBuzz\n", "Foo Fizz\n\n\nBuzz\n\n")]
+	[DataRow("Foo\n", "Foo\nq\n")]
+	[DataRow("Foo\n", "Foo\nq=foo\n")]
+	[DataRow("Foo\n", "Foo\nc=foo\n")]
+	[DataRow("Foo\n", "Foo\nn=foo\n")]
+	[DataRow("Foo\n", "Foo\nc:foo=bar\n")]
+	[DataRow("Foo\n", "Foo\nn:foo=Foo;c=foo,bar\n")]
 	public void Compiler_BuildHtml_BadText(string rawText, string pulpText) {
 		Assert.IsFalse(Compiler.TryBuildHtml(rawText, pulpText, out string _));
 	}
