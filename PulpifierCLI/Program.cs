@@ -3,7 +3,7 @@
 Console.WriteLine("Pulpifier");
 
 string directory = Path.GetFullPath(args[0], Directory.GetCurrentDirectory());
-string rawText = File.ReadAllText(Path.Combine(directory, "raw.txt"));
+string rawText = File.ReadAllText(Path.Combine(directory, "book.txt"));
 string pulpText = File.ReadAllText(Path.Combine(directory, "pulp.txt"));
 
 string html = Compiler.BuildHtml(rawText, pulpText);
