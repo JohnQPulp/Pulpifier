@@ -22,6 +22,12 @@ s=fizz
 "Fizz fizz fizz fizz buzz."
 e:buzz=happy
 
+"Buzz."
+
+
+"Fizz."
+e:buzz=sad
+
 Buzz.
 c=buzz; s=
 

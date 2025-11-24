@@ -4,6 +4,8 @@ Fizz fizz. Buzz buzz.
 
 "Fizz?" buzzed Buzz.
 
-"Fizz fizz," fizzed Fizz. "Fizz fizz fizz fizz buzz."
+"Fizz fizz," fizzed Fizz. "Fizz fizz fizz fizz buzz.
+
+"Buzz. Fizz."
 
 Buzz. Fizz. Buzz. Fizz.

@@ -44,7 +44,20 @@ public static class Compiler {
 					sb.Append(pulpLine);
 					sb.Append("`, ");
 
-					constructedLine += Regex.Replace(pulpLine, "<e>.*?</e>", "") + ' ';
+					string cleanPulpLine = Regex.Replace(pulpLine, "<e>.*?</e>", "");
+					if (constructedLine.Count(c => c == '"') % 2 == 1 && !cleanPulpLine.StartsWith('"')) throw new Exception("Pulp line should continue ongoing quote.");
+
+					string constructionPulpLine = cleanPulpLine;
+					if (constructionPulpLine.StartsWith('"') && rawLine[constructedLine.Length] != '"') {
+						constructionPulpLine = constructionPulpLine[1..];
+					}
+					if (constructionPulpLine.EndsWith('"') && rawLine[constructedLine.Length + constructionPulpLine.Length - 1] != '"') {
+						constructionPulpLine = constructionPulpLine[..^1];
+					}
+					constructedLine += constructionPulpLine + ' ';
+
+					if (cleanPulpLine.Count(c => c == '"') % 2 == 1) throw new Exception("Unmatched quotes in pulp line.");
+
 					if (pulpLines[p + 2] != string.Empty) throw new Exception("Missing pulp line break.");
 
 					string[] metadata = pulpLines[p + 1].Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
