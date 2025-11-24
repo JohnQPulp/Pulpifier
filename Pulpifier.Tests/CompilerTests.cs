@@ -5,9 +5,12 @@ public class CompilerTests {
 	[TestMethod]
 	[DataRow("Foo\n", "Foo\n\n")]
 	[DataRow("Foo Bar\n", "Foo Bar\n\n")]
+	[DataRow("Foo. Bar\n", "Foo. <e>lorem</e>Bar\n\n")]
+	[DataRow("Foo Bar\n", "<e>lorem</e>Foo Bar<e>ipsum</e>\n\n")]
 	[DataRow("Foo\n\nFizz\n\nBuzz\n", "Foo\n\n\nFizz\n\n\nBuzz\n\n")]
 	[DataRow("\"Foo\"\n", "\"Foo\"\n\n")]
 	[DataRow("Foo. Fizz\n\nBuzz\n", "Foo.\n\n\nFizz\n\n\nBuzz\n\n")]
+	[DataRow("Foo. Fizz\n\nBuzz\n", "Foo.<e>lorem</e>\n\n\nFizz<e>ipsum</e>\n\n\nBuzz\n\n")]
 	[DataRow("Foo\n", "Foo\nb=back\n")]
 	[DataRow("Foo\n", "Foo\nn:foo=Foo\n")]
 	[DataRow("Foo\n", "Foo\nn:foo=Foo;c=foo\n")]
@@ -48,6 +51,9 @@ public class CompilerTests {
 	[DataRow("Foo\n", "Foo\nn=foo\n")]
 	[DataRow("Foo\n", "Foo\nc:foo=bar\n")]
 	[DataRow("Foo\n", "Foo\nn:foo=Foo;c=foo,bar\n")]
+	[DataRow("Foo\n", "Foo<e>lorem\n\n")]
+	[DataRow("Foo\n", "Foo<e>lorem<e>\n\n")]
+	[DataRow("Foo\n", "Foo<e>lorem<e>ipsum</e>lorem</e>\n\n")]
 	public void Compiler_BuildHtml_BadText(string rawText, string pulpText) {
 		Assert.IsFalse(Compiler.TryBuildHtml(rawText, pulpText, out string _));
 	}

@@ -44,7 +44,7 @@ public static class Compiler {
 					sb.Append(pulpLine);
 					sb.Append("`, ");
 
-					constructedLine += pulpLine + ' ';
+					constructedLine += Regex.Replace(pulpLine, "<e>.*?</e>", "") + ' ';
 					if (pulpLines[p + 2] != string.Empty) throw new Exception("Missing pulp line break.");
 
 					string[] metadata = pulpLines[p + 1].Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
