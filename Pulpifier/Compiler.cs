@@ -36,7 +36,9 @@ public static class Compiler {
 
 				string constructedLine = string.Empty;
 				while (rawLine != constructedLine) {
-					if (!rawLine.StartsWith(constructedLine)) throw new Exception("Mismatched pulp line.");
+					if (!rawLine.StartsWith(constructedLine)) {
+						throw new Exception($"Mismatched pulp line.\nBook: {rawLine}\nPulp: {constructedLine}");
+					}
 
 					string pulpLine = pulpLines[p];
 
