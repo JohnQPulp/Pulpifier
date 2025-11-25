@@ -23,6 +23,7 @@ public static class Compiler {
 
 		Dictionary<string, string> characterNames = new();
 		Dictionary<string, string> characterExpressions = new();
+		Dictionary<string, string> characterAges = new();
 		string[] activeCharacters = [];
 		string activeSpeaker = "";
 		string activeBackground = "";
@@ -86,9 +87,10 @@ public static class Compiler {
 								activeBackground = value;
 								break;
 							case 'e':
-								string ename = key.Split(':')[1];
-								if (!characterNames.ContainsKey(ename)) throw new Exception("Missing character name for expression.");
-								characterExpressions[ename] = value;
+								SetCharacterAttribute(key, value, characterNames, characterExpressions);
+								break;
+							case 'a':
+								SetCharacterAttribute(key, value, characterNames, characterAges);
 								break;
 							case 's':
 								if (value != "" && !characterNames.ContainsKey(value)) throw new Exception("Missing character name for speaker.");
@@ -113,6 +115,12 @@ public static class Compiler {
 
 		sb.Append("];</script></div>");
 		return sb.ToString();
+	}
+
+	private static void SetCharacterAttribute(string key, string value, Dictionary<string, string> characterNames, Dictionary<string, string> characterAttributes) {
+		string name = key.Split(':')[1];
+		if (!characterNames.ContainsKey(name)) throw new Exception("Missing character name for expression.");
+		characterAttributes[name] = value;
 	}
 
 	private static readonly char[] InvalidChars = ['`', '“', '”', '‘', '’'];

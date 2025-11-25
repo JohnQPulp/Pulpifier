@@ -27,6 +27,9 @@ public class CompilerTests {
 	[DataRow("Foo\n\nBar\n", "Foo\nn:foo=Foo\n\nBar\ns=foo\n")]
 	[DataRow("Foo\n\nBar\n", "Foo\nn:foo=Foo\n\nBar\ne:foo=boo\n")]
 	[DataRow("Foo\n\nBar\n", "Foo\nn:foo=Foo\n\nBar\ns=foo;c=foo;e:foo=boo\n")]
+	[DataRow("Foo\n\nBar\n", "Foo\nn:foo=Foo\n\nBar\na:foo=24\n")]
+	[DataRow("Foo\n\nBar\n", "Foo\nn:foo=Foo\n\nBar\ns=foo;c=foo;a:foo=old\n")]
+	[DataRow("Foo\n", "Foo\nn:f=F;c=f;e:f=hip;a:f=99\n")]
 	[DataRow("Foo\n\nBar1. Bar2.\n", "Foo\nn:foo=Foo\n\nBar1.\ns=foo\n\nBar2.\ns=\n")]
 	public void Compiler_BuildHtml_GoodText(string rawText, string pulpText) {
 		Compiler.BuildHtml(rawText, pulpText);
@@ -61,6 +64,8 @@ public class CompilerTests {
 	[DataRow("Foo\n", "Foo\nq=foo\n")]
 	[DataRow("Foo\n", "Foo\nc=foo\n")]
 	[DataRow("Foo\n", "Foo\nn=foo\n")]
+	[DataRow("Foo\n", "Foo\ne:f=yay\n")]
+	[DataRow("Foo\n", "Foo\na:f=24\n")]
 	[DataRow("Foo\n", "Foo\nc:foo=bar\n")]
 	[DataRow("Foo\n", "Foo\nn:foo=Foo;c=foo,bar\n")]
 	[DataRow("Foo\n", "Foo<e>lorem\n\n")]
