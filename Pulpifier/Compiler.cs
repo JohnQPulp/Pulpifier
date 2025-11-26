@@ -125,7 +125,7 @@ public static class Compiler {
 									activeCharacters = [];
 								} else {
 									string[] characters = value.Split(',');
-									if (characters.Any(c => !characterNames.ContainsKey(c))) throw new Exception("Missing character name.");
+									if (characters.Any(c => c != "" && !characterNames.ContainsKey(c))) throw new Exception("Missing character name.");
 									activeCharacters = characters;
 								}
 								break;
