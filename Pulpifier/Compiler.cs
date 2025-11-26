@@ -16,7 +16,11 @@ public static class Compiler {
 
 	public static string BuildHtml(string rawText, string pulpText) {
 		StringBuilder sb = new StringBuilder();
-		sb.Append("<div><div id='text'></div><button onclick=\"document.getElementById('text').innerHTML = htmlArr[i++];\">Next</button><script>let i = 0; const htmlArr = [");
+		sb.Append("<div><div id='pulp'><div id='foot'><div id='text'></div></div></div>");
+		sb.Append("<button onclick=\"document.getElementById('text').innerHTML = htmlArr[--i - 1];\">Previous</button>");
+		sb.Append("<button onclick=\"document.getElementById('text').innerHTML = htmlArr[i++];\">Next</button>");
+		sb.Append("<style>#pulp { width: 95vw; height: 95vh; position: relative; }\n#foot { width: 100%; min-height: 15em; display: flex; position: absolute; bottom: 0px; justify-content: center; }\n#text { width: 50em; font-family: sans-serif; font-size: 1.25em; position: relative; }\nb.speaker { position: absolute; top: -1.5em; }</style>");
+		sb.Append("<script>let i = 0; const htmlArr = [");
 
 		string[] rawLines = rawText.Split('\n');
 		string[] pulpLines = pulpText.Split('\n');
@@ -42,10 +46,6 @@ public static class Compiler {
 					}
 
 					string pulpLine = pulpLines[p];
-
-					sb.Append('`');
-					sb.Append(pulpLine);
-					sb.Append("`, ");
 
 					string cleanPulpLine = Regex.Replace(pulpLine, "<e>.*?</e>", "");
 					if (constructedLine.Count(c => c == '"') % 2 == 1 && !cleanPulpLine.StartsWith('"')) throw new Exception("Pulp line should continue ongoing quote.");
@@ -99,6 +99,13 @@ public static class Compiler {
 							default: throw new Exception($"Unrecognized key: '{key}'.");
 						}
 					}
+
+					string htmlLine = Regex.Replace(pulpLine, @"<e>(.*?)</e>", "<p class='e'><b>Editor's Note:</b> $1</p>");
+
+					sb.Append('`');
+					if (activeSpeaker != "") sb.Append($"<b class='speaker'>{characterNames[activeSpeaker]}</b>");
+					sb.Append(htmlLine);
+					sb.Append("`, ");
 
 					p += 3;
 				}
