@@ -59,6 +59,10 @@ public static class Compiler {
 		  position: absolute;
 		  top: -1.5em;
 		}
+		p.e {
+		  margin: 0.25em;
+		  font-size: 0.8em;
+		}
 		</style>
 		""");
 
