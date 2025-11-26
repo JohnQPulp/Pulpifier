@@ -17,9 +17,51 @@ public static class Compiler {
 	public static string BuildHtml(string rawText, string pulpText) {
 		StringBuilder sb = new StringBuilder();
 		sb.Append("<div><div id='pulp'><div id='foot'><div id='text'></div></div></div>");
-		sb.Append("<button onclick=\"document.getElementById('text').innerHTML = htmlArr[--i - 1];\">Previous</button>");
-		sb.Append("<button onclick=\"document.getElementById('text').innerHTML = htmlArr[i++];\">Next</button>");
-		sb.Append("<style>#pulp { width: 95vw; height: 95vh; position: relative; }\n#foot { width: 100%; min-height: 15em; display: flex; position: absolute; bottom: 0px; justify-content: center; }\n#text { width: 50em; font-family: sans-serif; font-size: 1.25em; position: relative; }\nb.speaker { position: absolute; top: -1.5em; }</style>");
+
+		sb.Append("""
+		<script>
+		document.addEventListener("keydown", function (e) {
+		  if (e.key === " " || e.key === "Spacebar" || e.key === "ArrowRight") {
+		    document.getElementById('text').innerHTML = htmlArr[i++];
+		  } else if (e.key === "ArrowLeft") {
+		    document.getElementById('text').innerHTML = htmlArr[--i - 1];
+		  }
+		});
+		</script>
+		""");
+
+		sb.Append("""
+		<style>
+		html, body {
+		  margin: 0px;
+		  padding: 0px;
+		}
+		#pulp {
+		  width: 100vw;
+		  height: 100vh;
+		  position: relative;
+		}
+		#foot {
+		  width: 100%;
+		  min-height: 15em;
+		  display: flex;
+		  position: absolute;
+		  bottom: 0px;
+		  justify-content: center;
+		}
+		#text {
+		  width: 40em;
+		  font-family: sans-serif;
+		  font-size: 2em;
+		  position: relative;
+		}
+		b.speaker {
+		  position: absolute;
+		  top: -1.5em;
+		}
+		</style>
+		""");
+
 		sb.Append("<script>let i = 0; const htmlArr = [");
 
 		string[] rawLines = rawText.Split('\n');
