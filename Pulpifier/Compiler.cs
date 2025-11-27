@@ -22,17 +22,21 @@ public static class Compiler {
 
 		sb.Append("""
 		<script>
+		function setLoc(i) {
+		  document.getElementById('pulp').innerHTML = imageHtmls[i] + "<div id='foot'><div></div><div id='text'>" + htmlArr[i] + "</div><div></div>";
+		  document.getElementById('pulp').style.backgroundImage = "url('images/b-" + backgrounds[backgroundIds[i]] + ".webp')";
+		}
 		document.addEventListener("keydown", function (e) {
 		  if (e.key === " " || e.key === "Spacebar" || e.key === "ArrowRight") {
-		    document.getElementById('pulp').innerHTML = imageHtmls[i] + "<div id='foot'><div></div><div id='text'>" + htmlArr[i] + "</div><div></div>";
-		    document.getElementById('pulp').style.backgroundImage = "url('images/b-" + backgrounds[backgroundIds[i]] + ".webp')";
-		    i++;
+		    setLoc(++i);
 		  } else if (e.key === "ArrowLeft") {
-		    --i;
-		    document.getElementById('pulp').innerHTML = imageHtmls[i - 1] + "<div id='foot'><div></div><div id='text'>" + htmlArr[i - 1] + "</div><div></div>";
-		    document.getElementById('pulp').style.backgroundImage = "url('images/b-" + backgrounds[backgroundIds[i - 1]] + ".webp')";
+		    setLoc(--i);
 		  }
 		});
+		document.addEventListener("click", function (e) {
+		  setLoc(++i);
+		});
+		window.addEventListener("load", e => setLoc(0));
 		</script>
 		""");
 
