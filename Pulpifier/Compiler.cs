@@ -18,18 +18,18 @@ public static class Compiler {
 
 	public static string BuildHtml(string rawText, string pulpText, out Dictionary<string, int> imageFiles) {
 		StringBuilder sb = new StringBuilder();
-		sb.Append("<div><div id='pulp'><div id='foot'><div></div><div id='text'></div><div></div></div></div>");
+		sb.Append("<div><div id='pulp'></div></div>");
 
 		sb.Append("""
 		<script>
 		document.addEventListener("keydown", function (e) {
 		  if (e.key === " " || e.key === "Spacebar" || e.key === "ArrowRight") {
-		    document.getElementById('text').innerHTML = htmlArr[i];
+		    document.getElementById('pulp').innerHTML = imageHtmls[i] + "<div id='foot'><div></div><div id='text'>" + htmlArr[i] + "</div><div></div>";
 		    document.getElementById('pulp').style.backgroundImage = "url('images/b-" + backgrounds[backgroundIds[i]] + ".webp')";
 		    i++;
 		  } else if (e.key === "ArrowLeft") {
 		    --i;
-		    document.getElementById('text').innerHTML = htmlArr[i - 1];
+		    document.getElementById('pulp').innerHTML = imageHtmls[i - 1] + "<div id='foot'><div></div><div id='text'>" + htmlArr[i - 1] + "</div><div></div>";
 		    document.getElementById('pulp').style.backgroundImage = "url('images/b-" + backgrounds[backgroundIds[i - 1]] + ".webp')";
 		  }
 		});
@@ -85,17 +85,23 @@ public static class Compiler {
 		  margin: 0.25em;
 		  font-size: 0.8em;
 		}
-		img.p-1/6 { left: calc(100% * 1/6); }
-		img.p-2/6, img.p-1/3 { left: calc(100% * 2/6); }
-		img.p-3/6, img.p-2/4, img.p-1/2 { left: 50%; }
-		img.p-4/6, img.p-2/3 { left: calc(100% * 4/6); }
-		img.p-5/6 { left: calc(100% * 5/6); }
-		img.p-1/5 { left: 20%; }
-		img.p-2/5 { left: 40%; }
-		img.p-3/5 { left: 60%; }
-		img.p-4/5 { left: 80%; }
-		img.p-1/4 { left: 25%; }
-		img.p-3/4 { left: 75%; }
+		#pulp > img {
+		  position: absolute;
+		  transform: translateX(-50%);
+		  bottom: -15vh;
+		  height: 100vh;
+		}
+		img.p-1\/6 { left: calc(100% * 1/6); }
+		img.p-2\/6, img.p-1\/3 { left: calc(100% * 2/6); }
+		img.p-3\/6, img.p-2\/4, img.p-1\/2 { left: 50%; }
+		img.p-4\/6, img.p-2\/3 { left: calc(100% * 4/6); }
+		img.p-5\/6 { left: calc(100% * 5/6); }
+		img.p-1\/5 { left: 20%; }
+		img.p-2\/5 { left: 40%; }
+		img.p-3\/5 { left: 60%; }
+		img.p-4\/5 { left: 80%; }
+		img.p-1\/4 { left: 25%; }
+		img.p-3\/4 { left: 75%; }
 		</style>
 		""");
 
@@ -108,6 +114,7 @@ public static class Compiler {
 		Dictionary<string, string> characterExpressions = new();
 		Dictionary<string, string> characterAges = new();
 		List<string> backgrounds = new();
+		List<string> imageHtmls = new();
 		List<int> backgroundIds = new();
 		imageFiles = new();
 		string[] activeCharacters = [];
@@ -202,6 +209,7 @@ public static class Compiler {
 							images += $"<img src='{directory}{file}.webp' class='p-{i+1}/{denominator}' />";
 						}
 					}
+					imageHtmls.Add(images);
 
 					if (activeSpeaker != "") {
 						string file = "c-" + activeSpeaker;
@@ -238,6 +246,9 @@ public static class Compiler {
 		sb.Append("backgroundIds=[");
 		sb.Append(string.Join(",", backgroundIds));
 		sb.Append("];");
+		sb.Append("imageHtmls=[`");
+		sb.Append(string.Join("`,`", imageHtmls));
+		sb.Append("`];");
 		sb.Append("</script></div>");
 		return sb.ToString();
 	}
