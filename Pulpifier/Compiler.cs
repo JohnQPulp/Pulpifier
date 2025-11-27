@@ -139,6 +139,7 @@ public static class Compiler {
 									activeCharacters = [];
 								} else {
 									string[] characters = value.Split(',');
+									if (characters.Length > 5) throw new Exception("Unsupported number of characters");
 									if (characters.Any(c => c != "" && !characterNames.ContainsKey(c))) throw new Exception("Missing character name.");
 									activeCharacters = characters;
 								}
