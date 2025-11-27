@@ -164,7 +164,6 @@ public static class Compiler {
 								if (imageFiles.TryAdd("b-" + activeBackground, p)) {
 									backgrounds.Add(activeBackground);
 								}
-								backgroundIds.Add(backgrounds.IndexOf(activeBackground));
 								break;
 							case 'e':
 								SetCharacterAttribute(key, value, characterNames, characterExpressions);
@@ -179,6 +178,8 @@ public static class Compiler {
 							default: throw new Exception($"Unrecognized key: '{key}'.");
 						}
 					}
+
+					backgroundIds.Add(backgrounds.IndexOf(activeBackground));
 
 					string directory = "images/";
 					string images = "";
