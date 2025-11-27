@@ -18,7 +18,7 @@ public static class Compiler {
 
 	public static string BuildHtml(string rawText, string pulpText, out Dictionary<string, int> imageFiles) {
 		StringBuilder sb = new StringBuilder();
-		sb.Append("<div><div id='pulp'><div id='foot'><div id='text'></div></div></div>");
+		sb.Append("<div><div id='pulp'><div id='foot'><div></div><div id='text'></div><div></div></div></div>");
 
 		sb.Append("""
 		<script>
@@ -60,15 +60,22 @@ public static class Compiler {
 		  position: absolute;
 		  bottom: 0px;
 		  justify-content: center;
-		  background: linear-gradient(to bottom, rgba(80, 80, 80, 0.5), rgba(80, 80, 80, 0.8), rgba(80, 80, 80, 0.95));
 		}
 		#text {
 		  width: 40em;
 		  font-family: sans-serif;
 		  font-size: 2em;
 		  position: relative;
-		  color: white;
-		  text-shadow: 2px 2px 4px black;
+		  color: black;
+		  background-color: #f8efd4f0;
+		}
+		#foot > div:first-child {
+		  flex-grow: 1;
+		  background: linear-gradient(to right, #f8efd445, #f8efd4f0);
+		}
+		#foot > div:last-child {
+		  flex-grow: 1;
+		  background: linear-gradient(to left, #f8efd445, #f8efd4f0);
 		}
 		b.speaker {
 		  position: absolute;
