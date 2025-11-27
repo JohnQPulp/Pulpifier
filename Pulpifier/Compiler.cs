@@ -79,7 +79,17 @@ public static class Compiler {
 		}
 		b.speaker {
 		  position: absolute;
-		  top: -1.5em;
+		  top: -2em;
+		  background-color: #f8efd4f0;
+		  padding: 0.25em;
+		  min-width: 2em;
+		  text-align: center;
+		}
+		img.speaker-img {
+		  position: absolute;
+		  transform: translateX(-50%);
+		  left: -130px;
+		  height: 120vh;
 		}
 		p.e {
 		  margin: 0.25em;
@@ -222,7 +232,19 @@ public static class Compiler {
 					string htmlLine = Regex.Replace(pulpLine, @"<e>(.*?)</e>", "<p class='e'><b>Editor's Note:</b> $1</p>");
 
 					sb.Append('`');
-					if (activeSpeaker != "") sb.Append($"<b class='speaker'>{characterNames[activeSpeaker]}</b>");
+					if (activeSpeaker != "") {
+						sb.Append($"<b class='speaker'>{characterNames[activeSpeaker]}</b>");
+
+						string file = "c-" + activeSpeaker;
+						if (characterAges.TryGetValue(activeSpeaker, out string age)) file += "-a" + age;
+						if (characterExpressions.TryGetValue(activeSpeaker, out string expression) && expression != "") file += "-e" + expression;
+						file += "-s";
+						imageFiles.TryAdd(file, p);
+
+						if (!activeCharacters.Contains(activeSpeaker)) {
+							sb.Append($"<img src='{directory}{file}.webp' class='speaker-img' />");
+						}
+					}
 					sb.Append(htmlLine);
 					sb.Append("`, ");
 
