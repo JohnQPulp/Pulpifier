@@ -15,7 +15,10 @@ if (args.Length == 2) {
 	int imagesTo = int.Parse(args[1]);
 	List<string> filesToPrint = imageFiles.Where(kvp => kvp.Value < imagesTo).Select(kvp => kvp.Key).ToList();
 	filesToPrint.Sort();
+
+	string imageDir = Path.Combine(directory, "images");
 	foreach (string file in filesToPrint) {
-		Console.WriteLine(file);
+		bool found = File.Exists(Path.Combine(imageDir, $"{file}.webp"));
+		Console.WriteLine(found ? file : $"{file} (missing)");
 	}
 }

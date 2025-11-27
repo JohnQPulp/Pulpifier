@@ -24,9 +24,13 @@ public static class Compiler {
 		<script>
 		document.addEventListener("keydown", function (e) {
 		  if (e.key === " " || e.key === "Spacebar" || e.key === "ArrowRight") {
-		    document.getElementById('text').innerHTML = htmlArr[i++];
+		    document.getElementById('text').innerHTML = htmlArr[i];
+		    document.getElementById('pulp').style.backgroundImage = "url('images/b-" + backgrounds[backgroundIds[i]] + ".webp')";
+		    i++;
 		  } else if (e.key === "ArrowLeft") {
-		    document.getElementById('text').innerHTML = htmlArr[--i - 1];
+		    --i;
+		    document.getElementById('text').innerHTML = htmlArr[i - 1];
+		    document.getElementById('pulp').style.backgroundImage = "url('images/b-" + backgrounds[backgroundIds[i - 1]] + ".webp')";
 		  }
 		});
 		</script>
@@ -38,10 +42,16 @@ public static class Compiler {
 		  margin: 0px;
 		  padding: 0px;
 		}
+		body {
+		  background-color: black;
+		}
 		#pulp {
 		  width: 100vw;
 		  height: 100vh;
 		  position: relative;
+		  background-position: center;
+		  background-repeat: no-repeat;
+		  background-size: cover;
 		}
 		#foot {
 		  width: 100%;
@@ -50,12 +60,15 @@ public static class Compiler {
 		  position: absolute;
 		  bottom: 0px;
 		  justify-content: center;
+		  background: linear-gradient(to bottom, rgba(80, 80, 80, 0.5), rgba(80, 80, 80, 0.8), rgba(80, 80, 80, 0.95));
 		}
 		#text {
 		  width: 40em;
 		  font-family: sans-serif;
 		  font-size: 2em;
 		  position: relative;
+		  color: white;
+		  text-shadow: 2px 2px 4px black;
 		}
 		b.speaker {
 		  position: absolute;
@@ -87,6 +100,8 @@ public static class Compiler {
 		Dictionary<string, string> characterNames = new();
 		Dictionary<string, string> characterExpressions = new();
 		Dictionary<string, string> characterAges = new();
+		List<string> backgrounds = new();
+		List<int> backgroundIds = new();
 		imageFiles = new();
 		string[] activeCharacters = [];
 		string activeSpeaker = "";
@@ -146,7 +161,10 @@ public static class Compiler {
 								break;
 							case 'b':
 								activeBackground = value;
-								imageFiles.TryAdd("b-" + activeBackground, p);
+								if (imageFiles.TryAdd("b-" + activeBackground, p)) {
+									backgrounds.Add(activeBackground);
+								}
+								backgroundIds.Add(backgrounds.IndexOf(activeBackground));
 								break;
 							case 'e':
 								SetCharacterAttribute(key, value, characterNames, characterExpressions);
@@ -205,7 +223,14 @@ public static class Compiler {
 			throw new Exception(error, e);
 		}
 
-		sb.Append("];</script></div>");
+		sb.Append("];");
+		sb.Append("backgrounds=['");
+		sb.Append(string.Join("','", backgrounds));
+		sb.Append("'];");
+		sb.Append("backgroundIds=[");
+		sb.Append(string.Join(",", backgroundIds));
+		sb.Append("];");
+		sb.Append("</script></div>");
 		return sb.ToString();
 	}
 
