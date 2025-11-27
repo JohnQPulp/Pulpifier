@@ -14,7 +14,9 @@ public static class Compiler {
 		}
 	}
 
-	public static string BuildHtml(string rawText, string pulpText) {
+	public static string BuildHtml(string rawText, string pulpText) => BuildHtml(rawText, pulpText, out _);
+
+	public static string BuildHtml(string rawText, string pulpText, out Dictionary<string, int> imageFiles) {
 		StringBuilder sb = new StringBuilder();
 		sb.Append("<div><div id='pulp'><div id='foot'><div id='text'></div></div></div>");
 
@@ -63,6 +65,17 @@ public static class Compiler {
 		  margin: 0.25em;
 		  font-size: 0.8em;
 		}
+		img.p-1/6 { left: calc(100% * 1/6); }
+		img.p-2/6, img.p-1/3 { left: calc(100% * 2/6); }
+		img.p-3/6, img.p-2/4, img.p-1/2 { left: 50%; }
+		img.p-4/6, img.p-2/3 { left: calc(100% * 4/6); }
+		img.p-5/6 { left: calc(100% * 5/6); }
+		img.p-1/5 { left: 20%; }
+		img.p-2/5 { left: 40%; }
+		img.p-3/5 { left: 60%; }
+		img.p-4/5 { left: 80%; }
+		img.p-1/4 { left: 25%; }
+		img.p-3/4 { left: 75%; }
 		</style>
 		""");
 
@@ -74,6 +87,7 @@ public static class Compiler {
 		Dictionary<string, string> characterNames = new();
 		Dictionary<string, string> characterExpressions = new();
 		Dictionary<string, string> characterAges = new();
+		imageFiles = new();
 		string[] activeCharacters = [];
 		string activeSpeaker = "";
 		string activeBackground = "";
@@ -131,6 +145,7 @@ public static class Compiler {
 								break;
 							case 'b':
 								activeBackground = value;
+								imageFiles.TryAdd("b-" + activeBackground, p);
 								break;
 							case 'e':
 								SetCharacterAttribute(key, value, characterNames, characterExpressions);
@@ -144,6 +159,29 @@ public static class Compiler {
 								break;
 							default: throw new Exception($"Unrecognized key: '{key}'.");
 						}
+					}
+
+					string directory = "images/";
+					string images = "";
+					int denominator = activeCharacters.Length + 1;
+					for (int i = 0; i < activeCharacters.Length; i++) {
+						string name = activeCharacters[i];
+						if (name != "") {
+							string file = "c-" + name;
+							if (characterAges.TryGetValue(name, out string age)) file += "-a" + age;
+							if (characterExpressions.TryGetValue(name, out string expression) && expression != "") file += "-e" + expression;
+							if (activeSpeaker == name) file += "-s";
+							imageFiles.TryAdd(file, p);
+							images += $"<img src='{directory}{file}.webp' class='p-{i+1}/{denominator}' />";
+						}
+					}
+
+					if (activeSpeaker != "") {
+						string file = "c-" + activeSpeaker;
+						if (characterAges.TryGetValue(activeSpeaker, out string age)) file += "-a" + age;
+						if (characterExpressions.TryGetValue(activeSpeaker, out string expression) && expression != "") file += "-e" + expression;
+						file += "-s";
+						imageFiles.TryAdd(file, p);
 					}
 
 					string htmlLine = Regex.Replace(pulpLine, @"<e>(.*?)</e>", "<p class='e'><b>Editor's Note:</b> $1</p>");
