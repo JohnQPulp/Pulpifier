@@ -18,25 +18,37 @@ public static class Compiler {
 
 	public static string BuildHtml(string rawText, string pulpText, out Dictionary<string, int> imageFiles) {
 		StringBuilder sb = new StringBuilder();
-		sb.Append("<div><div id='pulp'></div></div>");
-
+		sb.Append("<div id='app'><div id='pulp'></div></div>");
 		sb.Append("""
 		<script>
-		function setLoc(i) {
-		  document.getElementById('pulp').innerHTML = imageHtmls[i] + "<div id='foot'><div></div><div id='text'>" + htmlArr[i] + "</div><div></div>";
-		  document.getElementById('pulp').style.backgroundImage = "url('images/b-" + backgrounds[backgroundIds[i]] + ".webp')";
+		const app = document.getElementById('app');
+		function buildPulp(i) {
+		  return `<div id='pulp' style='background-image: url("images/b-` + backgrounds[backgroundIds[i]] + `.webp")'>` + imageHtmls[i] + "<div id='foot'><div></div><div id='text'>" + htmlArr[i] + "</div><div></div></div></div>";
+		}
+		function appendPulp(i) {
+		  app.innerHTML += buildPulp(i);
+		}
+		function prependPulp(i) {
+		  app.innerHTML = buildPulp(i) + app.innerHTML;
 		}
 		document.addEventListener("keydown", function (e) {
 		  if (e.key === " " || e.key === "Spacebar" || e.key === "ArrowRight") {
-		    setLoc(++i);
+		    app.removeChild(app.firstChild);
+		    appendPulp(++i + 1);
 		  } else if (e.key === "ArrowLeft") {
-		    setLoc(--i);
+		    prependPulp(--i - 1);
+		    app.removeChild(app.lastChild);
 		  }
 		});
 		document.addEventListener("click", function (e) {
-		  setLoc(++i);
+		  app.removeChild(app.firstChild);
+		  appendPulp(++i + 1);
 		});
-		window.addEventListener("load", e => setLoc(0));
+		window.addEventListener("load", e => {
+		  appendPulp(0);
+		  appendPulp(1);
+		  window.scrollBy({ top: window.innerHeight });
+		});
 		</script>
 		""");
 
