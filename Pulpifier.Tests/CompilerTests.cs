@@ -78,4 +78,24 @@ public class CompilerTests {
 	public void Compiler_BuildHtml_BadText(string rawText, string pulpText) {
 		Assert.IsFalse(Compiler.TryBuildHtml(rawText, pulpText, out string _));
 	}
+
+	[TestMethod]
+	[DataRow("Foo\n", "Foo\n\n", "Foo")]
+	[DataRow("*Foo*\n", "*Foo*\n\n", "<i>Foo</i>")]
+	[DataRow("**Foo**\n", "**Foo**\n\n", "<b>Foo</b>")]
+	[DataRow("***Foo***\n", "***Foo***\n\n", "<b><i>Foo</i></b>")]
+	[DataRow("Foo\n", "Foo<e>Bar</e>\n\n", "<b>Editor's Note:</b> Bar")]
+	[DataRow("*Foo*\n", "<e>1</e>*Foo*<e>2</e>\n\n", "<b>Editor's Note:</b> 1")]
+	[DataRow("*Foo*\n", "<e>1</e>*Foo*<e>2</e>\n\n", "<b>Editor's Note:</b> 2")]
+	[DataRow("*Foo*\n", "<e>1</e>*Foo*<e>2</e>\n\n", "<i>Foo</i>")]
+	[DataRow("Foo\n", "Foo<e>*Bar*</e>\n\n", "*Bar*")]
+	[DataRow("# Foo\n", "# Foo\n\n", "<h1>Foo</h1>")]
+	[DataRow("## Foo\n", "## Foo\n\n", "<h2>Foo</h2>")]
+	[DataRow("### Foo\n", "### Foo\n\n", "<h3>Foo</h3>")]
+	[DataRow("#### Foo\n", "#### Foo\n\n", "<h4>Foo</h4>")]
+	[DataRow("## Foo *Bar*\n", "## Foo *Bar*\n\n", "<h2>Foo <i>Bar</i></h2>")]
+	public void Compiler_BuildHtml_ContainsHtml(string rawText, string pulpText, string htmlSnippet) {
+		string html = Compiler.BuildHtml(rawText, pulpText);
+		Assert.Contains(htmlSnippet, html);
+	}
 }

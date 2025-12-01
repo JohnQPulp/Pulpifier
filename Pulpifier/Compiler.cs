@@ -85,6 +85,13 @@ public static class Compiler {
 		  color: black;
 		  background-color: #f8efd4f0;
 		}
+		#text > h1, #text > h2, #text > h3, #text > h4, #text > h5, #text > h6 {
+		  text-align: center;
+		  margin: 0.25em 0px;
+		}
+		#text > hr {
+		  margin: 1em 0px;
+		}
 		#foot > div:first-child {
 		  flex-grow: 1;
 		  background: linear-gradient(to right, #f8efd445, #f8efd4f0);
@@ -245,7 +252,31 @@ public static class Compiler {
 						imageFiles.TryAdd(file, p);
 					}
 
-					string htmlLine = Regex.Replace(pulpLine, @"<e>(.*?)</e>", "<p class='e'><b>Editor's Note:</b> $1</p>");
+					List<string> htmlParts = new List<string>();
+					string[] parts = Regex.Split(pulpLine, @"(<e>(.*?)</e>)", RegexOptions.Singleline);
+					bool editorLine = false;
+					for (int i = 0; i < parts.Length; i++) {
+						string part = parts[i];
+						if (editorLine) {
+							editorLine = false;
+							htmlParts.Add($"<p class='e'><b>Editor's Note:</b> {part}</p>");
+						} else if (part.StartsWith("<e>")) {
+							editorLine = true;
+						} else {
+							part = Regex.Replace(part, @"^—+$", "<hr>");
+							part = Regex.Replace(part, @"\*\*\*(.*?)\*\*\*", "<b><i>$1</i></b>");
+							part = Regex.Replace(part, @"\*\*(.*?)\*\*", "<b>$1</b>");
+							part = Regex.Replace(part, @"\*(.*?)\*", "<i>$1</i>");
+
+							part = Regex.Replace(part, @"^(#{1,6})\s+(.*)$",m => {
+								int level = m.Groups[1].Value.Length;
+								string text = m.Groups[2].Value;
+								return $"<h{level}>{text}</h{level}>";
+							}, RegexOptions.Singleline);
+							htmlParts.Add(part);
+						}
+					}
+					string htmlLine = string.Concat(htmlParts);
 
 					sb.Append('`');
 					if (activeSpeaker != "") {
