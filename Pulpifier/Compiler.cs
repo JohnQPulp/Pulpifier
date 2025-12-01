@@ -48,8 +48,10 @@ public static class Compiler {
 		  }
 		});
 		document.addEventListener("click", function (e) {
-		  app.removeChild(app.firstChild);
-		  appendPulp(++pos + 1);
+		  if (e.target.tagName === "IMG" || (e.target.tagName === "DIV" && e.target.id === "pulp")) {
+		    app.removeChild(app.firstChild);
+		    appendPulp(++pos + 1);
+		  }
 		});
 		window.addEventListener("load", e => {
 		  appendPulp(pos - 1);
