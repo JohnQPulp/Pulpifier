@@ -68,6 +68,7 @@ public static class Compiler {
 		}
 		body {
 		  background-color: black;
+		  overflow: hidden;
 		}
 		#pulp {
 		  width: 100vw;
