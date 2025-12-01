@@ -39,12 +39,16 @@ public static class Compiler {
 		  app.innerHTML = buildPulp(i) + app.innerHTML;
 		}
 		function nextPulp() {
-		  app.removeChild(app.firstChild);
-		  appendPulp(++pos + 1);
+		  if (pos + 1 < htmlArr.length) {
+		    app.removeChild(app.firstChild);
+		    appendPulp(++pos + 1);
+		  }
 		}
 		function prevPulp() {
-		  prependPulp(--pos - 1);
-		  app.removeChild(app.lastChild);
+		  if (pos - 1 >= 0) {
+		    prependPulp(--pos - 1);
+		    app.removeChild(app.lastChild);
+		  }
 		}
 		document.addEventListener("keydown", function (e) {
 		  if (e.key === " " || e.key === "Spacebar" || e.key === "ArrowRight") {
