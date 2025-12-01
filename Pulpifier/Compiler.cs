@@ -17,8 +17,6 @@ public static class Compiler {
 	public static string BuildHtml(string rawText, string pulpText) => BuildHtml(rawText, pulpText, out _);
 
 	public static string BuildHtml(string rawText, string pulpText, out Dictionary<string, int> imageFiles) {
-		int start = 7798 / 3;
-
 		StringBuilder sb = new StringBuilder();
 		sb.Append("<div id='app'></div>");
 		sb.Append("""
@@ -275,6 +273,9 @@ public static class Compiler {
 							editorLine = true;
 						} else {
 							part = Regex.Replace(part, @"^—+$", "<hr>");
+							part = Regex.Replace(part, @"(\S)—", "$1&#8288;—");
+							part = Regex.Replace(part, @"—(\S)", "—&#8288;$1");
+
 							part = Regex.Replace(part, @"\*\*\*(.*?)\*\*\*", "<b><i>$1</i></b>");
 							part = Regex.Replace(part, @"\*\*(.*?)\*\*", "<b>$1</b>");
 							part = Regex.Replace(part, @"\*(.*?)\*", "<i>$1</i>");
