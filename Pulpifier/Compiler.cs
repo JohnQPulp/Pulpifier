@@ -268,6 +268,13 @@ public static class Compiler {
 						string part = parts[i];
 						if (editorLine) {
 							editorLine = false;
+							part = Regex.Replace(part, @"<book>(.*?)(\|.*?)?</book>", m => {
+								string book = m.Groups[1].Value;
+								string text = m.Groups[2].Value.Trim('|');
+								if (text == "") text = book;
+								string url = "https://www.goodreads.com/search?q=" + string.Join("+", book.ToLowerInvariant());
+								return $"<a href='{url}'>{text}</a>";
+							}, RegexOptions.Singleline);
 							htmlParts.Add($"<p class='e'><b>Editor's Note:</b> {part}</p>");
 						} else if (part.StartsWith("<e>")) {
 							editorLine = true;
