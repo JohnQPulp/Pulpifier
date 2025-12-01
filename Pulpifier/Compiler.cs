@@ -38,19 +38,31 @@ public static class Compiler {
 		function prependPulp(i) {
 		  app.innerHTML = buildPulp(i) + app.innerHTML;
 		}
+		function nextPulp() {
+		  app.removeChild(app.firstChild);
+		  appendPulp(++pos + 1);
+		}
+		function prevPulp() {
+		  prependPulp(--pos - 1);
+		  app.removeChild(app.lastChild);
+		}
 		document.addEventListener("keydown", function (e) {
 		  if (e.key === " " || e.key === "Spacebar" || e.key === "ArrowRight") {
-		    app.removeChild(app.firstChild);
-		    appendPulp(++pos + 1);
+		    nextPulp();
 		  } else if (e.key === "ArrowLeft") {
-		    prependPulp(--pos - 1);
-		    app.removeChild(app.lastChild);
+		    prevPulp();
 		  }
 		});
 		document.addEventListener("click", function (e) {
 		  if (e.target.tagName === "IMG" || (e.target.tagName === "DIV" && e.target.id === "pulp")) {
-		    app.removeChild(app.firstChild);
-		    appendPulp(++pos + 1);
+		    nextPulp();
+		  }
+		});
+		document.addEventListener("wheel", function (e) {
+		  if (e.deltaY > 0) {
+		    nextPulp();
+		  } else {
+		    prevPulp();
 		  }
 		});
 		window.addEventListener("load", e => {
