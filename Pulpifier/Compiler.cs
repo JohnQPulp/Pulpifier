@@ -17,12 +17,21 @@ public static class Compiler {
 	public static string BuildHtml(string rawText, string pulpText) => BuildHtml(rawText, pulpText, out _);
 
 	public static string BuildHtml(string rawText, string pulpText, out Dictionary<string, int> imageFiles) {
+		int start = 7798 / 3;
+
 		StringBuilder sb = new StringBuilder();
-		sb.Append("<div id='app'><div id='pulp'></div></div>");
+		sb.Append("<div id='app'></div>");
 		sb.Append("""
 		<script>
 		const app = document.getElementById('app');
+		const params = new URLSearchParams(window.location.search);
+		let pos = Number(params.get("p"));
+		if (Number.isNaN(pos)) pos = 0;
+		pos = Math.floor(pos / 3);
 		function buildPulp(i) {
+		  if (i < 0 || i >= htmlArr.length) {
+		    return `<div id='pulp'></div>`;
+		  }
 		  return `<div id='pulp' style='background-image: url("images/b-` + backgrounds[backgroundIds[i]] + `.webp")'>` + imageHtmls[i] + "<div id='foot'><div></div><div id='text'>" + htmlArr[i] + "</div><div></div></div></div>";
 		}
 		function appendPulp(i) {
@@ -34,19 +43,20 @@ public static class Compiler {
 		document.addEventListener("keydown", function (e) {
 		  if (e.key === " " || e.key === "Spacebar" || e.key === "ArrowRight") {
 		    app.removeChild(app.firstChild);
-		    appendPulp(++i + 1);
+		    appendPulp(++pos + 1);
 		  } else if (e.key === "ArrowLeft") {
-		    prependPulp(--i - 1);
+		    prependPulp(--pos - 1);
 		    app.removeChild(app.lastChild);
 		  }
 		});
 		document.addEventListener("click", function (e) {
 		  app.removeChild(app.firstChild);
-		  appendPulp(++i + 1);
+		  appendPulp(++pos + 1);
 		});
 		window.addEventListener("load", e => {
-		  appendPulp(0);
-		  appendPulp(1);
+		  appendPulp(pos - 1);
+		  appendPulp(pos);
+		  appendPulp(pos + 1);
 		  window.scrollBy({ top: window.innerHeight });
 		});
 		</script>
@@ -68,6 +78,7 @@ public static class Compiler {
 		  background-position: center;
 		  background-repeat: no-repeat;
 		  background-size: cover;
+		  background-color: #f0ddb6;
 		}
 		#foot {
 		  width: 100%;
