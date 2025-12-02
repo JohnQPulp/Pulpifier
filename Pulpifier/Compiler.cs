@@ -174,6 +174,7 @@ public static class Compiler {
 		Dictionary<string, string> characterNames = new();
 		Dictionary<string, string> characterExpressions = new();
 		Dictionary<string, string> characterAges = new();
+		Dictionary<string, string> characterExtras = new();
 		List<string> backgrounds = new();
 		List<string> imageHtmls = new();
 		List<int> backgroundIds = new();
@@ -250,6 +251,9 @@ public static class Compiler {
 							case 'a':
 								SetCharacterAttribute(key, value, characterNames, characterAges);
 								break;
+							case 'x':
+								SetCharacterAttribute(key, value, characterNames, characterExtras);
+								break;
 							case 's':
 								if (value != "" && !characterNames.ContainsKey(value)) throw new Exception("Missing character name for speaker.");
 								activeSpeaker = value;
@@ -270,7 +274,7 @@ public static class Compiler {
 					for (int i = 0; i < activeCharacters.Length; i++) {
 						string name = activeCharacters[i];
 						if (name != "") {
-							string file = GetCharacterFile(name, characterAges, characterExpressions, activeSpeaker, activeThinker);
+							string file = GetCharacterFile(name, characterAges, characterExpressions, characterExtras, activeSpeaker, activeThinker);
 							imageFiles.TryAdd(file, p);
 							images += $"<img src='{directory}{file}.webp' class='p-{i+1}/{denominator}' />";
 						}
@@ -319,7 +323,7 @@ public static class Compiler {
 						string active = activeSpeaker != "" ? activeSpeaker : activeThinker;
 						sb.Append($"<b class='speaker'>{characterNames[active]}{(activeThinker != "" ? " (Thinking)" : "")}</b>");
 
-						string file = GetCharacterFile(active, characterAges, characterExpressions, activeSpeaker, activeThinker);
+						string file = GetCharacterFile(active, characterAges, characterExpressions, characterExtras, activeSpeaker, activeThinker);
 						imageFiles.TryAdd(file, p);
 
 						if (!activeCharacters.Contains(active)) {
@@ -358,7 +362,7 @@ public static class Compiler {
 		return sb.ToString();
 	}
 
-	private static string GetCharacterFile(string name,  Dictionary<string, string> ages, Dictionary<string, string> expressions, string speaker, string thinker) {
+	private static string GetCharacterFile(string name,  Dictionary<string, string> ages, Dictionary<string, string> expressions, Dictionary<string, string> extras, string speaker, string thinker) {
 		string file = "c-" + name;
 		if (ages.TryGetValue(name, out string age)) file += "-a" + age;
 		if (expressions.TryGetValue(name, out string expression) && expression != "") {
@@ -366,6 +370,7 @@ public static class Compiler {
 		} else if (name == thinker) {
 			file += "-et";
 		}
+		if (extras.TryGetValue(name, out string extra)) file += "-x" + extra;
 		if (name == speaker) file += "-s";
 		return file;
 	}
