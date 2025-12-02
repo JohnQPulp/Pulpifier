@@ -198,16 +198,19 @@ public static class Compiler {
 					string pulpLine = pulpLines[p];
 
 					string cleanPulpLine = Regex.Replace(pulpLine, "<e>.*?</e>", "");
-					if (constructedLine.Count(c => c == '"') % 2 == 1 && !cleanPulpLine.StartsWith('"')) throw new Exception("Pulp line should continue ongoing quote.");
-
-					string constructionPulpLine = cleanPulpLine;
-					if (constructionPulpLine.StartsWith('"') && rawLine[constructedLine.Length] != '"') {
-						constructionPulpLine = constructionPulpLine[1..];
+					if (cleanPulpLine == "") {
+						if (pulpLine == "") throw new Exception("Should only have empty lines if there are editor's notes.");
+					} else {
+						if (constructedLine.Count(c => c == '"') % 2 == 1 && !cleanPulpLine.StartsWith('"')) throw new Exception("Pulp line should continue ongoing quote.");
+						string constructionPulpLine = cleanPulpLine;
+						if (constructionPulpLine.StartsWith('"') && rawLine[constructedLine.Length] != '"') {
+							constructionPulpLine = constructionPulpLine[1..];
+						}
+						if (constructionPulpLine.EndsWith('"') && rawLine[constructedLine.Length + constructionPulpLine.Length - 1] != '"') {
+							constructionPulpLine = constructionPulpLine[..^1];
+						}
+						constructedLine += constructionPulpLine + ' ';
 					}
-					if (constructionPulpLine.EndsWith('"') && rawLine[constructedLine.Length + constructionPulpLine.Length - 1] != '"') {
-						constructionPulpLine = constructionPulpLine[..^1];
-					}
-					constructedLine += constructionPulpLine + ' ';
 
 					if (cleanPulpLine.Count(c => c == '"') % 2 == 1) throw new Exception("Unmatched quotes in pulp line.");
 
