@@ -270,10 +270,7 @@ public static class Compiler {
 					for (int i = 0; i < activeCharacters.Length; i++) {
 						string name = activeCharacters[i];
 						if (name != "") {
-							string file = "c-" + name;
-							if (characterAges.TryGetValue(name, out string age)) file += "-a" + age;
-							if (characterExpressions.TryGetValue(name, out string expression) && expression != "") file += "-e" + expression;
-							if (activeSpeaker == name) file += "-s";
+							string file = GetCharacterFile(name, characterAges, characterExpressions, activeSpeaker, activeThinker);
 							imageFiles.TryAdd(file, p);
 							images += $"<img src='{directory}{file}.webp' class='p-{i+1}/{denominator}' />";
 						}
@@ -322,14 +319,7 @@ public static class Compiler {
 						string active = activeSpeaker != "" ? activeSpeaker : activeThinker;
 						sb.Append($"<b class='speaker'>{characterNames[active]}{(activeThinker != "" ? " (Thinking)" : "")}</b>");
 
-						string file = "c-" + active;
-						if (characterAges.TryGetValue(active, out string age)) file += "-a" + age;
-						if (characterExpressions.TryGetValue(active, out string expression) && expression != "") {
-							file += "-e" + expression;
-						} else if (activeThinker != "") {
-							file += "-et";
-						}
-						if (activeSpeaker != "") file += "-s";
+						string file = GetCharacterFile(active, characterAges, characterExpressions, activeSpeaker, activeThinker);
 						imageFiles.TryAdd(file, p);
 
 						if (!activeCharacters.Contains(active)) {
@@ -366,6 +356,18 @@ public static class Compiler {
 		sb.Append("`];");
 		sb.Append("</script></div>");
 		return sb.ToString();
+	}
+
+	private static string GetCharacterFile(string name,  Dictionary<string, string> ages, Dictionary<string, string> expressions, string speaker, string thinker) {
+		string file = "c-" + name;
+		if (ages.TryGetValue(name, out string age)) file += "-a" + age;
+		if (expressions.TryGetValue(name, out string expression) && expression != "") {
+			file += "-e" + expression;
+		} else if (name == thinker) {
+			file += "-et";
+		}
+		if (name == speaker) file += "-s";
+		return file;
 	}
 
 	private static void SetCharacterAttribute(string key, string value, Dictionary<string, string> characterNames, Dictionary<string, string> characterAttributes) {

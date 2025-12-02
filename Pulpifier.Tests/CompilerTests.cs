@@ -117,6 +117,17 @@ public class CompilerTests {
 	[DataRow("Foo\n", "Foo<e>Book: <book>Some Book</book></e>\n\n", ">Some Book</a>")]
 	[DataRow("Foo\n", "Foo<e>Book: <book>Some Book|the book</book></e>\n\n", "Book: <a href='")]
 	[DataRow("Foo\n", "Foo<e>Book: <book>Some Book|the book</book></e>\n\n", ">the book</a>")]
+	[DataRow("Foo\n", "Foo\nn:r=R;c=r\n", "c-r.webp")]
+	[DataRow("Foo\n", "Foo\nn:r=R;c=r;s=r\n", "c-r-s.webp")]
+	[DataRow("Foo\n", "Foo\nn:r=R;s=r\n", "c-r-s.webp")]
+	[DataRow("Foo\n", "Foo\nn:r=R;c=r;e:r=u\n", "c-r-eu.webp")]
+	[DataRow("Foo\n", "Foo\nn:r=R;c=r;t=r\n", "c-r-et.webp")]
+	[DataRow("Foo\n", "Foo\nn:r=R;t=r\n", "c-r-et.webp")]
+	[DataRow("Foo\n", "Foo\nn:r=R;e:r=m;t=r\n", "c-r-em.webp")]
+	[DataRow("Foo\n", "Foo\nn:r=R;c=r;e:r=g;s=r\n", "c-r-eg-s.webp")]
+	[DataRow("Foo\n", "Foo\nn:r=R;e:r=g;s=r\n", "c-r-eg-s.webp")]
+	[DataRow("Foo\n", "Foo\nn:r=R;n:f=F;c=r,f\n", "c-r.webp")]
+	[DataRow("Foo\n", "Foo\nn:r=R;n:f=F;c=r,f\n", "c-f.webp")]
 	public void Compiler_BuildHtml_ContainsHtml(string rawText, string pulpText, string htmlSnippet) {
 		string html = Compiler.BuildHtml(rawText, pulpText);
 		Assert.Contains(htmlSnippet, html);
