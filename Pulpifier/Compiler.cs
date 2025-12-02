@@ -180,6 +180,7 @@ public static class Compiler {
 		imageFiles = new();
 		string[] activeCharacters = [];
 		string activeSpeaker = "";
+		string activeThinker = "";
 		string activeBackground = "";
 
 		int r = 0, p = 0;
@@ -253,6 +254,10 @@ public static class Compiler {
 								if (value != "" && !characterNames.ContainsKey(value)) throw new Exception("Missing character name for speaker.");
 								activeSpeaker = value;
 								break;
+							case 't':
+								if (value != "" && !characterNames.ContainsKey(value)) throw new Exception("Missing character name for thinker.");
+								activeThinker = value;
+								break;
 							default: throw new Exception($"Unrecognized key: '{key}'.");
 						}
 					}
@@ -274,14 +279,6 @@ public static class Compiler {
 						}
 					}
 					imageHtmls.Add(images);
-
-					if (activeSpeaker != "") {
-						string file = "c-" + activeSpeaker;
-						if (characterAges.TryGetValue(activeSpeaker, out string age)) file += "-a" + age;
-						if (characterExpressions.TryGetValue(activeSpeaker, out string expression) && expression != "") file += "-e" + expression;
-						file += "-s";
-						imageFiles.TryAdd(file, p);
-					}
 
 					List<string> htmlParts = new List<string>();
 					string[] parts = Regex.Split(pulpLine, @"(<e>(.*?)</e>)", RegexOptions.Singleline);
@@ -320,18 +317,26 @@ public static class Compiler {
 					string htmlLine = string.Concat(htmlParts);
 
 					sb.Append('`');
-					if (activeSpeaker != "") {
-						sb.Append($"<b class='speaker'>{characterNames[activeSpeaker]}</b>");
+					if (activeSpeaker != "" && activeThinker != "") throw new Exception("Can't have both active speaker and active thinker.");
+					if (activeSpeaker != "" || activeThinker != "") {
+						string active = activeSpeaker != "" ? activeSpeaker : activeThinker;
+						sb.Append($"<b class='speaker'>{characterNames[active]}{(activeThinker != "" ? " (Thinking)" : "")}</b>");
 
-						string file = "c-" + activeSpeaker;
-						if (characterAges.TryGetValue(activeSpeaker, out string age)) file += "-a" + age;
-						if (characterExpressions.TryGetValue(activeSpeaker, out string expression) && expression != "") file += "-e" + expression;
-						file += "-s";
+						string file = "c-" + active;
+						if (characterAges.TryGetValue(active, out string age)) file += "-a" + age;
+						if (characterExpressions.TryGetValue(active, out string expression) && expression != "") {
+							file += "-e" + expression;
+						} else if (activeThinker != "") {
+							file += "-et";
+						}
+						if (activeSpeaker != "") file += "-s";
 						imageFiles.TryAdd(file, p);
 
-						if (!activeCharacters.Contains(activeSpeaker)) {
+						if (!activeCharacters.Contains(active)) {
 							sb.Append($"<img src='{directory}{file}.webp' class='speaker-img' />");
 						}
+					} else if (cleanPulpLine.Contains('"')) {
+						//Console.WriteLine(p);
 					}
 					sb.Append(htmlLine);
 					sb.Append("`, ");
