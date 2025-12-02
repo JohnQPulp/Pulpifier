@@ -245,6 +245,17 @@ public static class Compiler {
 									backgrounds.Add(activeBackground);
 								}
 								break;
+							case 'r':
+								activeBackground = value;
+								if (imageFiles.TryAdd("b-" + activeBackground, p)) {
+									backgrounds.Add(activeBackground);
+								}
+								characterExtras.Clear();
+								characterExpressions.Clear();
+								activeSpeaker = "";
+								activeThinker = "";
+								activeCharacters = [];
+								break;
 							case 'e':
 								SetCharacterAttribute(key, value, characterNames, characterExpressions);
 								break;
