@@ -180,6 +180,7 @@ public static class Compiler {
 		List<int> backgroundIds = new();
 		imageFiles = new();
 		string[] activeCharacters = [];
+		Dictionary<string, string[]> backgroundModifiers = new();
 		string activeSpeaker = "";
 		string activeThinker = "";
 		string activeBackground = "";
@@ -241,20 +242,26 @@ public static class Compiler {
 								break;
 							case 'b':
 								activeBackground = value;
-								if (imageFiles.TryAdd("b-" + activeBackground, p)) {
-									backgrounds.Add(activeBackground);
-								}
+								backgroundModifiers.TryAdd(value, []);
 								break;
 							case 'r':
 								activeBackground = value;
-								if (imageFiles.TryAdd("b-" + activeBackground, p)) {
-									backgrounds.Add(activeBackground);
-								}
+								backgroundModifiers.TryAdd(value, []);
 								characterExtras.Clear();
 								characterExpressions.Clear();
 								activeSpeaker = "";
 								activeThinker = "";
 								activeCharacters = [];
+								foreach (string bkey in backgroundModifiers.Keys) {
+									backgroundModifiers[bkey] = [];
+								}
+								break;
+							case 'm':
+								string bname = key.Split(':')[1];
+								string[] bvalues = value == "" ? [] : value.Split(',');
+								bvalues.Sort();
+								if (!backgroundModifiers.ContainsKey(bname)) throw new Exception("Can't set modifiers on non-existent background.");
+								backgroundModifiers[bname] = bvalues;
 								break;
 							case 'e':
 								SetCharacterAttribute(key, value, characterNames, characterExpressions);
@@ -277,7 +284,15 @@ public static class Compiler {
 						}
 					}
 
-					backgroundIds.Add(backgrounds.IndexOf(activeBackground));
+					string backgroundFullName = activeBackground;
+					if (backgroundModifiers.TryGetValue(activeBackground, out string[] bmods) && bmods.Length > 0) {
+						backgroundFullName += "-mod-";
+						backgroundFullName += string.Join('-', bmods);
+					}
+					if (imageFiles.TryAdd("b-" + backgroundFullName, p)) {
+						backgrounds.Add(backgroundFullName);
+					}
+					backgroundIds.Add(backgrounds.IndexOf(backgroundFullName));
 
 					string directory = "images/";
 					string images = "";

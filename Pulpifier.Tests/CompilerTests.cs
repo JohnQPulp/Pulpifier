@@ -138,6 +138,11 @@ public class CompilerTests {
 	[DataRow("Foo. Bar.\n", "Foo.\nn:r=R;e:r=g;a:r=foo;x:r=bar\n\nBar.\nr=p;s=r\n", "c-r-afoo-s.webp")]
 	[DataRow("Foo\n", "Foo\nb=p\n", "'p'")]
 	[DataRow("Foo\n", "Foo\nr=p\n", "'p'")]
+	[DataRow("Foo\n", "Foo\nb=p;m:p=foo,bar\n", "'p-mod-bar-foo'")]
+	[DataRow("Foo. Bar.\n", "Foo.\nb=p;m:p=foo\n\nBar.\nm:p=bar\n", "'p-mod-foo'")]
+	[DataRow("Foo. Bar.\n", "Foo.\nb=p;m:p=foo\n\nBar.\nm:p=bar\n", "'p-mod-bar'")]
+	[DataRow("Foo. Bar.\n", "Foo.\nb=p;m:p=foo\n\nBar.\nr=p\n", "'p-mod-foo'")]
+	[DataRow("Foo. Bar.\n", "Foo.\nb=p;m:p=foo\n\nBar.\nr=p\n", "'p'")]
 	public void Compiler_BuildHtml_ContainsHtml(string rawText, string pulpText, string htmlSnippet) {
 		string html = Compiler.BuildHtml(rawText, pulpText);
 		Assert.Contains(htmlSnippet, html);
