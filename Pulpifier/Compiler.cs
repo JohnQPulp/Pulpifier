@@ -417,7 +417,7 @@ public static class Compiler {
 		} else if (name == thinker) {
 			file += "-et";
 		}
-		if (extras.TryGetValue(name, out string extra)) file += "-x" + extra;
+		if (extras.TryGetValue(name, out string extra) && extra != "") file += "-x" + extra;
 		if (name == speaker) file += "-s";
 		return file;
 	}
