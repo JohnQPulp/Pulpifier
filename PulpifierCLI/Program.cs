@@ -19,6 +19,6 @@ if (args.Length == 2) {
 	string imageDir = Path.Combine(directory, "images");
 	foreach (string file in filesToPrint) {
 		bool found = File.Exists(Path.Combine(imageDir, $"{file}.webp"));
-		Console.WriteLine(found ? file : $"{file} (missing)");
+		Console.WriteLine(found ? file : $"{file} (missing) {imageFiles[file]}");
 	}
 }

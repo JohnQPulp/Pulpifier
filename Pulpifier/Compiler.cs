@@ -238,6 +238,7 @@ public static class Compiler {
 								characterNames[name] = value;
 								break;
 							case 'c':
+								ThrowIfBadKey(key);
 								if (value == "") {
 									activeCharacters = [];
 								} else {
@@ -248,13 +249,16 @@ public static class Compiler {
 								}
 								break;
 							case 'o':
+								ThrowIfBadKey(key);
 								activeObject = value;
 								break;
 							case 'b':
+								ThrowIfBadKey(key);
 								activeBackground = value;
 								backgroundModifiers.TryAdd(value, []);
 								break;
 							case 'r':
+								ThrowIfBadKey(key);
 								activeBackground = value;
 								backgroundModifiers.TryAdd(value, []);
 								characterExtras.Clear();
@@ -283,10 +287,12 @@ public static class Compiler {
 								SetCharacterAttribute(key, value, characterNames, characterExtras);
 								break;
 							case 's':
+								ThrowIfBadKey(key);
 								if (value != "" && !characterNames.ContainsKey(value)) throw new Exception("Missing character name for speaker.");
 								activeSpeaker = value;
 								break;
 							case 't':
+								ThrowIfBadKey(key);
 								if (value != "" && !characterNames.ContainsKey(value)) throw new Exception("Missing character name for thinker.");
 								activeThinker = value;
 								break;
@@ -428,5 +434,9 @@ public static class Compiler {
 		if (line.ContainsAny(InvalidChars)) throw new Exception("Contains invalid char.");
 		if (line.Contains("...") || line.Contains("--")) throw new Exception("Contains invalid sequence.");
 		if (line != line.Trim()) throw new Exception("Contains leading/trailing whitespace.");
+	}
+
+	private static void ThrowIfBadKey(string key) {
+		if (key.Length != 1) throw new Exception($"Key \"{key}\" should be single letter.");
 	}
 }
