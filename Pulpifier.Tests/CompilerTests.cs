@@ -136,6 +136,8 @@ public class CompilerTests {
 	[DataRow("Foo. Bar.\n", "Foo.\nn:r=R;e:r=g;a:r=foo;x:r=bar\n\nBar.\nr=p;c=r\n", "c-r-afoo.webp")]
 	[DataRow("Foo. Bar.\n", "Foo.\nn:r=R;e:r=g;s=r;a:r=foo;x:r=bar\n\nBar.\nr=p;c=r\n", "c-r-afoo.webp")]
 	[DataRow("Foo. Bar.\n", "Foo.\nn:r=R;e:r=g;a:r=foo;x:r=bar\n\nBar.\nr=p;s=r\n", "c-r-afoo-s.webp")]
+	[DataRow("Foo\n", "Foo\no=myobj\n", "o-myobj.webp")]
+	[DataRow("Foo\n", "Foo\no=myobj\n", "class='c'")]
 	[DataRow("Foo\n", "Foo\nb=p\n", "'p'")]
 	[DataRow("Foo\n", "Foo\nr=p\n", "'p'")]
 	[DataRow("Foo\n", "Foo\nb=p;m:p=foo,bar\n", "'p-mod-bar-foo'")]

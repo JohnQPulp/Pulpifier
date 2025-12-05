@@ -1,0 +1,11 @@
+"I am a wizard."
+n:w=Wizard;c=w,,,
+
+"Here's an apple."
+o=apple
+
+"Behold, now it is gone."
+o=
+
+"As am I."
+c=

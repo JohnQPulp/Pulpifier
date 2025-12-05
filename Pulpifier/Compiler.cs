@@ -163,6 +163,12 @@ public static class Compiler {
 		img.p-4\/5 { left: 80%; }
 		img.p-1\/4 { left: 25%; }
 		img.p-3\/4 { left: 75%; }
+		#pulp > img.c {
+			transform: translate(-50%, -50%);
+			top: 50vh;
+			left: 50vw;
+			height: 60vh;
+		}
 		</style>
 		""");
 
@@ -184,6 +190,7 @@ public static class Compiler {
 		string activeSpeaker = "";
 		string activeThinker = "";
 		string activeBackground = "";
+		string activeObject = "";
 
 		int r = 0, p = 0;
 		try {
@@ -239,6 +246,9 @@ public static class Compiler {
 									if (characters.Any(c => c != "" && !characterNames.ContainsKey(c))) throw new Exception("Missing character name.");
 									activeCharacters = characters;
 								}
+								break;
+							case 'o':
+								activeObject = value;
 								break;
 							case 'b':
 								activeBackground = value;
@@ -304,6 +314,11 @@ public static class Compiler {
 							imageFiles.TryAdd(file, p);
 							images += $"<img src='{directory}{file}.webp' class='p-{i+1}/{denominator}' />";
 						}
+					}
+					if (activeObject != "") {
+						string file = "o-" + activeObject;
+						imageFiles.TryAdd(file, p);
+						images += $"<img src='{directory}{file}.webp' class='c' />";
 					}
 					imageHtmls.Add(images);
 
