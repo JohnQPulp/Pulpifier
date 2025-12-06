@@ -174,6 +174,8 @@ public static class Compiler {
 
 		sb.Append("<script>let i = 0; const htmlArr = [");
 
+		StringBuilder styleBuilder = new StringBuilder();
+		
 		string[] rawLines = rawText.Split('\n');
 		string[] pulpLines = pulpText.Split('\n');
 
@@ -296,6 +298,14 @@ public static class Compiler {
 								if (value != "" && !characterNames.ContainsKey(value)) throw new Exception("Missing character name for thinker.");
 								activeThinker = value;
 								break;
+							case 'z':
+								string[][] zooms = value.Split(',').Select(z => z.Split(':')).ToArray();
+								foreach (string[] zoom in zooms) {
+									string zn = zoom[0];
+									if (!characterNames.ContainsKey(zn.Split('-')[0])) throw new Exception($"Missing character name \"{zn}\" for zoom.");
+									styleBuilder.AppendLine($"#pulp > img[src^='images/c-{zn}.'], #pulp > img[src^='images/c-{zn}-'] {{ height: {zoom[1]}vh {(zn.Contains("-a") ? "!important" : "")}; }}");
+								}
+								break;
 							default: throw new Exception($"Unrecognized key: '{key}'.");
 						}
 					}
@@ -405,7 +415,9 @@ public static class Compiler {
 		sb.Append("imageHtmls=[`");
 		sb.Append(string.Join("`,`", imageHtmls));
 		sb.Append("`];");
-		sb.Append("</script></div>");
+		sb.Append("</script><style>");
+		sb.Append(styleBuilder);
+		sb.Append("</style></div>");
 		return sb.ToString();
 	}
 
