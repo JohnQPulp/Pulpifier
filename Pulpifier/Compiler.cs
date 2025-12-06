@@ -182,7 +182,7 @@ public static class Compiler {
 		Dictionary<string, string> characterNames = new();
 		Dictionary<string, string> characterExpressions = new();
 		Dictionary<string, string> characterAges = new();
-		Dictionary<string, string> characterExtras = new();
+		Dictionary<string, string[]> characterExtras = new();
 		List<string> backgrounds = new();
 		List<string> imageHtmls = new();
 		List<int> backgroundIds = new();
@@ -286,7 +286,9 @@ public static class Compiler {
 								SetCharacterAttribute(key, value, characterNames, characterAges);
 								break;
 							case 'x':
-								SetCharacterAttribute(key, value, characterNames, characterExtras);
+								string[] extras = value.Split(',', StringSplitOptions.RemoveEmptyEntries);
+								extras.Sort();
+								SetCharacterAttribute(key, extras, characterNames, characterExtras);
 								break;
 							case 's':
 								ThrowIfBadKey(key);
@@ -421,7 +423,7 @@ public static class Compiler {
 		return sb.ToString();
 	}
 
-	private static string GetCharacterFile(string name,  Dictionary<string, string> ages, Dictionary<string, string> expressions, Dictionary<string, string> extras, string speaker, string thinker) {
+	private static string GetCharacterFile(string name,  Dictionary<string, string> ages, Dictionary<string, string> expressions, Dictionary<string, string[]> extras, string speaker, string thinker) {
 		string file = "c-" + name;
 		if (ages.TryGetValue(name, out string age)) file += "-a" + age;
 		if (expressions.TryGetValue(name, out string expression) && expression != "") {
@@ -429,12 +431,16 @@ public static class Compiler {
 		} else if (name == thinker) {
 			file += "-et";
 		}
-		if (extras.TryGetValue(name, out string extra) && extra != "") file += "-x" + extra;
+		if (extras.TryGetValue(name, out string[] xarr)) {
+			foreach (string extra in xarr) {
+				file += "-x" + extra;
+			}
+		}
 		if (name == speaker) file += "-s";
 		return file;
 	}
 
-	private static void SetCharacterAttribute(string key, string value, Dictionary<string, string> characterNames, Dictionary<string, string> characterAttributes) {
+	private static void SetCharacterAttribute<T>(string key, T value, Dictionary<string, string> characterNames, Dictionary<string, T> characterAttributes) {
 		string name = key.Split(':')[1];
 		if (!characterNames.ContainsKey(name)) throw new Exception("Missing character name for expression.");
 		characterAttributes[name] = value;
