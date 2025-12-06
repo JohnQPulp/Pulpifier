@@ -88,14 +88,23 @@ public static class Compiler {
 		  background-color: black;
 		  overflow: hidden;
 		}
+		#app {
+		  position: relative;
+		}
 		#pulp {
 		  width: 100vw;
 		  height: 100vh;
-		  position: relative;
+		  position: absolute;
+		  top: 0px;
+		  left: 0px;
 		  background-position: center;
 		  background-repeat: no-repeat;
 		  background-size: cover;
 		  background-color: #f0ddb6;
+		  z-index: 0;
+		}
+		#pulp:nth-child(2) {
+		  z-index: 1;
 		}
 		#foot {
 		  width: 100%;
