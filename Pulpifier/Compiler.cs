@@ -426,15 +426,15 @@ public static class Compiler {
 	private static string GetCharacterFile(string name,  Dictionary<string, string> ages, Dictionary<string, string> expressions, Dictionary<string, string[]> extras, string speaker, string thinker) {
 		string file = "c-" + name;
 		if (ages.TryGetValue(name, out string age)) file += "-a" + age;
-		if (expressions.TryGetValue(name, out string expression) && expression != "") {
-			file += "-e" + expression;
-		} else if (name == thinker) {
-			file += "-et";
-		}
 		if (extras.TryGetValue(name, out string[] xarr)) {
 			foreach (string extra in xarr) {
 				file += "-x" + extra;
 			}
+		}
+		if (expressions.TryGetValue(name, out string expression) && expression != "") {
+			file += "-e" + expression;
+		} else if (name == thinker) {
+			file += "-et";
 		}
 		if (name == speaker) file += "-s";
 		return file;
