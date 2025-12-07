@@ -30,7 +30,7 @@ public static class Compiler {
 		  if (i < 0 || i >= htmlArr.length) {
 		    return `<div id='pulp'></div>`;
 		  }
-		  return `<div id='pulp' style='background-image: url("images/b-` + backgrounds[backgroundIds[i]] + `.webp")'>` + imageHtmls[i] + "<div id='foot'><div></div><div id='text'>" + htmlArr[i] + "</div><div></div></div></div>";
+		  return `<div id='pulp' style='background-image: url("images/b-` + backgrounds[backgroundIds[i]] + `.webp")'>` + imageHtmls[i] + "<div id='foot'><div>" + (speakers[i] === "" ? "" : ("<img src='images/" + speakers[i] + "' class='speaker-img' />")) + "</div><div id='text'>" + htmlArr[i] + "</div><div></div></div></div>";
 		}
 		function appendPulp(i) {
 		  app.innerHTML += buildPulp(i);
@@ -73,7 +73,6 @@ public static class Compiler {
 		  appendPulp(pos - 1);
 		  appendPulp(pos);
 		  appendPulp(pos + 1);
-		  window.scrollBy({ top: window.innerHeight });
 		});
 		</script>
 		""");
@@ -130,7 +129,7 @@ public static class Compiler {
 		  margin: 1em 0px;
 		}
 		#foot > div:first-child {
-		  flex-grow: 1;
+		  width: 20em;
 		  background: linear-gradient(to right, #f8efd445, #f8efd4f0);
 		}
 		#foot > div:last-child {
@@ -148,8 +147,8 @@ public static class Compiler {
 		img.speaker-img {
 		  position: absolute;
 		  transform: translateX(-50%);
-		  left: -130px;
-		  height: 120vh;
+		  left: 10em;
+		  height: 450%;
 		}
 		p.e {
 		  margin: 0.25em;
@@ -195,6 +194,7 @@ public static class Compiler {
 		List<string> backgrounds = new();
 		List<string> imageHtmls = new();
 		List<int> backgroundIds = new();
+		List<string> speakers = new();
 		imageFiles = new();
 		string[] activeCharacters = [];
 		Dictionary<string, string[]> backgroundModifiers = new();
@@ -395,10 +395,15 @@ public static class Compiler {
 						imageFiles.TryAdd(file, p);
 
 						if (!activeCharacters.Contains(active)) {
-							sb.Append($"<img src='{directory}{file}.webp' class='speaker-img' />");
+							speakers.Add(file + ".webp");
+						} else {
+							speakers.Add("");
 						}
-					} else if (cleanPulpLine.Contains('"')) {
+					} else {
+						speakers.Add("");
+						//if (cleanPulpLine.Contains('"')) {
 						//Console.WriteLine(p);
+						//}
 					}
 					sb.Append(htmlLine);
 					sb.Append("`, ");
@@ -426,6 +431,9 @@ public static class Compiler {
 		sb.Append("imageHtmls=[`");
 		sb.Append(string.Join("`,`", imageHtmls));
 		sb.Append("`];");
+		sb.Append("speakers=['");
+		sb.Append(string.Join("','", speakers));
+		sb.Append("'];");
 		sb.Append("</script><style>");
 		sb.Append(styleBuilder);
 		sb.Append("</style></div>");
