@@ -450,7 +450,9 @@ public static class Compiler {
 			}
 		}
 		if (expressions.TryGetValue(name, out string expression) && expression != "") {
-			file += "-e" + expression;
+			if (expression != "0") {
+				file += "-e" + expression;
+			}
 		} else if (name == thinker) {
 			file += "-et";
 		}
