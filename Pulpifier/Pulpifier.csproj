@@ -5,4 +5,8 @@
     <Nullable>enable</Nullable>
     <RootNamespace>Pulp.Pulpifier</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="script.js" />
+    <EmbeddedResource Include="style.css" />
+  </ItemGroup>
 </Project>

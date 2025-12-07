@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -18,169 +19,11 @@ public static class Compiler {
 
 	public static string BuildHtml(string rawText, string pulpText, out Dictionary<string, int> imageFiles) {
 		StringBuilder sb = new StringBuilder();
-		sb.Append("<div id='app'></div>");
-		sb.Append("""
-		<script>
-		const app = document.getElementById('app');
-		const params = new URLSearchParams(window.location.search);
-		let pos = Number(params.get("p"));
-		if (Number.isNaN(pos)) pos = 0;
-		pos = Math.floor(pos / 3);
-		function buildPulp(i) {
-		  if (i < 0 || i >= htmlArr.length) {
-		    return `<div id='pulp'></div>`;
-		  }
-		  return `<div id='pulp' style='background-image: url("images/b-` + backgrounds[backgroundIds[i]] + `.webp")'>` + imageHtmls[i] + "<div id='foot'><div>" + (speakers[i] === "" ? "" : ("<img src='images/" + speakers[i] + "' class='speaker-img' />")) + "</div><div id='text'>" + htmlArr[i] + "</div><div></div></div></div>";
-		}
-		function appendPulp(i) {
-		  app.innerHTML += buildPulp(i);
-		}
-		function prependPulp(i) {
-		  app.innerHTML = buildPulp(i) + app.innerHTML;
-		}
-		function nextPulp() {
-		  if (pos + 1 < htmlArr.length) {
-		    app.removeChild(app.firstChild);
-		    appendPulp(++pos + 1);
-		  }
-		}
-		function prevPulp() {
-		  if (pos - 1 >= 0) {
-		    prependPulp(--pos - 1);
-		    app.removeChild(app.lastChild);
-		  }
-		}
-		document.addEventListener("keydown", function (e) {
-		  if (e.key === " " || e.key === "Spacebar" || e.key === "ArrowRight") {
-		    nextPulp();
-		  } else if (e.key === "ArrowLeft") {
-		    prevPulp();
-		  }
-		});
-		document.addEventListener("click", function (e) {
-		  if (e.target.tagName === "IMG" || (e.target.tagName === "DIV" && e.target.id === "pulp")) {
-		    nextPulp();
-		  }
-		});
-		document.addEventListener("wheel", function (e) {
-		  if (e.deltaY > 0) {
-		    nextPulp();
-		  } else {
-		    prevPulp();
-		  }
-		});
-		window.addEventListener("load", e => {
-		  appendPulp(pos - 1);
-		  appendPulp(pos);
-		  appendPulp(pos + 1);
-		});
-		</script>
-		""");
-
-		sb.Append("""
-		<style>
-		html, body {
-		  margin: 0px;
-		  padding: 0px;
-		}
-		body {
-		  background-color: black;
-		  overflow: hidden;
-		}
-		#app {
-		  position: relative;
-		  font-family: "Noto Sans", sans-serif;
-		  line-height: 1.4;
-		}
-		#pulp {
-		  width: 100vw;
-		  height: 100vh;
-		  position: absolute;
-		  top: 0px;
-		  left: 0px;
-		  background-position: center;
-		  background-repeat: no-repeat;
-		  background-size: cover;
-		  background-color: #f0ddb6;
-		  z-index: 0;
-		}
-		#pulp:nth-child(2) {
-		  z-index: 1;
-		}
-		#foot {
-		  width: 100%;
-		  min-height: 15em;
-		  display: flex;
-		  position: absolute;
-		  bottom: 0px;
-		  justify-content: center;
-		}
-		#text {
-		  width: 40em;
-		  font-size: 2em;
-		  position: relative;
-		  color: black;
-		  background-color: #f8efd4f0;
-		}
-		#text > h1, #text > h2, #text > h3, #text > h4, #text > h5, #text > h6 {
-		  text-align: center;
-		  margin: 0.25em 0px;
-		}
-		#text > hr {
-		  margin: 1em 0px;
-		}
-		#foot > div:first-child {
-		  width: 20em;
-		  background: linear-gradient(to right, #f8efd445, #f8efd4f0);
-		}
-		#foot > div:last-child {
-		  flex-grow: 1;
-		  background: linear-gradient(to left, #f8efd445, #f8efd4f0);
-		}
-		b.speaker {
-		  position: absolute;
-		  top: -2em;
-		  background-color: #f8efd4f0;
-		  padding: 0.25em;
-		  min-width: 2em;
-		  text-align: center;
-		}
-		img.speaker-img {
-		  position: absolute;
-		  transform: translateX(-50%);
-		  left: 10em;
-		  height: 450%;
-		}
-		p.e {
-		  margin: 0.25em;
-		  font-size: 0.8em;
-		}
-		#pulp > img {
-		  position: absolute;
-		  transform: translateX(-50%);
-		  bottom: -15vh;
-		  height: 100vh;
-		}
-		img.p-1\/6 { left: calc(100% * 1/6); }
-		img.p-2\/6, img.p-1\/3 { left: calc(100% * 2/6); }
-		img.p-3\/6, img.p-2\/4, img.p-1\/2 { left: 50%; }
-		img.p-4\/6, img.p-2\/3 { left: calc(100% * 4/6); }
-		img.p-5\/6 { left: calc(100% * 5/6); }
-		img.p-1\/5 { left: 20%; }
-		img.p-2\/5 { left: 40%; }
-		img.p-3\/5 { left: 60%; }
-		img.p-4\/5 { left: 80%; }
-		img.p-1\/4 { left: 25%; }
-		img.p-3\/4 { left: 75%; }
-		#pulp > img.c {
-			transform: translate(-50%, -50%);
-			top: 50vh;
-			left: 50vw;
-			height: 60vh;
-		}
-		</style>
-		""");
-
+		sb.AppendLine("<div id='app'></div><script>");
+		sb.Append(ReadResource("script.js"));
+		sb.AppendLine("</script><style>");
+		sb.Append(ReadResource("style.css"));
+		sb.Append("</style>");
 		sb.Append("<script>let i = 0; const htmlArr = [");
 
 		StringBuilder styleBuilder = new StringBuilder();
@@ -476,5 +319,13 @@ public static class Compiler {
 
 	private static void ThrowIfBadKey(string key) {
 		if (key.Length != 1) throw new Exception($"Key \"{key}\" should be single letter.");
+	}
+	
+	private static string ReadResource(string name)
+	{
+		Assembly asm = Assembly.GetExecutingAssembly();
+		using Stream stream = asm.GetManifestResourceStream("Pulp.Pulpifier." + name);
+		using StreamReader reader = new StreamReader(stream);
+		return reader.ReadToEnd();
 	}
 }
