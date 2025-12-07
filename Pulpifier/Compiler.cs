@@ -89,6 +89,8 @@ public static class Compiler {
 		}
 		#app {
 		  position: relative;
+		  font-family: "Noto Sans", sans-serif;
+		  line-height: 1.4;
 		}
 		#pulp {
 		  width: 100vw;
@@ -115,7 +117,6 @@ public static class Compiler {
 		}
 		#text {
 		  width: 40em;
-		  font-family: sans-serif;
 		  font-size: 2em;
 		  position: relative;
 		  color: black;
