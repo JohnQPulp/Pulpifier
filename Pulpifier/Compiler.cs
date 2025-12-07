@@ -99,7 +99,7 @@ public static class Compiler {
 								} else {
 									string[] characters = value.Split(',');
 									if (characters.Length > 5) throw new Exception("Unsupported number of characters");
-									if (characters.Any(c => c != "" && !characterNames.ContainsKey(c))) throw new Exception("Missing character name.");
+									if (characters.Any(c => c != "" && !characterNames.ContainsKey(c.TrimStart('!')))) throw new Exception("Missing character name.");
 									activeCharacters = characters;
 								}
 								break;
@@ -181,9 +181,15 @@ public static class Compiler {
 					for (int i = 0; i < activeCharacters.Length; i++) {
 						string name = activeCharacters[i];
 						if (name != "") {
+							bool flip = false;
+							if (name[0] == '!') {
+								flip = true;
+								name = name.Substring(1);
+							}
+							if (name.Contains('!')) throw new Exception("Name should not contain exclamations.");
 							string file = GetCharacterFile(name, characterAges, characterExpressions, characterExtras, activeSpeaker, activeThinker);
 							imageFiles.TryAdd(file, p);
-							images += $"<img src='{directory}{file}.webp' class='p-{i+1}/{denominator}' />";
+							images += $"<img src='{directory}{file}.webp' class='{(flip ? "f ": "")}p-{i+1}/{denominator}' />";
 						}
 					}
 					if (activeObject != "") {
@@ -238,7 +244,7 @@ public static class Compiler {
 						string file = GetCharacterFile(active, characterAges, characterExpressions, characterExtras, activeSpeaker, activeThinker);
 						imageFiles.TryAdd(file, p);
 
-						if (!activeCharacters.Contains(active)) {
+						if (activeCharacters.All(c => c.TrimStart('!') != active)) {
 							speakers.Add(file + ".webp");
 						} else {
 							speakers.Add("");

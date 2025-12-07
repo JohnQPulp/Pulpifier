@@ -1,5 +1,5 @@
 "I am a wizard."
-n:w=Wizard;c=w,,,
+n:w=Wizard;c=w,,,;s=w
 
 "Here's an apple."
 o=apple
@@ -9,3 +9,9 @@ o=
 
 "As am I."
 c=
+
+"Now I'm back actually."
+c=,w
+
+"And facing the other way!"
+c=,!w
