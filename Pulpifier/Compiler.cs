@@ -35,6 +35,7 @@ public static class Compiler {
 		Dictionary<string, string> characterExpressions = new();
 		Dictionary<string, string> characterAges = new();
 		Dictionary<string, string[]> characterExtras = new();
+		Dictionary<string, string> characterFilters = new();
 		List<string> backgrounds = new();
 		List<string> imageHtmls = new();
 		List<int> backgroundIds = new();
@@ -118,6 +119,7 @@ public static class Compiler {
 								backgroundModifiers.TryAdd(value, []);
 								characterExtras.Clear();
 								characterExpressions.Clear();
+								characterFilters.Clear();
 								activeSpeaker = "";
 								activeThinker = "";
 								activeCharacters = [];
@@ -161,6 +163,9 @@ public static class Compiler {
 									styleBuilder.AppendLine($"#pulp > img[src^='images/c-{zn}.'], #pulp > img[src^='images/c-{zn}-'] {{ height: {zoom[1]}vh {(zn.Contains("-a") ? "!important" : "")}; }}");
 								}
 								break;
+							case 'f':
+								SetCharacterAttribute(key, value, characterNames, characterFilters);
+								break;
 							default: throw new Exception($"Unrecognized key: '{key}'.");
 						}
 					}
@@ -189,7 +194,11 @@ public static class Compiler {
 							if (name.Contains('!')) throw new Exception("Name should not contain exclamations.");
 							string file = GetCharacterFile(name, characterAges, characterExpressions, characterExtras, activeSpeaker, activeThinker);
 							imageFiles.TryAdd(file, p);
-							images += $"<img src='{directory}{file}.webp' class='{(flip ? "f ": "")}p-{i+1}/{denominator}' />";
+							images += $"<img src='{directory}{file}.webp' class='{(flip ? "f ": "")}p-{i+1}/{denominator}' ";
+							if (characterFilters.TryGetValue(name, out string filter) && name != "") {
+								images += $"style='filter:{filter}' ";
+							}
+							images += "/>";
 						}
 					}
 					if (activeObject != "") {
@@ -311,7 +320,7 @@ public static class Compiler {
 
 	private static void SetCharacterAttribute<T>(string key, T value, Dictionary<string, string> characterNames, Dictionary<string, T> characterAttributes) {
 		string name = key.Split(':')[1];
-		if (!characterNames.ContainsKey(name)) throw new Exception("Missing character name for expression.");
+		if (!characterNames.ContainsKey(name)) throw new Exception($"Missing character name \"{name}\" for expression.");
 		characterAttributes[name] = value;
 	}
 
