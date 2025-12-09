@@ -7,9 +7,10 @@ function buildPulp(i) {
   if (i < 0 || i >= htmlArr.length) {
     return `<div id='pulp'></div>`;
   }
+  var background = backgrounds[backgroundIds[i]].split(';');
   return (
 `<div id='pulp'>
-  <div id='back' style='background-image: url("images/b-${backgrounds[backgroundIds[i]]}.webp")'></div>
+  <div id='back' style='background-image: url("images/b-${background[0]}.webp");${background.length === 1 ? "" : ("filter:" + background[1])}'></div>
   ${imageHtmls[i]}
   <div id='foot'>
     <div>${speakers[i] === "" ? "" : ("<img src='images/" + speakers[i] + "' class='speaker-img' />")}</div>

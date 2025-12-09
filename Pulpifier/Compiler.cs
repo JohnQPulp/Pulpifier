@@ -43,6 +43,7 @@ public static class Compiler {
 		imageFiles = new();
 		string[] activeCharacters = [];
 		Dictionary<string, string[]> backgroundModifiers = new();
+		Dictionary<string, string> backgroundFilters = new();
 		string activeSpeaker = "";
 		string activeThinker = "";
 		string activeBackground = "";
@@ -165,7 +166,13 @@ public static class Compiler {
 								}
 								break;
 							case 'f':
-								SetCharacterAttribute(key, value, characterNames, characterFilters);
+								if (key.StartsWith("f:c:")) {
+									SetCharacterAttribute(key.Substring(2), value, characterNames, characterFilters);
+								} else if (key.StartsWith("f:b:")) {
+									SetCharacterAttribute(key.Substring(2), value, backgroundModifiers, backgroundFilters);
+								} else {
+									throw new Exception($"Invalid filter key \"{key}\".");
+								}
 								break;
 							default: throw new Exception($"Unrecognized key: '{key}'.");
 						}
@@ -176,10 +183,16 @@ public static class Compiler {
 						backgroundFullName += "-mod-";
 						backgroundFullName += string.Join('-', bmods);
 					}
-					if (imageFiles.TryAdd("b-" + backgroundFullName, p)) {
+					imageFiles.TryAdd("b-" + backgroundFullName, p);
+					if (backgroundFilters.TryGetValue(activeBackground, out string bfilter) && bfilter != "") {
+						backgroundFullName += ";" +  bfilter;
+					}
+					int bIndex = backgrounds.IndexOf(backgroundFullName);
+					if (bIndex == -1) {
+						bIndex = backgrounds.Count;
 						backgrounds.Add(backgroundFullName);
 					}
-					backgroundIds.Add(backgrounds.IndexOf(backgroundFullName));
+					backgroundIds.Add(bIndex);
 
 					string directory = "images/";
 					string images = "";
@@ -319,7 +332,7 @@ public static class Compiler {
 		return file;
 	}
 
-	private static void SetCharacterAttribute<T>(string key, T value, Dictionary<string, string> characterNames, Dictionary<string, T> characterAttributes) {
+	private static void SetCharacterAttribute<T, T2>(string key, T value, Dictionary<string, T2> characterNames, Dictionary<string, T> characterAttributes) {
 		string name = key.Split(':')[1];
 		if (!characterNames.ContainsKey(name)) throw new Exception($"Missing character name \"{name}\" for expression.");
 		characterAttributes[name] = value;
