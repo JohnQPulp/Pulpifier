@@ -59,10 +59,11 @@ body {
 b.speaker {
   position: absolute;
   top: -2em;
-  background-color: #f8efd4f0;
-  padding: 0.25em;
+  left: -0.75em;
+  padding: 0.25em 0.75em;
   min-width: 2em;
   text-align: center;
+  background: linear-gradient(to right, transparent 0, #f8efd4f0 0.5em, #f8efd4f0 calc(100% - 0.5em), transparent 100%);
 }
 img.speaker-img {
   position: absolute;
