@@ -31,7 +31,7 @@ body {
   min-height: 15em;
   display: flex;
   position: absolute;
-  bottom: 0px;
+  bottom: 1em;
   justify-content: center;
 }
 #text {
@@ -69,6 +69,7 @@ img.speaker-img {
   transform: translateX(-50%);
   left: 10em;
   height: 450%;
+  mask-image: linear-gradient(to bottom, black 0%, black 21%, transparent 22.5%, transparent 100%);
 }
 p.e {
   margin: 0.25em;
@@ -77,8 +78,8 @@ p.e {
 #pulp > img {
   position: absolute;
   transform: translateX(-50%);
-  bottom: -15vh;
-  height: 100vh;
+  bottom: -45vh;
+  height: 130vh;
 }
 #pulp > img.f {
   transform: translateX(-50%) scaleX(-1);

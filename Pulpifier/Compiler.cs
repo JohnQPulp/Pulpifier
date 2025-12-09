@@ -160,7 +160,8 @@ public static class Compiler {
 								foreach (string[] zoom in zooms) {
 									string zn = zoom[0];
 									if (!characterNames.ContainsKey(zn.Split('-')[0])) throw new Exception($"Missing character name \"{zn}\" for zoom.");
-									styleBuilder.AppendLine($"#pulp > img[src^='images/c-{zn}.'], #pulp > img[src^='images/c-{zn}-'] {{ height: {zoom[1]}vh {(zn.Contains("-a") ? "!important" : "")}; }}");
+									int vh = int.Parse(zoom[1]) * 13 / 10;
+									styleBuilder.AppendLine($"#pulp > img[src^='images/c-{zn}.'], #pulp > img[src^='images/c-{zn}-'] {{ height: {vh}vh {(zn.Contains("-a") ? "!important" : "")}; }}");
 								}
 								break;
 							case 'f':
