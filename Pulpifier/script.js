@@ -7,7 +7,16 @@ function buildPulp(i) {
   if (i < 0 || i >= htmlArr.length) {
     return `<div id='pulp'></div>`;
   }
-  return `<div id='pulp' style='background-image: url("images/b-` + backgrounds[backgroundIds[i]] + `.webp")'>` + imageHtmls[i] + "<div id='foot'><div>" + (speakers[i] === "" ? "" : ("<img src='images/" + speakers[i] + "' class='speaker-img' />")) + "</div><div id='text'>" + htmlArr[i] + "</div><div></div></div></div>";
+  return (
+`<div id='pulp'>
+  <div id='back' style='background-image: url("images/b-${backgrounds[backgroundIds[i]]}.webp")'></div>
+  ${imageHtmls[i]}
+  <div id='foot'>
+    <div>${speakers[i] === "" ? "" : ("<img src='images/" + speakers[i] + "' class='speaker-img' />")}</div>
+    <div id='text'>${htmlArr[i]}</div>
+    <div></div>
+  </div>
+</div>`);
 }
 function appendPulp(i) {
   app.innerHTML += buildPulp(i);

@@ -17,14 +17,21 @@ body {
   position: absolute;
   top: 0px;
   left: 0px;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
   background-color: #f0ddb6;
   z-index: 0;
 }
 #pulp:nth-child(2) {
   z-index: 1;
+}
+#back {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 #foot {
   width: 100%;
