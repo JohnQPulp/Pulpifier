@@ -104,8 +104,11 @@ img.p-4\/5 { left: 80%; }
 img.p-1\/4 { left: 25%; }
 img.p-3\/4 { left: 75%; }
 #pulp > img.c {
-  transform: translate(-50%, -50%);
-  top: 50vh;
+  transform: translate(-50%, 0%);
+  top: 10vh;
   left: 50vw;
   height: 60vh;
+  mask-image: linear-gradient(to top, transparent, black 5%), linear-gradient(to bottom, transparent, black 5%), linear-gradient(to left, transparent, black 5%), linear-gradient(to right, transparent, black 5%);
+  mask-composite: intersect;
+  filter: opacity(96%);
 }
