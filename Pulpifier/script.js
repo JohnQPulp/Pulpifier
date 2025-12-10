@@ -13,7 +13,7 @@ function buildPulp(i) {
   <div id='back' style='background-image: url("images/b-${background[0]}.webp");${background.length === 1 ? "" : ("filter:" + background[1])}'></div>
   ${imageHtmls[i]}
   <div id='foot'>
-    <div>${speakers[i] === "" ? "" : ("<img src='images/" + speakers[i] + "' class='speaker-img' />")}</div>
+    <div>${speakers[i] === "" ? "" : ("<div class='speaker-back' style='background-image: url(images/" + speakers[i] + ")'></div>")}</div>
     <div id='text'>${htmlArr[i]}</div>
     <div></div>
   </div>

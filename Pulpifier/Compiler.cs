@@ -163,6 +163,8 @@ public static class Compiler {
 									if (!characterNames.ContainsKey(zn.Split('-')[0])) throw new Exception($"Missing character name \"{zn}\" for zoom.");
 									int vh = int.Parse(zoom[1]) * 13 / 10;
 									styleBuilder.AppendLine($"#pulp > img[src^='images/c-{zn}.'], #pulp > img[src^='images/c-{zn}-'] {{ height: {vh}vh {(zn.Contains("-a") ? "!important" : "")}; }}");
+									int sh = int.Parse(zoom[1]) * 2 / 5;
+									styleBuilder.AppendLine($".speaker-back[style*='background-image: url(images/c-{zn}.'], .speaker-back[style*='background-image: url(images/c-{zn}-'] {{ background-size: {sh}em {(zn.Contains("-a") ? "!important" : "")}; }}");
 								}
 								break;
 							case 'f':
@@ -278,7 +280,9 @@ public static class Compiler {
 						//Console.WriteLine(p);
 						//}
 					}
+					sb.Append("<div>");
 					sb.Append(htmlLine);
+					sb.Append("</div>");
 					sb.Append("`, ");
 
 					p += 3;

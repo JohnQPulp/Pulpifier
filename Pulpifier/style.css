@@ -46,22 +46,38 @@ body {
   font-size: 2em;
   position: relative;
   color: black;
-  background-color: #f8efd4f0;
 }
-#text > h1, #text > h2, #text > h3, #text > h4, #text > h5, #text > h6 {
+#text > div {
+  width: 100%;
+  height: 100%;
+  background-color: #f8efd4f0;
+  mask-image: linear-gradient(to top, transparent, black 0.25em);
+  display: flow-root;
+}
+#text h1, #text h2, #text h3, #text h4, #text h5, #text h6 {
   text-align: center;
   margin: 0.25em 0px;
 }
-#text > hr {
+#text hr {
   margin: 1em 0px;
 }
 #foot > div:first-child {
   width: 20em;
-  background: linear-gradient(to right, #f8efd445, #f8efd4f0);
+  background: linear-gradient(to left, #f8efd4f0, #f8efd4f0 1em, #f8efd445);
+  mask-image: linear-gradient(to top, transparent, black 0.5em);
+}
+.speaker-back {
+  width: 100%;
+  height: 100%;
+  background-position: 48% 1%;
+  background-size: 40em;
+  mask-image: linear-gradient(265deg, #c2121200, #c2121247 1em, black 2em), linear-gradient(to left, transparent, black 1em);
+  mask-composite: intersect;
 }
 #foot > div:last-child {
   flex-grow: 1;
   background: linear-gradient(to left, #f8efd445, #f8efd4f0);
+  mask-image: linear-gradient(to top, transparent, black 0.5em);
 }
 b.speaker {
   position: absolute;
@@ -71,13 +87,6 @@ b.speaker {
   min-width: 2em;
   text-align: center;
   background: linear-gradient(to right, transparent 0, #f8efd4f0 0.5em, #f8efd4f0 calc(100% - 0.5em), transparent 100%);
-}
-img.speaker-img {
-  position: absolute;
-  transform: translateX(-50%);
-  left: 10em;
-  height: 450%;
-  mask-image: linear-gradient(to bottom, black 0%, black 21%, transparent 22.5%, transparent 100%);
 }
 p.e {
   margin: 0.25em;
