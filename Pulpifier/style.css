@@ -92,13 +92,21 @@ p.e {
   margin: 0.25em;
   font-size: 0.8em;
 }
-#pulp > img {
+.characters {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+}
+.characters > img {
   position: absolute;
   transform: translateX(-50%);
-  bottom: -45vh;
-  height: 130vh;
+  bottom: -45%;
+  height: 130%;
 }
-#pulp > img.f {
+.characters > img.f {
   transform: translateX(-50%) scaleX(-1);
 }
 img.p-1\/6 { left: calc(100% * 1/6); }
@@ -113,6 +121,7 @@ img.p-4\/5 { left: 80%; }
 img.p-1\/4 { left: 25%; }
 img.p-3\/4 { left: 75%; }
 #pulp > img.c {
+  position: absolute;
   transform: translate(-50%, 0%);
   top: 10vh;
   left: 50vw;

@@ -161,8 +161,8 @@ public static class Compiler {
 								foreach (string[] zoom in zooms) {
 									string zn = zoom[0];
 									if (!characterNames.ContainsKey(zn.Split('-')[0])) throw new Exception($"Missing character name \"{zn}\" for zoom.");
-									int vh = int.Parse(zoom[1]) * 13 / 10;
-									styleBuilder.AppendLine($"#pulp > img[src^='images/c-{zn}.'], #pulp > img[src^='images/c-{zn}-'] {{ height: {vh}vh {(zn.Contains("-a") ? "!important" : "")}; }}");
+									int ch = int.Parse(zoom[1]) * 13 / 10;
+									styleBuilder.AppendLine($".characters > img[src^='images/c-{zn}.'], .characters > img[src^='images/c-{zn}-'] {{ height: {ch}% {(zn.Contains("-a") ? "!important" : "")}; }}");
 									int sh = int.Parse(zoom[1]) * 2 / 5;
 									styleBuilder.AppendLine($".speaker-back[style*='background-image: url(images/c-{zn}.'], .speaker-back[style*='background-image: url(images/c-{zn}-'] {{ background-size: {sh}em {(zn.Contains("-a") ? "!important" : "")}; }}");
 								}
@@ -197,7 +197,7 @@ public static class Compiler {
 					backgroundIds.Add(bIndex);
 
 					string directory = "images/";
-					string images = "";
+					string images = "<div class='characters'>";
 					int denominator = activeCharacters.Length + 1;
 					for (int i = 0; i < activeCharacters.Length; i++) {
 						string name = activeCharacters[i];
@@ -217,6 +217,7 @@ public static class Compiler {
 							images += "/>";
 						}
 					}
+					images += "</div>";
 					if (activeObject != "") {
 						string file = "o-" + activeObject;
 						imageFiles.TryAdd(file, p);
