@@ -48,6 +48,7 @@ public static class Compiler {
 		string activeThinker = "";
 		string activeBackground = "";
 		string activeObject = "";
+		Tuple<int, int> viewScale = null;
 
 		int r = 0, p = 0;
 		try {
@@ -127,6 +128,7 @@ public static class Compiler {
 								foreach (string bkey in backgroundModifiers.Keys) {
 									backgroundModifiers[bkey] = [];
 								}
+								viewScale = null;
 								break;
 							case 'm':
 								string bname = key.Split(':')[1];
@@ -176,6 +178,14 @@ public static class Compiler {
 									throw new Exception($"Invalid filter key \"{key}\".");
 								}
 								break;
+							case 'v':
+								if (value == "") {
+									viewScale = null;
+								} else {
+									string[] viewWxH = value.Split(',');
+									viewScale = new Tuple<int, int>(int.Parse(viewWxH[0]), int.Parse(viewWxH[1]));
+								}
+								break;
 							default: throw new Exception($"Unrecognized key: '{key}'.");
 						}
 					}
@@ -198,6 +208,10 @@ public static class Compiler {
 
 					string directory = "images/";
 					string images = "<div class='characters'>";
+					if (viewScale != null) {
+						images = $"<div class='characters' style='width:{viewScale.Item1}%; height:{viewScale.Item2}%;'>";
+					}
+					
 					int denominator = activeCharacters.Length + 1;
 					for (int i = 0; i < activeCharacters.Length; i++) {
 						string name = activeCharacters[i];

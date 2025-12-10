@@ -15,3 +15,24 @@ c=,w
 
 "And facing the other way!"
 c=,!w
+
+"Now I'm big!"
+v=100,125
+
+"Now I'm normal."
+v=100,100
+
+"Now I'm small!"
+v=100,75
+
+"Now normal."
+v=
+
+"Now moving."
+v=110,100
+
+"Moving."
+v=120,100
+
+"Moving."
+v=130,100
