@@ -121,7 +121,7 @@ public class CompilerTests {
 	[DataRow("### Foo\n", "### Foo\n\n", "<h3>Foo</h3>")]
 	[DataRow("#### Foo\n", "#### Foo\n\n", "<h4>Foo</h4>")]
 	[DataRow("## Foo *Bar*\n", "## Foo *Bar*\n\n", "<h2>Foo <i>Bar</i></h2>")]
-	[DataRow("Foo\n", "Foo<e>Book: <book>Some Book</book></e>\n\n", "Book: <a href='")]
+	[DataRow("Foo\n", "Foo<e>Book: <book>Some Book</book></e>\n\n", "Book: <i><a href='")]
 	[DataRow("Foo\n", "Foo<e>Book: <book>Some Book</book></e>\n\n", ">Some Book</a>")]
 	[DataRow("Foo\n", "Foo<e>Book: <book>Some Book|the book</book></e>\n\n", "Book: <a href='")]
 	[DataRow("Foo\n", "Foo<e>Book: <book>Some Book|the book</book></e>\n\n", ">the book</a>")]
