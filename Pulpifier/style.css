@@ -63,7 +63,7 @@ body {
 }
 #foot > div:first-child {
   width: 20em;
-  background: linear-gradient(to left, #f8efd4f0, #f8efd4f0 1em, #f8efd445);
+  background: linear-gradient(to left, #f8efd4f0, #f8efd4f0 1em, #f8efd445 19em, transparent 20em);
   mask-image: linear-gradient(to top, transparent, black 0.5em);
 }
 .speaker-back {
@@ -76,8 +76,9 @@ body {
 }
 #foot > div:last-child {
   flex-grow: 1;
-  background: linear-gradient(to left, #f8efd445, #f8efd4f0);
+  background: linear-gradient(to right, #f8efd4f0, #f8efd4f0 1em, #f8efd445 19em, transparent 20em);
   mask-image: linear-gradient(to top, transparent, black 0.5em);
+  max-width: 20em;
 }
 b.speaker {
   position: absolute;
