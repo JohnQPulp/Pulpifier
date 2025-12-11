@@ -45,7 +45,7 @@ document.addEventListener("keydown", function (e) {
   }
 });
 document.addEventListener("click", function (e) {
-  if (e.target.tagName === "IMG" || (e.target.tagName === "DIV" && e.target.id === "pulp")) {
+  if (e.target.tagName === "IMG" || (e.target.tagName === "DIV" && (e.target.id === "back" || e.target.className === "characters"))) {
     nextPulp();
   }
 });
