@@ -257,8 +257,6 @@ public static class Compiler {
 							editorLine = true;
 						} else {
 							part = Regex.Replace(part, @"^—+$", "<hr>");
-							part = Regex.Replace(part, @"(\S)—", "$1&#8288;—");
-							part = Regex.Replace(part, @"—(\S)", "—&#8288;$1");
 
 							part = Regex.Replace(part, @"\*\*\*(.*?)\*\*\*", "<b><i>$1</i></b>");
 							part = Regex.Replace(part, @"\*\*(.*?)\*\*", "<b>$1</b>");
@@ -273,6 +271,8 @@ public static class Compiler {
 						}
 					}
 					string htmlLine = string.Concat(htmlParts);
+					htmlLine = Regex.Replace(htmlLine, @"(\S)—", "$1&#8288;—");
+					htmlLine = Regex.Replace(htmlLine, @"—(\S)", "—&#8288;$1");
 
 					sb.Append('`');
 					if (activeSpeaker != "" && activeThinker != "") throw new Exception("Can't have both active speaker and active thinker.");
