@@ -207,31 +207,39 @@ public static class Compiler {
 					backgroundIds.Add(bIndex);
 
 					string directory = "images/";
-					string images = "<div class='characters'>";
-					if (viewScale != null) {
-						images = $"<div class='characters' style='width:{viewScale.Item1}%; height:{viewScale.Item2}%;'>";
-					}
-					
-					int denominator = activeCharacters.Length + 1;
-					for (int i = 0; i < activeCharacters.Length; i++) {
-						string name = activeCharacters[i];
-						if (name != "") {
-							bool flip = false;
-							if (name[0] == '!') {
-								flip = true;
-								name = name.Substring(1);
-							}
-							if (name.Contains('!')) throw new Exception("Name should not contain exclamations.");
-							string file = GetCharacterFile(name, characterAges, characterExpressions, characterExtras, activeSpeaker, activeThinker);
-							imageFiles.TryAdd(file, p);
-							images += $"<img src='{directory}{file}.webp' class='{(flip ? "f ": "")}p-{i+1}/{denominator}' ";
-							if (characterFilters.TryGetValue(name, out string filter) && name != "") {
-								images += $"style='filter:{filter}' ";
-							}
-							images += "/>";
+					string images = "";
+					if (activeCharacters.Length > 0) {
+						if (viewScale == null) {
+							images = "<div class='characters'>";
+						} else {
+							images = $"<div class='characters' style='width:{viewScale.Item1}%; height:{viewScale.Item2}%;'>";
 						}
+
+						int denominator = activeCharacters.Length + 1;
+						for (int i = 0; i < activeCharacters.Length; i++) {
+							string name = activeCharacters[i];
+							if (name != "") {
+								bool flip = false;
+								if (name[0] == '!') {
+									flip = true;
+									name = name.Substring(1);
+								}
+
+								if (name.Contains('!')) throw new Exception("Name should not contain exclamations.");
+								string file = GetCharacterFile(name, characterAges, characterExpressions, characterExtras, activeSpeaker, activeThinker);
+								imageFiles.TryAdd(file, p);
+								images += $"<img src='{directory}{file}.webp' class='{(flip ? "f " : "")}p-{i + 1}/{denominator}' ";
+								if (characterFilters.TryGetValue(name, out string filter) && name != "") {
+									images += $"style='filter:{filter}' ";
+								}
+
+								images += "/>";
+							}
+						}
+
+						images += "</div>";
 					}
-					images += "</div>";
+
 					if (activeObject != "") {
 						string file = "o-" + activeObject;
 						imageFiles.TryAdd(file, p);
