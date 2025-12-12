@@ -286,7 +286,10 @@ public static class Compiler {
 					if (activeSpeaker != "" && activeThinker != "") throw new Exception("Can't have both active speaker and active thinker.");
 					if (activeSpeaker != "" || activeThinker != "") {
 						string active = activeSpeaker != "" ? activeSpeaker : activeThinker;
-						sb.Append($"<b class='speaker'>{characterNames[active]}{(activeThinker != "" ? " (Thinking)" : "")}</b>");
+						string activeName = characterNames[active];
+						if (activeName != "") {
+							sb.Append($"<b class='speaker'>{characterNames[active]}{(activeThinker != "" ? " (Thinking)" : "")}</b>");
+						}
 
 						string file = GetCharacterFile(active, characterAges, characterExpressions, characterExtras, activeSpeaker, activeThinker);
 						imageFiles.TryAdd(file, p);
