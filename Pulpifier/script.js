@@ -13,6 +13,9 @@ if (!Number.isNaN(pVal) && pVal !== 0) {
 const lVal = Number(params.get("l"));
 if (!Number.isNaN(lVal) && lVal !== 0) {
   pos = lVal;
+  const url = new URL(window.location);
+  url.searchParams.delete("l");
+  history.replaceState(null, "", url);
 }
 onPosUpdate();
 
