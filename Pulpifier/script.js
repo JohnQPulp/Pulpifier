@@ -1,8 +1,22 @@
 const app = document.getElementById('app');
 const params = new URLSearchParams(window.location.search);
-let pos = Number(params.get("p"));
-if (Number.isNaN(pos)) pos = 0;
-pos = Math.floor(pos / 3);
+
+let pos = 0;
+const sVal = Number(localStorage.getItem('l'));
+if (!Number.isNaN(sVal) && sVal !== 0) {
+  pos = sVal;
+}
+const pVal = Number(params.get("p"));
+if (!Number.isNaN(pVal) && pVal !== 0) {
+  pos = Math.floor(pVal / 3);
+}
+const lVal = Number(params.get("l"));
+if (!Number.isNaN(lVal) && lVal !== 0) {
+  pos = lVal;
+}
+onPosUpdate();
+
+
 function buildPulp(i) {
   if (i < 0 || i >= htmlArr.length) {
     return `<div id='pulp'></div>`;
@@ -29,12 +43,14 @@ function nextPulp() {
   if (pos + 1 < htmlArr.length) {
     app.removeChild(app.firstChild);
     appendPulp(++pos + 1);
+    onPosUpdate();
   }
 }
 function prevPulp() {
   if (pos - 1 >= 0) {
     prependPulp(--pos - 1);
     app.removeChild(app.lastChild);
+    onPosUpdate();
   }
 }
 document.addEventListener("keydown", function (e) {
@@ -61,3 +77,6 @@ window.addEventListener("load", e => {
   appendPulp(pos);
   appendPulp(pos + 1);
 });
+function onPosUpdate() {
+  localStorage.setItem("l", pos);
+}
