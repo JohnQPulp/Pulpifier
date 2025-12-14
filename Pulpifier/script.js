@@ -75,10 +75,13 @@ document.addEventListener("wheel", function (e) {
     prevPulp();
   }
 });
+function setPos(i) {
+  pos = i;
+  app.innerHTML = buildPulp(i - 1) + buildPulp(i) + buildPulp(i + 1);
+  onPosUpdate();
+}
 window.addEventListener("load", e => {
-  appendPulp(pos - 1);
-  appendPulp(pos);
-  appendPulp(pos + 1);
+  setPos(pos);
 });
 function onPosUpdate() {
   localStorage.setItem("l", pos);
