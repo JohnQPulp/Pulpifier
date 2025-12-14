@@ -88,4 +88,5 @@ window.addEventListener("load", e => {
 });
 function onPosUpdate() {
   localStorage.setItem("l", pos);
+  handlePosUpdate && handlePosUpdate();
 }
