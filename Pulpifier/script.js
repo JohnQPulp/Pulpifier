@@ -68,11 +68,14 @@ document.addEventListener("click", function (e) {
     nextPulp();
   }
 });
+let scrollEnabled = true;
 document.addEventListener("wheel", function (e) {
-  if (e.deltaY > 0) {
-    nextPulp();
-  } else {
-    prevPulp();
+  if (scrollEnabled) {
+    if (e.deltaY > 0) {
+      nextPulp();
+    } else {
+      prevPulp();
+    }
   }
 });
 function setPos(i) {
