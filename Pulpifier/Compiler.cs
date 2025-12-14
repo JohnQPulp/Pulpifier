@@ -41,6 +41,7 @@ public static class Compiler {
 		List<int> backgroundIds = new();
 		List<string> speakers = new();
 		imageFiles = new();
+		List<string> headers = new();
 		string[] activeCharacters = [];
 		Dictionary<string, string[]> backgroundModifiers = new();
 		Dictionary<string, string> backgroundFilters = new();
@@ -273,6 +274,8 @@ public static class Compiler {
 							part = Regex.Replace(part, @"^(#{1,6})\s+(.*)$",m => {
 								int level = Math.Min(6, m.Groups[1].Value.Length * 2 - 3);
 								string text = m.Groups[2].Value;
+								if (text.Contains('|')) throw new Exception("Header should not have a pipe.");
+								headers.Add($"{p / 3}|{level}|{text}");
 								return $"<h{level}>{text}</h{level}>";
 							}, RegexOptions.Singleline);
 							htmlParts.Add(part);
@@ -336,6 +339,9 @@ public static class Compiler {
 		sb.Append("speakers=['");
 		sb.Append(string.Join("','", speakers));
 		sb.Append("'];");
+		sb.Append("headers=[`");
+		sb.Append(string.Join("`,`", headers));
+		sb.Append("`];");
 		sb.Append("</script><style>");
 		sb.Append(styleBuilder);
 		sb.Append("</style></div>");
