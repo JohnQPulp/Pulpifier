@@ -1,6 +1,9 @@
 ﻿using Pulp.Pulpifier;
 
 string directory = Path.GetFullPath(args[0], Directory.GetCurrentDirectory());
+string jsonText = File.ReadAllText(Path.Combine(directory, "metadata.json"));
+Metadata.Parse(jsonText);
+
 string rawText = File.ReadAllText(Path.Combine(directory, "book.txt"));
 string pulpText = File.ReadAllText(Path.Combine(directory, "pulp.txt"));
 
