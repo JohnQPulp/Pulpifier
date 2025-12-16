@@ -5,6 +5,9 @@ html, body {
 body {
   background-color: black;
   overflow-y: auto;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
 }
 #app {
   position: relative;
