@@ -2,7 +2,7 @@ const app = document.getElementById('app');
 const params = new URLSearchParams(window.location.search);
 
 let pos = 0;
-const sVal = Number(localStorage.getItem('l'));
+const sVal = Number(localStorage.getItem(getLocalStorageKey('l')));
 if (!Number.isNaN(sVal) && sVal !== 0) {
   pos = sVal;
 }
@@ -87,6 +87,13 @@ window.addEventListener("load", e => {
   setPos(pos);
 });
 function onPosUpdate() {
-  localStorage.setItem("l", pos);
+  localStorage.setItem(getLocalStorageKey("l"), pos);
   window["handlePosUpdate"] && window["handlePosUpdate"]();
+}
+function getLocalStorageKey(k) {
+  const bookId = window['bookId'];
+  if (bookId) {
+    return bookId + ':' + k;
+  }
+  return k;
 }
