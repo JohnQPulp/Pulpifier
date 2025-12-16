@@ -4,7 +4,7 @@ html, body {
 }
 body {
   background-color: black;
-  overflow: hidden;
+  overflow-y: auto;
 }
 #app {
   position: relative;
@@ -19,6 +19,7 @@ body {
   left: 0px;
   background-color: #f0ddb6;
   z-index: 0;
+  overflow: hidden;
 }
 #pulp:nth-child(2) {
   z-index: 1;
