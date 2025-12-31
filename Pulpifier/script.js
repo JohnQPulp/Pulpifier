@@ -57,7 +57,7 @@ function prevPulp() {
   }
 }
 document.addEventListener("keydown", function (e) {
-  if (e.key === " " || e.key === "Spacebar" || e.key === "ArrowRight") {
+  if (e.key === "ArrowRight") {
     nextPulp();
   } else if (e.key === "ArrowLeft") {
     prevPulp();
@@ -70,7 +70,7 @@ document.addEventListener("click", function (e) {
 });
 let scrollEnabled = true;
 document.addEventListener("wheel", function (e) {
-  if (scrollEnabled) {
+  if (scrollEnabled && e.shiftKey) {
     if (e.deltaY > 0) {
       nextPulp();
     } else {
