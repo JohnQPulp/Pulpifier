@@ -17,8 +17,7 @@ if (!Number.isNaN(lVal) && lVal !== 0) {
   url.searchParams.delete("l");
   history.replaceState(null, "", url);
 }
-onPosUpdate();
-
+onPosUpdate(true);
 
 function buildPulp(i) {
   if (i < 0 || i >= htmlArr.length) {
@@ -65,12 +64,15 @@ document.addEventListener("keydown", function (e) {
 });
 document.addEventListener("click", function (e) {
   if (e.target.tagName === "IMG" || (e.target.tagName === "DIV" && (e.target.id === "back" || e.target.className === "characters"))) {
-    nextPulp();
+    if (e.clientX >= window.innerWidth / 2) {
+      nextPulp();
+    } else {
+      prevPulp();
+    }
   }
 });
-let scrollEnabled = true;
 document.addEventListener("wheel", function (e) {
-  if (scrollEnabled && e.shiftKey) {
+  if (e.shiftKey) {
     if (e.deltaY > 0) {
       nextPulp();
     } else {
@@ -78,17 +80,20 @@ document.addEventListener("wheel", function (e) {
     }
   }
 });
-function setPos(i) {
+function setPos(i, firstUpdate) {
   pos = i;
   app.innerHTML = buildPulp(i - 1) + buildPulp(i) + buildPulp(i + 1);
-  onPosUpdate();
+  onPosUpdate(firstUpdate);
 }
 window.addEventListener("load", e => {
-  setPos(pos);
+  setPos(pos, true);
 });
-function onPosUpdate() {
+function onPosUpdate(firstUpdate) {
   localStorage.setItem(getLocalStorageKey("l"), pos);
   window["handlePosUpdate"] && window["handlePosUpdate"]();
+  if (!firstUpdate) {
+    app.scrollIntoView();
+  }
 }
 function getLocalStorageKey(k) {
   const bookId = window['bookId'];

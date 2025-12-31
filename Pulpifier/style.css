@@ -2,17 +2,12 @@ html, body {
   margin: 0px;
   padding: 0px;
 }
-body {
-  background-color: black;
-  overflow-y: auto;
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-}
 #app {
   position: relative;
   font-family: "Noto Sans", sans-serif;
   line-height: 1.4;
+  width: 100vw;
+  height: 100vh;
 }
 #pulp {
   width: 100vw;
@@ -115,6 +110,7 @@ p.e {
   transform: translateX(-50%);
   bottom: -45%;
   height: 130%;
+  user-select: none;
 }
 .characters > img.f {
   transform: translateX(-50%) scaleX(-1);
