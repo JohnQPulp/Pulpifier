@@ -19,15 +19,14 @@ public static class Compiler {
 
 	public static string BuildHtml(string rawText, string pulpText, out Dictionary<string, int> imageFiles) {
 		StringBuilder sb = new StringBuilder();
-		sb.AppendLine("<div id='app'></div><script>");
-		sb.Append(ReadResource("script.js"));
-		sb.AppendLine("</script><style>");
+		sb.AppendLine("<div id='app'></div>");
+		sb.AppendLine("<style>");
 		sb.Append(ReadResource("style.css"));
 		sb.Append("</style>");
 		sb.Append("<script>let i = 0; const htmlArr = [");
 
 		StringBuilder styleBuilder = new StringBuilder();
-		
+
 		string[] rawLines = rawText.Split('\n');
 		string[] pulpLines = pulpText.Split('\n');
 
@@ -342,6 +341,8 @@ public static class Compiler {
 		sb.Append("headers=[`");
 		sb.Append(string.Join("`,`", headers));
 		sb.Append("`];");
+		sb.Append("</script><script>");
+		sb.Append(ReadResource("script.js"));
 		sb.Append("</script><style>");
 		sb.Append(styleBuilder);
 		sb.Append("</style></div>");
@@ -384,7 +385,7 @@ public static class Compiler {
 	private static void ThrowIfBadKey(string key) {
 		if (key.Length != 1) throw new Exception($"Key \"{key}\" should be single letter.");
 	}
-	
+
 	private static string ReadResource(string name)
 	{
 		Assembly asm = Assembly.GetExecutingAssembly();
