@@ -4,7 +4,8 @@ namespace Pulp.Pulpifier;
 
 public class Metadata {
 	public required string Title { get; init; }
-	public required string ShortTitle {  get; init; }
+	public required string ShortTitle { get; init; }
+	public string VNTitle => ShortTitle + ": The Visual Novel";
 	public required string Author { get; init; }
 	public required int Year { get; init; }
 	public required string Source { get; init; }
