@@ -123,6 +123,8 @@ public class CompilerTests {
 	[DataRow("## Foo *Bar*\n", "## Foo *Bar*\n\n", "<h1>Foo <i>Bar</i></h1>")]
 	[DataRow("Foo\n", "Foo<e>Book: <book>Some Book</book></e>\n\n", "Book: <i><a href='")]
 	[DataRow("Foo\n", "Foo<e>Book: <book>Some Book</book></e>\n\n", ">Some Book</a>")]
+	[DataRow("Foo\n", "Foo<e>Story: <book>\"Some Story\"</book></e>\n\n", "Story: <a href='")]
+	[DataRow("Foo\n", "Foo<e>Story: <book>\"Some Story\"</book></e>\n\n", ">\"Some Story\"</a>")]
 	[DataRow("Foo\n", "Foo<e>Book: <book>Some Book|the book</book></e>\n\n", "Book: <a href='")]
 	[DataRow("Foo\n", "Foo<e>Book: <book>Some Book|the book</book></e>\n\n", ">the book</a>")]
 	[DataRow("Foo\n", "Foo\nn:r=R;c=r\n", "c-r.webp")]
