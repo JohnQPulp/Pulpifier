@@ -1,0 +1,14 @@
+{
+  "title": "Wizard",
+  "shortTitle": "Wizard",
+  "author": "John Q. Pulp",
+  "year": 2026,
+  "source": "wizard",
+  "words": 5,
+  "pulpDate": "2026-01-01",
+  "repo": "wizard",
+  "links": {
+    "wizard": "wizard"
+  },
+  "blurb": "wizard"
+}

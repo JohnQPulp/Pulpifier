@@ -1,0 +1,14 @@
+{
+  "title": "FizzBuzz",
+  "shortTitle": "FizzBuzz",
+  "author": "John Q. Pulp",
+  "year": 2026,
+  "source": "fizzbuzz",
+  "words": 5,
+  "pulpDate": "2026-01-01",
+  "repo": "fizzbuzz",
+  "links": {
+    "fizzbuzz": "fizzbuzz"
+  },
+  "blurb": "fizzbuzz"
+}
