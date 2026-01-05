@@ -54,7 +54,7 @@ public static class Compiler {
 		try {
 			while (r < rawLines.Length) {
 				ThrowIfContainsInvalidChars(rawLines[r]);
-				string rawLine = rawLines[r] + ' ';
+				string rawLine = rawLines[r].Replace("\uFEFF", string.Empty).Replace("\u200A…", "…").Replace("\u00a0", " ") + ' ';
 				if (rawLines[r + 1] != string.Empty) throw new Exception("Missing raw line break.");
 
 				string constructedLine = string.Empty;
@@ -63,7 +63,7 @@ public static class Compiler {
 						throw new Exception($"Mismatched pulp line.\nBook: {rawLine}\nPulp: {constructedLine}");
 					}
 
-					string pulpLine = pulpLines[p];
+					string pulpLine = pulpLines[p].Replace("\u00a0", " ");
 
 					string cleanPulpLine = Regex.Replace(pulpLine, "<e>.*?</e>", "");
 					if (cleanPulpLine == "") {
@@ -71,16 +71,17 @@ public static class Compiler {
 					} else {
 						if (constructedLine.Count(c => c == '"') % 2 == 1 && !cleanPulpLine.StartsWith('"')) throw new Exception("Pulp line should continue ongoing quote.");
 						string constructionPulpLine = cleanPulpLine;
-						if (constructionPulpLine.StartsWith('"') && rawLine[constructedLine.Length] != '"') {
+						if ((constructionPulpLine.StartsWith('"') && rawLine[constructedLine.Length] != '"') || (constructionPulpLine.StartsWith('“') && rawLine[constructedLine.Length] != '“')) {
 							constructionPulpLine = constructionPulpLine[1..];
 						}
-						if (constructionPulpLine.EndsWith('"') && rawLine[constructedLine.Length + constructionPulpLine.Length - 1] != '"') {
+						if ((constructionPulpLine.EndsWith('"') && rawLine[constructedLine.Length + constructionPulpLine.Length - 1] != '"') || (constructionPulpLine.EndsWith('”') && rawLine[constructedLine.Length + constructionPulpLine.Length - 1] != '”')) {
 							constructionPulpLine = constructionPulpLine[..^1];
 						}
 						constructedLine += constructionPulpLine + ' ';
 					}
 
 					if (cleanPulpLine.Count(c => c == '"') % 2 == 1) throw new Exception("Unmatched quotes in pulp line.");
+					if (cleanPulpLine.Count(c => c == '“') != cleanPulpLine.Count(c => c == '”')) throw new Exception("Unmatched quotes in pulp line.");
 
 					if (pulpLines[p + 2] != string.Empty) throw new Exception("Missing pulp line break.");
 
@@ -369,11 +370,11 @@ public static class Compiler {
 		characterAttributes[name] = value;
 	}
 
-	private static readonly char[] InvalidChars = ['`', '“', '”', '‘', '’'];
+	private static readonly char[] InvalidChars = ['`'];
 	private static void ThrowIfContainsInvalidChars(string line) {
 		if (line.Any(char.IsControl)) throw new Exception("Contains control char.");
 		if (line.ContainsAny(InvalidChars)) throw new Exception("Contains invalid char.");
-		if (line.Contains("...") || line.Contains("--")) throw new Exception("Contains invalid sequence.");
+		if (line.Contains("...") || line.Contains(". . .") || line.Contains("--")) throw new Exception("Contains invalid sequence.");
 		if (line != line.Trim()) throw new Exception("Contains leading/trailing whitespace.");
 	}
 
