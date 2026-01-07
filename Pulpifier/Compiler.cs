@@ -91,6 +91,7 @@ public static class Compiler {
 						string[] kvp = data.Split('=');
 						string key = kvp[0];
 						string value = kvp[1];
+						if (kvp.Length > 2) throw new Exception("Extra equal sign.");
 
 						switch (key[0]) {
 							case 'n':
@@ -140,6 +141,7 @@ public static class Compiler {
 								backgroundModifiers[bname] = bvalues;
 								break;
 							case 'e':
+								if (!Regex.IsMatch(value, "^[a-z]*$")) throw new Exception("Unexpected expression name.");
 								SetCharacterAttribute(key, value, characterNames, characterExpressions);
 								break;
 							case 'a':
@@ -363,7 +365,7 @@ public static class Compiler {
 	}
 
 	private static bool IsNeutralExpression(string expression) {
-		return expression == "" || expression == "0" || expression == "neutral";
+		return expression == "" || expression == "neutral";
 	}
 
 	private static void SetCharacterAttribute<T, T2>(string key, T value, Dictionary<string, T2> characterNames, Dictionary<string, T> characterAttributes) {
