@@ -13,13 +13,16 @@ File.WriteAllText(Path.Combine(directory, "out.html"), html);
 if (args.Length == 1) {
 	Console.WriteLine("Written.");
 } else if (args.Length == 2) {
-	int imagesTo = int.Parse(args[1]);
-	List<string> filesToPrint = imageFiles.Where(kvp => kvp.Value < imagesTo).Select(kvp => kvp.Key).ToList();
-	filesToPrint.Sort();
+	if (args[1] == "-l" || args[1] == "--list-images") {
+		List<string> filesToPrint = imageFiles.Keys.ToList();
+		filesToPrint.Sort();
 
-	string imageDir = Path.Combine(directory, "images");
-	foreach (string file in filesToPrint) {
-		bool found = File.Exists(Path.Combine(imageDir, $"{file}.webp"));
-		Console.WriteLine($"{imageFiles[file]} {file}{(found ? "" : " (missing)")}");
+		string imageDir = Path.Combine(directory, "images");
+		foreach (string file in filesToPrint) {
+			bool found = File.Exists(Path.Combine(imageDir, $"{file}.webp"));
+			Console.WriteLine($"{imageFiles[file],5} {file}{(found ? "" : " (missing)")}");
+		}
+	} else {
+		throw new Exception($"Invalid arg \"{args[1]}\".");
 	}
 }
