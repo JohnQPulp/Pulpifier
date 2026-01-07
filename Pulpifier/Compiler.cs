@@ -55,10 +55,11 @@ public static class Compiler {
 			while (r < rawLines.Length) {
 				ThrowIfContainsInvalidChars(rawLines[r]);
 				string rawLine = rawLines[r].Replace("\uFEFF", string.Empty).Replace("\u200A…", "…").Replace("\u00a0", " ") + ' ';
+				if (rawLine == " ") throw new Exception("Empty raw line.");
 				if (rawLines[r + 1] != string.Empty) throw new Exception("Missing raw line break.");
 
 				string constructedLine = string.Empty;
-				while (rawLine != constructedLine) {
+				while (rawLine != constructedLine || (r + 2 == rawLines.Length && p < pulpLines.Length)) {
 					if (!rawLine.StartsWith(constructedLine)) {
 						throw new Exception($"Mismatched pulp line.\nBook: {rawLine}\nPulp: {constructedLine}");
 					}
@@ -313,6 +314,7 @@ public static class Compiler {
 
 				r += 2;
 			}
+			if (p != pulpLines.Length) throw new Exception("Extra pulp lines.");
 		} catch (Exception e) {
 			string error = $"Parsing error at raw line {r} and pulp line {p}.";
 			if (rawLines.Length > r) error += '\n' + rawLines[r];

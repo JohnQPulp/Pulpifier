@@ -21,6 +21,7 @@ public class CompilerTests {
 	[DataRow("\"Foo. Bar. Foobar.\"\n", "\"Foo.\"\n\n\n\"Bar.\"\n\n\n\"Foobar.\"\n\n")]
 	[DataRow("\"Foo. Bar.\n\n\"Fizz. Buzz.\"\n", "\"Foo. Bar.\"\n\n\n\"Fizz. Buzz.\"\n\n")]
 	[DataRow("\"Foo. Bar.\n\n\"Fizz. Buzz.\"\n", "\"Foo.\"\n\n\n\"Bar.\"\n\n\n\"Fizz.\"\n\n\n\"Buzz.\"\n\n")]
+	[DataRow("Foo.\n\nBar.\n", "Foo.\n\n\n<e>Text</e>\n\n\nBar.\n\n")]
 	[DataRow("Foo. Fizz\n\nBuzz\n", "Foo.\n\n\nFizz\n\n\nBuzz\n\n")]
 	[DataRow("Foo. Fizz\n\nBuzz\n", "Foo.<e>lorem</e>\n\n\nFizz<e>ipsum</e>\n\n\nBuzz\n\n")]
 	[DataRow("Foo\n", "Foo\nb=back\n")]
@@ -63,6 +64,9 @@ public class CompilerTests {
 	[DataRow("\"Foo. Bar.\"\n", "\"Foo.\n\n\n\"Bar.\"\n\n")]
 	[DataRow("\"Foo. Bar.\n\n\"Fizz. Buzz.\"\n", "\"Foo. Bar.\"\n\n\nFizz. \"Buzz.\"\n\n")]
 	[DataRow("\"Foo. Bar. Foobar.\"\n", "\"Foo.\"\n\n\nBar.\n\n\n\"Foobar.\"\n\n")]
+	[DataRow("Foo.\n\n\n\nBar.\n", "Foo.\n\n\n\n\n\nBar.\n\n")]
+	[DataRow("Foo.\n\nBar.\n", "Foo.\n\n\n\n\n\nBar.\n\n")]
+	[DataRow("Foo.\n\n\n\nBar.\n", "Foo.\n\n\n<e>Text</e>\n\n\nBar.\n\n")]
 	[DataRow("Foo\x0005\n", "Foo\x0005\n\n")]
 	[DataRow("Foo\r\n", "Foo\n\n")]
 	[DataRow("Foo\n", "Foo\r\n\n")]
@@ -102,6 +106,7 @@ public class CompilerTests {
 	[DataRow("Foo\n", "Foo<e>lorem<e>\n\n")]
 	[DataRow("Foo\n", "Foo<e>lorem<e>ipsum</e>lorem</e>\n\n")]
 	[DataRow("Foo. Bar.\n", "<e>1</e>Foo.<e>2</e>\n\n\n\n\n\nBar.<e>4</e><e>5</e>\n\n")]
+	[DataRow("Foo. Bar.\n", "<e>1</e>\n\n\nFoo.<e>2</e>\n\n\n<e>3</e>\n\n\nBar.<e>4</e>\n\n\n<e>5</e>\n\n\n\n\n")]
 	public void Compiler_BuildHtml_BadText(string rawText, string pulpText) {
 		Assert.IsFalse(Compiler.TryBuildHtml(rawText, pulpText, out string _));
 	}
@@ -116,6 +121,10 @@ public class CompilerTests {
 	[DataRow("*Foo*\n", "<e>1</e>*Foo*<e>2</e>\n\n", "<b>Editor's Note:</b> 2")]
 	[DataRow("*Foo*\n", "<e>1</e>*Foo*<e>2</e>\n\n", "<i>Foo</i>")]
 	[DataRow("Foo\n", "Foo<e>*Bar*</e>\n\n", "*Bar*")]
+	[DataRow("Foo. Bar.\n", "<e>0</e>\n\n\n<e>1</e>\n\n\nFoo.<e>2</e>\n\n\n<e>3</e>\n\n\nBar.<e>4</e>\n\n\n<e>5</e>\n\n\n<e>6</e>\n\n", "<b>Editor's Note:</b> 0")]
+	[DataRow("Foo. Bar.\n", "<e>0</e>\n\n\n<e>1</e>\n\n\nFoo.<e>2</e>\n\n\n<e>3</e>\n\n\nBar.<e>4</e>\n\n\n<e>5</e>\n\n\n<e>6</e>\n\n", "<b>Editor's Note:</b> 1")]
+	[DataRow("Foo. Bar.\n", "<e>0</e>\n\n\n<e>1</e>\n\n\nFoo.<e>2</e>\n\n\n<e>3</e>\n\n\nBar.<e>4</e>\n\n\n<e>5</e>\n\n\n<e>6</e>\n\n", "<b>Editor's Note:</b> 5")]
+	[DataRow("Foo. Bar.\n", "<e>0</e>\n\n\n<e>1</e>\n\n\nFoo.<e>2</e>\n\n\n<e>3</e>\n\n\nBar.<e>4</e>\n\n\n<e>5</e>\n\n\n<e>6</e>\n\n", "<b>Editor's Note:</b> 6")]
 	[DataRow("# Foo\n", "# Foo\n\n", "<h1>Foo</h1>")]
 	[DataRow("## Foo\n", "## Foo\n\n", "<h1>Foo</h1>")]
 	[DataRow("### Foo\n", "### Foo\n\n", "<h3>Foo</h3>")]
