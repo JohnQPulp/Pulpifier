@@ -285,6 +285,7 @@ public static class Compiler {
 
 					sb.Append('`');
 					if (activeSpeaker != "" && activeThinker != "") throw new Exception("Can't have both active speaker and active thinker.");
+					if (activeSpeaker != "" && !(cleanPulpLine.Contains('"') || (cleanPulpLine.Contains('“') && cleanPulpLine.Contains('”')))) throw new Exception("Active speaker on a quote-less line.");
 					if (activeSpeaker != "" || activeThinker != "") {
 						string active = activeSpeaker != "" ? activeSpeaker : activeThinker;
 						string activeName = characterNames[active];
