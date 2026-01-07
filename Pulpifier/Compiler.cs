@@ -355,15 +355,15 @@ public static class Compiler {
 				file += "-x" + extra;
 			}
 		}
-		if (expressions.TryGetValue(name, out string expression) && expression != "") {
-			if (expression != "0") {
-				file += "-e" + expression;
-			}
-		} else if (name == thinker) {
-			file += "-et";
+		if (expressions.TryGetValue(name, out string expression) && !IsNeutralExpression(expression)) {
+			file += "-e" + expression;
 		}
 		if (name == speaker) file += "-s";
 		return file;
+	}
+
+	private static bool IsNeutralExpression(string expression) {
+		return expression == "" || expression == "0" || expression == "neutral";
 	}
 
 	private static void SetCharacterAttribute<T, T2>(string key, T value, Dictionary<string, T2> characterNames, Dictionary<string, T> characterAttributes) {
