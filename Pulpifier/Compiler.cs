@@ -63,6 +63,7 @@ public static class Compiler {
 					if (!rawLine.StartsWith(constructedLine)) {
 						throw new Exception($"Mismatched pulp line.\nBook: {rawLine}\nPulp: {constructedLine}");
 					}
+					if (constructedLine != string.Empty && !Regex.IsMatch(constructedLine, "[\\.!?:;—…]['’\\\"”\\*\\)]* $")) throw new Exception("Line break in the middle of a sentence.");
 
 					string pulpLine = pulpLines[p].Replace("\u00a0", " ");
 
