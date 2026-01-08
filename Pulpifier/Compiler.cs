@@ -353,7 +353,7 @@ public static class Compiler {
 
 	private static string GetCharacterFile(string name,  Dictionary<string, string> ages, Dictionary<string, string> expressions, Dictionary<string, string[]> extras, string speaker, string thinker) {
 		string file = "c-" + name;
-		if (ages.TryGetValue(name, out string age)) file += "-a" + age;
+		if (ages.TryGetValue(name, out string age) && age != string.Empty) file += "-a" + age;
 		if (extras.TryGetValue(name, out string[] xarr)) {
 			foreach (string extra in xarr) {
 				file += "-x" + extra;

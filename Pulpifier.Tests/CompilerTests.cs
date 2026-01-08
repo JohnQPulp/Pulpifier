@@ -184,6 +184,8 @@ public class CompilerTests {
 	[DataRow("Foo. Bar.\n", "Foo.\nn:r=R;c=r;x:r=foo\n\nBar.\nx:r=foo,bar\n", "c-r-xfoo.webp")]
 	[DataRow("Foo. Bar.\n", "Foo.\nn:r=R;c=r;x:r=foo\n\nBar.\nx:r=foo,bar\n", "c-r-xbar-xfoo.webp")]
 	[DataRow("Foo\n", "Foo\nn:r=R;c=r;a:r=foo\n", "c-r-afoo.webp")]
+	[DataRow("Foo. Bar.\n", "Foo.\nn:r=R;c=r;a:r=foo\n\nBar.\na:r=\n", "c-r-afoo.webp")]
+	[DataRow("Foo. Bar.\n", "Foo.\nn:r=R;c=r;a:r=foo\n\nBar.\na:r=\n", "c-r.webp")]
 	[DataRow("Foo\n", "Foo\nn:r=R;c=r;t=r\n", "c-r.webp")]
 	[DataRow("Foo\n", "Foo\nn:r=R;t=r\n", "c-r.webp")]
 	[DataRow("Foo\n", "Foo\nn:r=R;c=r;t=r;e:r=t\n", "c-r-et.webp")]
