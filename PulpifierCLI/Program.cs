@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Diagnostics;
+using System.Text.RegularExpressions;
 using Pulp.Pulpifier;
 
 string directory = Path.GetFullPath(args[0], Directory.GetCurrentDirectory());
@@ -8,7 +9,7 @@ Metadata.Parse(jsonText);
 string rawText = File.ReadAllText(Path.Combine(directory, "book.txt"));
 string pulpText = File.ReadAllText(Path.Combine(directory, "pulp.txt"));
 
-string html = Compiler.BuildHtml(rawText, pulpText, out Dictionary<string, int> imageFiles);
+string html = Compiler.BuildHtml(rawText, pulpText, out Dictionary<string, ImageMetadata> imageFiles);
 File.WriteAllText(Path.Combine(directory, "out.html"), html);
 
 if (args.Length == 1) {
@@ -37,7 +38,9 @@ if (args.Length == 1) {
 		string imageDir = Path.Combine(directory, "images");
 		foreach (string file in filesToPrint) {
 			bool found = File.Exists(Path.Combine(imageDir, $"{file}.webp"));
-			Console.WriteLine($"{imageFiles[file],5} {file}{(found ? "" : " (missing)")}");
+			int? fore = imageFiles[file].ForegroundPulpLine;
+			Debug.Assert(fore == null || file.StartsWith("b-"));
+			Console.WriteLine($"{fore,5} {imageFiles[file].PulpLine,5} {file}{(found ? "" : " (missing)")}");
 		}
 	} else {
 		throw new Exception($"Invalid arg \"{args[1]}\".");

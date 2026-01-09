@@ -4,6 +4,11 @@ using System.Text.RegularExpressions;
 
 namespace Pulp.Pulpifier;
 
+public class ImageMetadata(int pulpLine) {
+	public int PulpLine { get; } = pulpLine;
+	public int? ForegroundPulpLine { get; set; }
+}
+
 public static class Compiler {
 	public static bool TryBuildHtml(string rawText, string pulpText, out string html) {
 		try {
@@ -17,7 +22,7 @@ public static class Compiler {
 
 	public static string BuildHtml(string rawText, string pulpText) => BuildHtml(rawText, pulpText, out _);
 
-	public static string BuildHtml(string rawText, string pulpText, out Dictionary<string, int> imageFiles) {
+	public static string BuildHtml(string rawText, string pulpText, out Dictionary<string, ImageMetadata> imageFiles) {
 		StringBuilder sb = new StringBuilder();
 		sb.AppendLine("<div id='app'></div>");
 		sb.AppendLine("<style>");
@@ -200,7 +205,8 @@ public static class Compiler {
 						backgroundFullName += "-mod-";
 						backgroundFullName += string.Join('-', bmods);
 					}
-					imageFiles.TryAdd("b-" + backgroundFullName, p);
+					imageFiles.TryAdd("b-" + backgroundFullName, new ImageMetadata(p));
+					if (activeCharacters.Length > 0) imageFiles["b-" + backgroundFullName].ForegroundPulpLine = p;
 					if (backgroundFilters.TryGetValue(activeBackground, out string bfilter) && bfilter != "") {
 						backgroundFullName += ";" +  bfilter;
 					}
@@ -232,7 +238,7 @@ public static class Compiler {
 
 								if (name.Contains('!')) throw new Exception("Name should not contain exclamations.");
 								string file = GetCharacterFile(name, characterAges, characterExpressions, characterExtras, activeSpeaker, activeThinker);
-								imageFiles.TryAdd(file, p);
+								imageFiles.TryAdd(file, new ImageMetadata(p));
 								images += $"<img src='{directory}{file}.webp' class='{(flip ? "f " : "")}p-{i + 1}/{denominator}' ";
 								if (characterFilters.TryGetValue(name, out string filter) && name != "") {
 									images += $"style='filter:{filter}' ";
@@ -247,7 +253,7 @@ public static class Compiler {
 
 					if (activeObject != "") {
 						string file = "o-" + activeObject;
-						imageFiles.TryAdd(file, p);
+						imageFiles.TryAdd(file, new ImageMetadata(p));
 						images += $"<img src='{directory}{file}.webp' class='c' />";
 					}
 					imageHtmls.Add(images);
@@ -295,7 +301,7 @@ public static class Compiler {
 						}
 
 						string file = GetCharacterFile(active, characterAges, characterExpressions, characterExtras, activeSpeaker, activeThinker);
-						imageFiles.TryAdd(file, p);
+						imageFiles.TryAdd(file, new ImageMetadata(p));
 
 						if (activeCharacters.All(c => c.TrimStart('!') != active)) {
 							speakers.Add(file + ".webp");
