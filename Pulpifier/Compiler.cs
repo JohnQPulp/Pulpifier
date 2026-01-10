@@ -40,6 +40,7 @@ public static class Compiler {
 		Dictionary<string, string> characterAges = new();
 		Dictionary<string, string[]> characterExtras = new();
 		Dictionary<string, string> characterFilters = new();
+		HashSet<string> characterZooms = new();
 		List<string> backgrounds = new();
 		List<string> imageHtmls = new();
 		List<int> backgroundIds = new();
@@ -172,6 +173,7 @@ public static class Compiler {
 								string[][] zooms = value.Split(',').Select(z => z.Split(':')).ToArray();
 								foreach (string[] zoom in zooms) {
 									string zn = zoom[0];
+									if (!characterZooms.Add(zn)) throw new Exception("Can't add already added zoom.");
 									if (!characterNames.ContainsKey(zn.Split('-')[0])) throw new Exception($"Missing character name \"{zn}\" for zoom.");
 									int ch = int.Parse(zoom[1]) * 13 / 10;
 									styleBuilder.AppendLine($".characters > img[src^='images/c-{zn}.'], .characters > img[src^='images/c-{zn}-'] {{ height: {ch}% {(zn.Contains("-a") ? "!important" : "")}; }}");
