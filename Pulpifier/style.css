@@ -8,6 +8,7 @@ html, body {
   line-height: 1.4;
   width: 100%;
   height: 100vh;
+  --vnFontSize: 1.5vh;
 }
 #pulp {
   width: 100%;
@@ -34,7 +35,7 @@ html, body {
 }
 #foot {
   width: 102%;
-  font-size: 1.5vh;
+  font-size: var(--vnFontSize);
   min-height: 15em;
   display: flex;
   position: absolute;
@@ -43,8 +44,8 @@ html, body {
   left: -1%;
 }
 #text {
-  width: 40em;
   font-size: 2em;
+  width: 40em;
   position: relative;
   color: black;
 }
