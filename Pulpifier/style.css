@@ -53,7 +53,6 @@ html, body {
   width: 100%;
   height: 100%;
   background-color: #f8efd4f0;
-  mask-image: linear-gradient(to top, transparent, black 0.25em);
   display: flow-root;
 }
 #text h1, #text h2, #text h3, #text h4, #text h5, #text h6 {
@@ -66,7 +65,6 @@ html, body {
 #foot > div:first-child {
   width: 21em;
   background: linear-gradient(to left, #f8efd4f0, #f8efd4f0 1em, #f8efd445 20em, transparent 21em);
-  mask-image: linear-gradient(to top, transparent, black 0.5em);
   display: flex;
   justify-content: end;
 }
@@ -82,7 +80,6 @@ html, body {
 #foot > div:last-child {
   flex-grow: 1;
   background: linear-gradient(to right, #f8efd4f0, #f8efd4f0 1em, #f8efd445 20em, transparent 21em);
-  mask-image: linear-gradient(to top, transparent, black 0.5em);
   max-width: 21em;
   min-width: 1vw;
 }
