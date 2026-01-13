@@ -62,7 +62,7 @@ document.addEventListener("keydown", function (e) {
     prevPulp();
   }
 });
-document.addEventListener("click", function (e) {
+document.addEventListener("pointerdown", function (e) {
   if (e.target.tagName === "IMG" || (e.target.tagName === "DIV" && (e.target.id === "back" || e.target.className === "characters"))) {
     if (e.clientX >= window.innerWidth / 2) {
       nextPulp();
