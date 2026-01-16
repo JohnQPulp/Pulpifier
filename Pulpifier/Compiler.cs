@@ -76,7 +76,7 @@ public static class Compiler {
 						throw new Exception($"Mismatched pulp line.\nBook: {rawLine}\nPulp: {constructedLine}\nDiff Char: {diff}");
 					}
 
-					if (constructedLine != string.Empty && !Regex.IsMatch(constructedLine, "[\\.!?:;—…]['’\\\"”\\*\\)]* $")) {
+					if (constructedLine != string.Empty && !Regex.IsMatch(constructedLine, "[\\.!?:;—…]['’\\\"”\\*\\)\\]]* $")) {
 						throw new Exception("Line break in the middle of a sentence.");
 					}
 
