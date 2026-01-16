@@ -135,3 +135,12 @@ img.p-3\/4 { left: 75%; }
   mask-composite: intersect;
   filter: opacity(96%);
 }
+.upper {
+  text-transform: uppercase;
+}
+.center {
+  text-align: center;
+}
+.big {
+  font-size: 1.2em;
+}
