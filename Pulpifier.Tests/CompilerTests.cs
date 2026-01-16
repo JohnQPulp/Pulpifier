@@ -15,6 +15,8 @@ public class CompilerTests {
 	[DataRow("*Foo*. Bar.\n", "*Foo*.\n\n\nBar.\n\n")]
 	[DataRow("(Foo.) Bar.\n", "(Foo.)\n\n\nBar.\n\n")]
 	[DataRow("\"'Foo.'\" Bar.\n", "\"'Foo.'\"\n\n\nBar.\n\n")]
+	[DataRow("Foo, “Bar.”\n", "Foo,\n\n\n“Bar.”\n\n")]
+	[DataRow("Foo, \"Bar.\"\n", "Foo,\n\n\n\"Bar.\"\n\n")]
 	[DataRow("Foo. Bar\n", "Foo. <e>lorem</e>Bar\n\n")]
 	[DataRow("Foo Bar\n", "<e>lorem</e>Foo Bar<e>ipsum</e>\n\n")]
 	[DataRow("Foo Bar\n", "<e>lorem</e>Foo <e>mid</e>Bar<e>ipsum</e>\n\n")]

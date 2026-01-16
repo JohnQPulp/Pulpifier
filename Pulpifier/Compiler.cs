@@ -76,7 +76,7 @@ public static class Compiler {
 						throw new Exception($"Mismatched pulp line.\nBook: {rawLine}\nPulp: {constructedLine}\nDiff Char: {diff}");
 					}
 
-					if (constructedLine != string.Empty && !Regex.IsMatch(constructedLine, "[\\.!?:;—…]['’\\\"”\\*\\)\\]]* $")) {
+					if (constructedLine != string.Empty && !(Regex.IsMatch(constructedLine, "[\\.!?:;—…]['’\\\"”\\*\\)\\]]* $") || (constructedLine.EndsWith(", ", StringComparison.Ordinal) && IsOpenQuote(rawLine[constructedLine.Length])))) {
 						throw new Exception("Line break in the middle of a sentence.");
 					}
 
@@ -394,6 +394,10 @@ public static class Compiler {
 		string name = key.Split(':')[1];
 		if (!characterNames.ContainsKey(name)) throw new Exception($"Missing character name \"{name}\" for expression.");
 		characterAttributes[name] = value;
+	}
+
+	private static bool IsOpenQuote(char c) {
+		return c == '"' || c == '“';
 	}
 
 	private static readonly char[] InvalidChars = ['`'];
