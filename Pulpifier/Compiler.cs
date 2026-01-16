@@ -60,18 +60,21 @@ public static class Compiler {
 		try {
 			while (r < rawLines.Length) {
 				ThrowIfContainsInvalidChars(rawLines[r]);
-				string rawLine = rawLines[r].Replace("\uFEFF", string.Empty).Replace("\u200A…", "…").Replace("\u00a0", " ") + ' ';
+				string rawLine = rawLines[r].Replace("\uFEFF", string.Empty).Replace("\u200A…", "…").Replace("\u00a0", " ").Replace("“\u200a’", "“’") + ' ';
 				if (rawLine == " ") throw new Exception("Empty raw line.");
 				if (rawLines[r + 1] != string.Empty) throw new Exception("Missing raw line break.");
 
 				string constructedLine = string.Empty;
 				while (rawLine != constructedLine || (r + 2 == rawLines.Length && p < pulpLines.Length)) {
-					if (!rawLine.StartsWith(constructedLine)) {
+					if (!rawLine.StartsWith(constructedLine, StringComparison.Ordinal)) {
 						throw new Exception($"Mismatched pulp line.\nBook: {rawLine}\nPulp: {constructedLine}");
 					}
-					if (constructedLine != string.Empty && !Regex.IsMatch(constructedLine, "[\\.!?:;—…]['’\\\"”\\*\\)]* $")) throw new Exception("Line break in the middle of a sentence.");
 
-					string pulpLine = pulpLines[p].Replace("\u00a0", " ");
+					if (constructedLine != string.Empty && !Regex.IsMatch(constructedLine, "[\\.!?:;—…]['’\\\"”\\*\\)]* $")) {
+						throw new Exception("Line break in the middle of a sentence.");
+					}
+
+					string pulpLine = pulpLines[p].Replace("\uFEFF", string.Empty).Replace("\u200A…", "…").Replace("\u00a0", " ").Replace("“\u200a’", "“’");
 
 					string cleanPulpLine = Regex.Replace(pulpLine, "<e>.*?</e>", "");
 					if (cleanPulpLine == "") {
