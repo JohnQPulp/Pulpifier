@@ -103,6 +103,7 @@ public static class Compiler {
 						switch (key[0]) {
 							case 'n':
 								string name = key.Split(':')[1];
+								if (string.Equals(name, "none", StringComparison.OrdinalIgnoreCase)) throw new Exception("Forbidden name.");
 								characterNames[name] = value;
 								break;
 							case 'c':
@@ -161,11 +162,13 @@ public static class Compiler {
 								break;
 							case 's':
 								ThrowIfBadKey(key);
+								if (string.Equals(value, "none", StringComparison.OrdinalIgnoreCase)) value = "";
 								if (value != "" && !characterNames.ContainsKey(value)) throw new Exception("Missing character name for speaker.");
 								activeSpeaker = value;
 								break;
 							case 't':
 								ThrowIfBadKey(key);
+								if (string.Equals(value, "none", StringComparison.OrdinalIgnoreCase)) value = "";
 								if (value != "" && !characterNames.ContainsKey(value)) throw new Exception("Missing character name for thinker.");
 								activeThinker = value;
 								break;
