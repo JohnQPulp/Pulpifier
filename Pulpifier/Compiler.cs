@@ -295,7 +295,7 @@ public static class Compiler {
 								string text = m.Groups[2].Value;
 								if (text.Contains('|')) throw new Exception("Header should not have a pipe.");
 								headers.Add($"{p / 3}|{level}|{text}");
-								return $"<h{level}>{text}</h{level}>";
+								return $"<h{level} class='upper'>{text}</h{level}>";
 							}, RegexOptions.Singleline);
 							htmlParts.Add(part);
 						}

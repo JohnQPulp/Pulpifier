@@ -136,7 +136,7 @@ img.p-3\/4 { left: 75%; }
   filter: opacity(96%);
 }
 .upper {
-  text-transform: uppercase;
+  font-variant: small-caps;
 }
 .center {
   text-align: center;
