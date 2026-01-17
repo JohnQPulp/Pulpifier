@@ -286,8 +286,8 @@ public static class Compiler {
 						} else {
 							part = Regex.Replace(part, @"^—+$", "<hr>");
 
-							part = Regex.Replace(part, @"\*\*\*(.*?)\*\*\*", "<b><i>$1</i></b>");
-							part = Regex.Replace(part, @"\*\*(.*?)\*\*", "<b>$1</b>");
+							part = Regex.Replace(part, @"\*\*\*(.*?)\*\*\*", "<i class='upper'>$1</i>");
+							part = Regex.Replace(part, @"\*\*(.*?)\*\*", "<span class='upper'>$1</span>");
 							part = Regex.Replace(part, @"\*(.*?)\*", "<i>$1</i>");
 
 							part = Regex.Replace(part, @"^(#{1,6})\s+(.*)$",m => {
