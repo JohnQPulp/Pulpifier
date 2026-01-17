@@ -280,7 +280,7 @@ public static class Compiler {
 						if (editorLine) {
 							editorLine = false;
 							part = BookTag.FormatText(part);
-							htmlParts.Add($"<p class='e'><b>Editor's Note:</b> {part}</p>");
+							htmlParts.Add($"<p class='e'><span class='upper'>Editor's Note:</span> {part}</p>");
 						} else if (part.StartsWith("<e>")) {
 							editorLine = true;
 						} else {
