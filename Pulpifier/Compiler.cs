@@ -105,9 +105,10 @@ public static class Compiler {
 					string[] metadata = pulpLines[p + 1].Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 					foreach (string data in metadata) {
 						string[] kvp = data.Split('=');
+						if (kvp.Length < 2) throw new Exception("Missing equal sign.");
+						if (kvp.Length > 2) throw new Exception("Extra equal sign.");
 						string key = kvp[0];
 						string value = kvp[1];
-						if (kvp.Length > 2) throw new Exception("Extra equal sign.");
 
 						switch (key[0]) {
 							case 'n':
