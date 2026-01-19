@@ -36,7 +36,10 @@ if (args.Length == 1) {
 					return string.Compare(m1.Groups[i].Value, m2.Groups[i].Value, StringComparison.Ordinal);
 				}
 			}
-			throw new Exception($"Duplicate character entries: \"{s1}\", \"{s2}\"");
+
+			if (s1 == s2) return 0;
+
+			throw new Exception($"Unexpected comparison failure: \"{s1}\", \"{s2}\"");
 		});
 
 		string imageDir = Path.Combine(directory, "images");
