@@ -145,6 +145,7 @@ public static class Compiler {
 								characterFilters.Clear();
 								activeSpeaker = "";
 								activeThinker = "";
+								activeObject = "";
 								activeCharacters = [];
 								foreach (string bkey in backgroundModifiers.Keys) {
 									backgroundModifiers[bkey] = [];
