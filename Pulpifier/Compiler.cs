@@ -192,7 +192,13 @@ public static class Compiler {
 								int ch = zzoom * 13 / 10;
 								styleBuilder.AppendLine($".characters > img[src^='images/c-{zn}.'], .characters > img[src^='images/c-{zn}-'] {{ height: {ch}% {(zn.Contains("-a") ? "!important" : "")}; }}");
 								int sh = zzoom * 2 / 5;
-								styleBuilder.AppendLine($".speaker-back[style*='background-image: url(images/c-{zn}.'], .speaker-back[style*='background-image: url(images/c-{zn}-'] {{ background-size: {sh}em {(zn.Contains("-a") ? "!important" : "")}; }}");
+								string zcss = $"background-size: {sh}em {(zn.Contains("-a") ? "!important" : "")}";
+								if (zvals.Length > 1) {
+									int zx = int.Parse(zvals[1]);
+									int zy = int.Parse(zvals[2]);
+									zcss += $"; background-position: {zx}% {zy}% {(zn.Contains("-a") ? "!important" : "")}";
+								}
+								styleBuilder.AppendLine($".speaker-back[style*='background-image: url(images/c-{zn}.'], .speaker-back[style*='background-image: url(images/c-{zn}-'] {{ {zcss}; }}");
 								break;
 							case 'f':
 								if (key.StartsWith("f:c:")) {
