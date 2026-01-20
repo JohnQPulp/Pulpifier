@@ -131,9 +131,8 @@ img.p-3\/4 { left: 75%; }
   top: 10vh;
   left: 50vw;
   height: 60vh;
-  mask-image: linear-gradient(to top, transparent, black 5%), linear-gradient(to bottom, transparent, black 5%), linear-gradient(to left, transparent, black 5%), linear-gradient(to right, transparent, black 5%);
-  mask-composite: intersect;
   filter: opacity(96%);
+  box-shadow: 0 0 20px black;
 }
 .upper {
   font-variant: small-caps;
