@@ -183,16 +183,16 @@ public static class Compiler {
 								activeThinker = value;
 								break;
 							case 'z':
-								string[][] zooms = value.Split(',').Select(z => z.Split(':')).ToArray();
-								foreach (string[] zoom in zooms) {
-									string zn = zoom[0];
-									if (!characterZooms.Add(zn)) throw new Exception("Can't add already added zoom.");
-									if (!characterNames.ContainsKey(zn.Split('-')[0])) throw new Exception($"Missing character name \"{zn}\" for zoom.");
-									int ch = int.Parse(zoom[1]) * 13 / 10;
-									styleBuilder.AppendLine($".characters > img[src^='images/c-{zn}.'], .characters > img[src^='images/c-{zn}-'] {{ height: {ch}% {(zn.Contains("-a") ? "!important" : "")}; }}");
-									int sh = int.Parse(zoom[1]) * 2 / 5;
-									styleBuilder.AppendLine($".speaker-back[style*='background-image: url(images/c-{zn}.'], .speaker-back[style*='background-image: url(images/c-{zn}-'] {{ background-size: {sh}em {(zn.Contains("-a") ? "!important" : "")}; }}");
-								}
+								string zn = key.Split(':')[1];
+								if (!characterNames.ContainsKey(zn.Split('-')[0])) throw new Exception($"Missing character name \"{zn}\" for zoom.");
+								if (!characterZooms.Add(zn)) throw new Exception("Can't add already added zoom.");
+								string[] zvals = value.Split(',');
+
+								int zzoom = int.Parse(zvals[0]);
+								int ch = zzoom * 13 / 10;
+								styleBuilder.AppendLine($".characters > img[src^='images/c-{zn}.'], .characters > img[src^='images/c-{zn}-'] {{ height: {ch}% {(zn.Contains("-a") ? "!important" : "")}; }}");
+								int sh = zzoom * 2 / 5;
+								styleBuilder.AppendLine($".speaker-back[style*='background-image: url(images/c-{zn}.'], .speaker-back[style*='background-image: url(images/c-{zn}-'] {{ background-size: {sh}em {(zn.Contains("-a") ? "!important" : "")}; }}");
 								break;
 							case 'f':
 								if (key.StartsWith("f:c:")) {
