@@ -128,7 +128,7 @@ img.p-3\/4 { left: 75%; }
 #pulp > img.c {
   position: absolute;
   transform: translate(-50%, 0%);
-  top: 10vh;
+  top: 8vh;
   left: 50vw;
   height: 60vh;
   filter: opacity(96%);
