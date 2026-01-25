@@ -66,6 +66,8 @@ public static class Compiler {
 
 				string constructedLine = string.Empty;
 				while (rawLine != constructedLine || (r + 2 == rawLines.Length && p < pulpLines.Length)) {
+					if (p >= pulpLines.Length - 2) throw new Exception("Early pulp end.");
+
 					if (!rawLine.StartsWith(constructedLine, StringComparison.Ordinal)) {
 						int diff = -1;
 						for (int i = 0; diff == - 1 && i < rawLine.Length && i < constructedLine.Length; i++) {
@@ -348,10 +350,10 @@ public static class Compiler {
 			}
 			if (p != pulpLines.Length) throw new Exception("Extra pulp lines.");
 		} catch (Exception e) {
-			string error = $"Parsing error at raw line {r} and pulp line {p}.";
-			if (rawLines.Length > r) error += '\n' + rawLines[r];
-			if (pulpLines.Length > p) error += '\n' + pulpLines[p];
-			if (pulpLines.Length > p + 1) error += '\n' + pulpLines[p + 1];
+			string error = $"Parsing error at raw line {r} and pulp line {p}.\n";
+			if (rawLines.Length > r) error += '\n' + rawLines[r] + '\n';
+			if (pulpLines.Length > p) error += '\n' + pulpLines[p] + '\n';
+			if (pulpLines.Length > p + 1) error += '\n' + pulpLines[p + 1] + '\n';
 			throw new Exception(error, e);
 		}
 
