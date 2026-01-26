@@ -75,7 +75,7 @@ public static class Compiler {
 								diff = i;
 							}
 						}
-						throw new Exception($"Mismatched pulp line.\nBook: {rawLine}\nPulp: {constructedLine}\nDiff Char: {diff}");
+						throw new Exception($"Mismatched pulp line.\nBook: {rawLine}\n\nPulp: {constructedLine}\n\nDiff Char: {diff}\n");
 					}
 
 					if (constructedLine != string.Empty && !(Regex.IsMatch(constructedLine, "[\\.!?:;—…]['’\\\"”\\*\\)\\]]* $") || (constructedLine.EndsWith(", ", StringComparison.Ordinal) && IsOpenQuote(rawLine[constructedLine.Length])))) {
