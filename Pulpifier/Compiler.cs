@@ -145,6 +145,7 @@ public static class Compiler {
 								characterExtras.Clear();
 								characterExpressions.Clear();
 								characterFilters.Clear();
+								backgroundFilters.Clear();
 								activeSpeaker = "";
 								activeThinker = "";
 								activeObject = "";
