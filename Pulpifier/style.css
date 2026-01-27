@@ -138,6 +138,9 @@ img.p-3\/4 { left: 75%; }
 .upper {
   font-variant: small-caps;
 }
+.uppercase {
+  text-transform: uppercase;
+}
 .center {
   text-align: center;
 }
