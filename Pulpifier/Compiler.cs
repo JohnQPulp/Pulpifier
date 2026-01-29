@@ -228,6 +228,10 @@ public static class Compiler {
 									viewScale = new Tuple<int, int>(int.Parse(viewWxH[0]), int.Parse(viewWxH[1]));
 								}
 								break;
+							case 'h':
+								if (p != 0) throw new Exception("Header settings can only be declared on the first pulp line.");
+								if (value == "no-speaker-counter") _sSpeakerCounterEnabled = false;
+								break;
 							default: throw new Exception($"Unrecognized key: '{key}'.");
 						}
 					}
@@ -395,6 +399,7 @@ public static class Compiler {
 	}
 
 	private static readonly string[] ExpressionVariationArr = ["", "2", "", "2", "3", "", "3", "2"];
+	private static bool _sSpeakerCounterEnabled = true;
 
 	private static string GetCharacterFile(string name,  Dictionary<string, string> ages, Dictionary<string, string> expressions, Dictionary<string, int> characterExpressionCounters, Dictionary<string, string[]> extras, string speaker, string thinker) {
 		string file = "c-" + name;
@@ -410,7 +415,7 @@ public static class Compiler {
 		if (name == speaker) {
 			file += "-s";
 			int counterIndex = (characterExpressionCounters[name] - 1) % ExpressionVariationArr.Length;
-			file += ExpressionVariationArr[counterIndex];
+			if (_sSpeakerCounterEnabled) file += ExpressionVariationArr[counterIndex];
 		}
 		return file;
 	}
