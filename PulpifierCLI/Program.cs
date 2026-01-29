@@ -15,7 +15,7 @@ File.WriteAllText(Path.Combine(directory, "out.html"), html);
 if (args.Length == 1) {
 	Console.WriteLine("Written.");
 } else {
-	Regex r = new Regex(@"^c-([^-]+)(-a[^-]+)?((-x[^-]+)+)?(-e[^-]+)?(-s)?$");
+	Regex r = new Regex(@"^c-([^-]+)(-a[^-]+)?((-x[^-]+)+)?(-e[^-]+)?(-s[23]?)?$");
 	if (args.Length == 2 && (args[1] == "-l" || args[1] == "--list-images")) {
 		List<string> filesToPrint = imageFiles.Keys.ToList();
 		filesToPrint.Sort((s1, s2) => {

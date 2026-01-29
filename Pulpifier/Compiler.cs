@@ -37,6 +37,7 @@ public static class Compiler {
 
 		Dictionary<string, string> characterNames = new();
 		Dictionary<string, string> characterExpressions = new();
+		Dictionary<string, int> characterExpressionCounters = new();
 		Dictionary<string, string> characterAges = new();
 		Dictionary<string, string[]> characterExtras = new();
 		Dictionary<string, string> characterFilters = new();
@@ -144,6 +145,7 @@ public static class Compiler {
 								backgroundModifiers.TryAdd(value, []);
 								characterExtras.Clear();
 								characterExpressions.Clear();
+								characterExpressionCounters.Clear();
 								characterFilters.Clear();
 								backgroundFilters.Clear();
 								activeSpeaker = "";
@@ -164,15 +166,20 @@ public static class Compiler {
 								break;
 							case 'e':
 								if (!Regex.IsMatch(value, "^[a-z]*$")) throw new Exception("Unexpected expression name.");
+								string keyname = key.Split(':')[1];
+								characterExpressions.TryGetValue(keyname, out string? prevValue);
 								SetCharacterAttribute(key, value, characterNames, characterExpressions);
+								if (prevValue != value && !(IsNeutralExpression(prevValue) && IsNeutralExpression(value))) characterExpressionCounters.Remove(keyname);
 								break;
 							case 'a':
 								SetCharacterAttribute(key, value, characterNames, characterAges);
+								characterExpressionCounters.Remove(key.Split(':')[1]);
 								break;
 							case 'x':
 								string[] extras = value.Split(',', StringSplitOptions.RemoveEmptyEntries);
 								extras.Sort();
 								SetCharacterAttribute(key, extras, characterNames, characterExtras);
+								characterExpressionCounters.Remove(key.Split(':')[1]);
 								break;
 							case 's':
 								ThrowIfBadKey(key);
@@ -242,6 +249,11 @@ public static class Compiler {
 					}
 					backgroundIds.Add(bIndex);
 
+					if (activeSpeaker != "") {
+						characterExpressionCounters.TryGetValue(activeSpeaker, out int expressionCounter);
+						characterExpressionCounters[activeSpeaker] = expressionCounter + 1;
+					}
+
 					string directory = "images/";
 					string images = "";
 					if (activeCharacters.Length > 0) {
@@ -262,7 +274,7 @@ public static class Compiler {
 								}
 
 								if (name.Contains('!')) throw new Exception("Name should not contain exclamations.");
-								string file = GetCharacterFile(name, characterAges, characterExpressions, characterExtras, activeSpeaker, activeThinker);
+								string file = GetCharacterFile(name, characterAges, characterExpressions, characterExpressionCounters, characterExtras, activeSpeaker, activeThinker);
 								imageFiles.TryAdd(file, new ImageMetadata(p));
 								images += $"<img src='{directory}{file}.webp' class='{(flip ? "f " : "")}p-{i + 1}/{denominator}' ";
 								if (characterFilters.TryGetValue(name, out string filter) && name != "") {
@@ -325,7 +337,7 @@ public static class Compiler {
 							sb.Append($"<b class='speaker'>{characterNames[active]}{(activeThinker != "" ? " (Thinking)" : "")}</b>");
 						}
 
-						string file = GetCharacterFile(active, characterAges, characterExpressions, characterExtras, activeSpeaker, activeThinker);
+						string file = GetCharacterFile(active, characterAges, characterExpressions, characterExpressionCounters, characterExtras, activeSpeaker, activeThinker);
 						imageFiles.TryAdd(file, new ImageMetadata(p));
 
 						if (activeCharacters.All(c => c.TrimStart('!') != active)) {
@@ -382,7 +394,9 @@ public static class Compiler {
 		return sb.ToString();
 	}
 
-	private static string GetCharacterFile(string name,  Dictionary<string, string> ages, Dictionary<string, string> expressions, Dictionary<string, string[]> extras, string speaker, string thinker) {
+	private static readonly string[] ExpressionVariationArr = ["", "2", "", "2", "3", "", "3", "2"];
+
+	private static string GetCharacterFile(string name,  Dictionary<string, string> ages, Dictionary<string, string> expressions, Dictionary<string, int> characterExpressionCounters, Dictionary<string, string[]> extras, string speaker, string thinker) {
 		string file = "c-" + name;
 		if (ages.TryGetValue(name, out string age) && age != string.Empty) file += "-a" + age;
 		if (extras.TryGetValue(name, out string[] xarr)) {
@@ -390,15 +404,19 @@ public static class Compiler {
 				file += "-x" + extra;
 			}
 		}
-		if (expressions.TryGetValue(name, out string expression) && !IsNeutralExpression(expression)) {
+		if (expressions.TryGetValue(name, out string? expression) && !IsNeutralExpression(expression)) {
 			file += "-e" + expression;
 		}
-		if (name == speaker) file += "-s";
+		if (name == speaker) {
+			file += "-s";
+			int counterIndex = (characterExpressionCounters[name] - 1) % ExpressionVariationArr.Length;
+			file += ExpressionVariationArr[counterIndex];
+		}
 		return file;
 	}
 
-	private static bool IsNeutralExpression(string expression) {
-		return expression == "" || expression == "neutral";
+	private static bool IsNeutralExpression(string? expression) {
+		return string.IsNullOrEmpty(expression) || expression == "neutral";
 	}
 
 	private static void SetCharacterAttribute<T, T2>(string key, T value, Dictionary<string, T2> characterNames, Dictionary<string, T> characterAttributes) {

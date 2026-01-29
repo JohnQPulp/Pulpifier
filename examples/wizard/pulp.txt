@@ -1,5 +1,5 @@
 "I am a wizard."
-n:w=Wizard;c=w,,,;s=w
+n:w=Wizard;c=w,,,;s=w;z:w=100,20,1
 
 "Here's an apple."
 o=apple
