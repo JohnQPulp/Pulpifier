@@ -222,6 +222,7 @@ public class CompilerTests {
 	[DataRow("\"Foo. Bar.\"\n", "\"Foo.\"\nn:r=R;s=r;a:r=foo;e:r=g\n\n\"Bar.\"\n\n", "c-r-afoo-eg-s2.webp")]
 	[DataRow("\"Foo\"\n", "\"Foo\"\nn:r=R;e:r=g;s=r;a:r=foo;x:r=bar\n", "c-r-afoo-xbar-eg-s.webp")]
 	[DataRow("\"Foo\"\n", "\"Foo\"\nn:r=R;e:r=g;s=r;a:r=foo;x:r=fizz,buzz\n", "c-r-afoo-xbuzz-xfizz-eg-s.webp")]
+	[DataRow("\"Foo.\"\n\n\"Bar.\"\n\n\"Fizz.\"\n", "\"Foo.\"\nn:r=R;n:j=J;s=r;c=r,j\n\n\"Bar.\"\ns=j\n\n\"Fizz.\"\ns=r\n", "c-r-s2.webp")]
 	[DataRow("Foo. Bar.\n", "Foo.\nn:r=R;c=r;x:r=bar\n\nBar.\nx:r=\n", "c-r-xbar.webp")]
 	[DataRow("Foo. Bar.\n", "Foo.\nn:r=R;c=r;x:r=bar\n\nBar.\nx:r=\n", "c-r.webp")]
 	[DataRow("Foo\n", "Foo\nn:r=R;n:f=F;c=r,f\n", "c-r.webp")]

@@ -253,6 +253,12 @@ public static class Compiler {
 					}
 					backgroundIds.Add(bIndex);
 
+					foreach (string counterKey in characterExpressionCounters.Keys) {
+						if (counterKey != activeSpeaker && activeCharacters.All(ac => ac.Trim('!') != counterKey)) {
+							 characterExpressionCounters.Remove(counterKey);
+						}
+					}
+
 					if (activeSpeaker != "") {
 						characterExpressionCounters.TryGetValue(activeSpeaker, out int expressionCounter);
 						characterExpressionCounters[activeSpeaker] = expressionCounter + 1;
