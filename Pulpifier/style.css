@@ -4,12 +4,12 @@ html, body {
 }
 #app {
   position: relative;
-  font-family: Roboto, sans-serif;
+  font-family: "Noto Serif", serif;
   line-height: 1.4;
   width: 100%;
   height: 100vh;
   --vnFontSize: 1.5vh;
-  --vnDialogueFontWeight: 550;
+  --vnDialogueFontWeight: 600;
   --vnLineHeight: 1.4;
   --vnFontSizeReally: 1.05em;
 }
