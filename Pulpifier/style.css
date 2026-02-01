@@ -93,6 +93,9 @@ b.speaker {
   text-align: center;
   background: linear-gradient(to right, transparent 0, #f8efd4f0 0.5em, #f8efd4f0 calc(100% - 0.5em), transparent 100%);
 }
+b.speaker + div > span.d {
+  font-weight: bold;
+}
 p.e {
   margin: 0.25em;
   font-size: 0.8em;

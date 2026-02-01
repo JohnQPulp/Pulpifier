@@ -240,6 +240,7 @@ public class CompilerTests {
 	[DataRow("Foo. Bar.\n", "Foo.\nb=p;m:p=foo\n\nBar.\nm:p=bar\n", "'p-mod-bar'")]
 	[DataRow("Foo. Bar.\n", "Foo.\nb=p;m:p=foo\n\nBar.\nr=p\n", "'p-mod-foo'")]
 	[DataRow("Foo. Bar.\n", "Foo.\nb=p;m:p=foo\n\nBar.\nr=p\n", "'p'")]
+	[DataRow("“Foo” said Foo. “Bar.”\n", "“Foo” said Foo. “Bar.”\nn:f=Foo;s=f\n", "<span class='d'>“Foo”</span> said Foo. <span class='d'>“Bar.”</span>")]
 	public void Compiler_BuildHtml_ContainsHtml(string rawText, string pulpText, string htmlSnippet) {
 		string html = Compiler.BuildHtml(rawText, pulpText);
 		Assert.Contains(htmlSnippet, html);

@@ -322,6 +322,7 @@ public static class Compiler {
 							part = Regex.Replace(part, @"\*\*\*(.*?)\*\*\*", "<i class='upper'>$1</i>");
 							part = Regex.Replace(part, @"\*\*(.*?)\*\*", "<span class='upper'>$1</span>");
 							part = Regex.Replace(part, @"\*(.*?)\*", "<i>$1</i>");
+							part = Regex.Replace(part, @"“(.*?)”", "<span class='d'>“$1”</span>");
 
 							part = Regex.Replace(part, @"^(#{1,6})\s+(.*)$",m => {
 								int level = Math.Max(1, Math.Min(6, m.Groups[1].Value.Length * 2 - 3));
