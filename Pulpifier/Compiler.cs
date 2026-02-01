@@ -28,6 +28,9 @@ public static class Compiler {
 		sb.AppendLine("<style>");
 		sb.Append(ReadResource("style.css"));
 		sb.Append("</style>");
+		sb.Append("<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">");
+		sb.Append("<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>");
+		sb.Append("<link href=\"https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap\" rel=\"stylesheet\">");
 		sb.Append("<script>let i = 0; const htmlArr = [");
 
 		StringBuilder styleBuilder = new StringBuilder();
