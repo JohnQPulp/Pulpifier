@@ -2,20 +2,25 @@ html, body {
   margin: 0px;
   padding: 0px;
 }
+body {
+  --vwUnit: 1vw;
+  --vhUnit: 1vh;
+}
 #app {
   position: relative;
   font-family: "Noto Serif", serif;
   line-height: 1.4;
-  width: 100%;
-  height: 100vh;
-  --vnFontSize: 1.5vh;
+  width: calc(100 * var(--vwUnit));
+  height: calc(100 * var(--vhUnit));
+  align-self: center;
+  --vnFontSize: 1.5;
   --vnDialogueFontWeight: 600;
   --vnLineHeight: 1.4;
   --vnFontSizeReally: 1.05em;
 }
 #pulp {
-  width: 100%;
-  height: 100vh;
+  width: calc(100 * var(--vwUnit));
+  height: calc(100 * var(--vhUnit));
   position: absolute;
   top: 0px;
   left: 0px;
@@ -27,8 +32,8 @@ html, body {
   z-index: 1;
 }
 #back {
-  width: 100%;
-  height: 100vh;
+  width: calc(100 * var(--vwUnit));
+  height: calc(100 * var(--vhUnit));
   position: absolute;
   top: 0px;
   left: 0px;
@@ -38,7 +43,7 @@ html, body {
 }
 #foot {
   width: 102%;
-  font-size: var(--vnFontSize);
+  font-size: calc(var(--vnFontSize) * var(--vhUnit));
   min-height: 15em;
   display: flex;
   position: absolute;
@@ -87,7 +92,7 @@ html, body {
   flex-grow: 1;
   background: linear-gradient(to right, #f8efd4f0, #f8efd4f0 1em, #f8efd445 20em, transparent 21em);
   max-width: 21em;
-  min-width: 1vw;
+  min-width: var(--vwUnit);
 }
 b.speaker {
   position: absolute;
@@ -138,9 +143,9 @@ img.p-3\/4 { left: 75%; }
 #pulp > img.c {
   position: absolute;
   transform: translate(-50%, 0%);
-  top: 8vh;
-  left: 50vw;
-  height: 60vh;
+  top: calc(8 * var(--vhUnit));
+  left: calc(50 * var(--vwUnit));
+  height: calc(60 * var(--vhUnit));
   filter: opacity(96%);
   box-shadow: 0 0 20px black;
 }
