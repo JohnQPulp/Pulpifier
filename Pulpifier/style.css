@@ -17,6 +17,7 @@ body {
   --vnDialogueFontWeight: 600;
   --vnLineHeight: 1.4;
   --vnFontSizeReally: 1.05em;
+  --editorDisplay: block;
 }
 #pulp {
   width: calc(100 * var(--vwUnit));
@@ -110,6 +111,7 @@ b.speaker + div > span.d {
 p.e {
   margin: 0.25em;
   font-size: 0.8em;
+  display: var(--editorDisplay);
 }
 .characters {
   width: 100%;
