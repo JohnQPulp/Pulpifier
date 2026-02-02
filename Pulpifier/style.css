@@ -52,15 +52,15 @@ body {
   left: -1%;
 }
 #text {
+  background-color: #f8efd4f0;
   font-size: 2em;
   width: 40em;
   position: relative;
   color: black;
 }
 #text > div {
-  width: 100%;
+  width: calc(100% - 12px);
   height: 100%;
-  background-color: #f8efd4f0;
   display: flow-root;
   font-size: var(--vnFontSizeReally);
   line-height: var(--vnLineHeight);
