@@ -17,7 +17,7 @@ if (!Number.isNaN(lVal) && lVal !== 0) {
   url.searchParams.delete("l");
   history.replaceState(null, "", url);
 }
-onPosUpdate(true);
+onPosUpdate();
 
 function buildPulp(i) {
   if (i < 0 || i >= htmlArr.length) {
@@ -80,20 +80,17 @@ document.addEventListener("wheel", function (e) {
     }
   }
 });
-function setPos(i, firstUpdate) {
+function setPos(i) {
   pos = i;
   app.innerHTML = buildPulp(i - 1) + buildPulp(i) + buildPulp(i + 1);
-  onPosUpdate(firstUpdate);
+  onPosUpdate();
 }
 window.addEventListener("load", e => {
   setPos(pos, true);
 });
-function onPosUpdate(firstUpdate) {
+function onPosUpdate() {
   localStorage.setItem(getLocalStorageKey("l"), pos);
   window["handlePosUpdate"] && window["handlePosUpdate"]();
-  if (!firstUpdate) {
-    app.scrollIntoView({behavior: "smooth"});
-  }
 }
 function getLocalStorageKey(k) {
   const bookId = window['bookId'];
