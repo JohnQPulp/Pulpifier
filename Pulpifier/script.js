@@ -92,7 +92,7 @@ function onPosUpdate(firstUpdate) {
   localStorage.setItem(getLocalStorageKey("l"), pos);
   window["handlePosUpdate"] && window["handlePosUpdate"]();
   if (!firstUpdate) {
-    app.scrollIntoView();
+    app.scrollIntoView({behavior: "smooth"});
   }
 }
 function getLocalStorageKey(k) {
