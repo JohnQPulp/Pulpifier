@@ -41,11 +41,11 @@ function appendPulp(i) {
 function prependPulp(i) {
   app.innerHTML = buildPulp(i) + app.innerHTML;
 }
-function nextPulp() {
+function nextPulp(isAutoNext) {
   if (pos + 1 < htmlArr.length) {
     app.removeChild(app.firstChild);
     appendPulp(++pos + 1);
-    onPosUpdate();
+    onPosUpdate(isAutoNext);
   }
 }
 function prevPulp() {
@@ -88,9 +88,9 @@ function setPos(i) {
 window.addEventListener("load", e => {
   setPos(pos, true);
 });
-function onPosUpdate() {
+function onPosUpdate(isAutoNext) {
   localStorage.setItem(getLocalStorageKey("l"), pos);
-  window["handlePosUpdate"] && window["handlePosUpdate"]();
+  window["handlePosUpdate"] && window["handlePosUpdate"](isAutoNext);
 }
 function getLocalStorageKey(k) {
   const bookId = window['bookId'];
