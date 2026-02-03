@@ -56,10 +56,12 @@ function prevPulp() {
   }
 }
 document.addEventListener("keydown", function (e) {
-  if (e.key === "ArrowRight") {
-    nextPulp();
-  } else if (e.key === "ArrowLeft") {
-    prevPulp();
+  if (e.currentTarget.activeElement.tagName !== "INPUT") {
+    if (e.key === "ArrowRight") {
+      nextPulp();
+    } else if (e.key === "ArrowLeft") {
+      prevPulp();
+    }
   }
 });
 document.addEventListener("pointerdown", function (e) {
