@@ -2,9 +2,19 @@ html, body {
   margin: 0px;
   padding: 0px;
 }
+html {
+  --ed: block;
+  --ned: none;
+}
 body {
   --vwUnit: 1vw;
   --vhUnit: 1vh;
+}
+.ed {
+  display: var(--ed);
+}
+.ned {
+  display: var(--ned); /* okily dokily */
 }
 #app {
   position: relative;
@@ -17,7 +27,6 @@ body {
   --vnDialogueFontWeight: 600;
   --vnLineHeight: 1.4;
   --vnFontSizeReally: 1.05em;
-  --editorDisplay: block;
 }
 #pulp {
   width: calc(100 * var(--vwUnit));
@@ -111,7 +120,7 @@ b.speaker + div > span.d {
 p.e {
   margin: 0.25em;
   font-size: 0.8em;
-  display: var(--editorDisplay);
+  display: var(--ed);
 }
 .characters {
   width: 100%;

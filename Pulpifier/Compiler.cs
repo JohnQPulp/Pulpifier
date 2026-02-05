@@ -38,7 +38,7 @@ public static class Compiler {
 		string[] rawLines = rawText.Split('\n');
 		string[] pulpLines = pulpText.Split('\n');
 
-		Dictionary<string, string> characterNames = new();
+		Dictionary<string, string> characterNames = new() { { "author", "" } };
 		Dictionary<string, string> characterExpressions = new();
 		Dictionary<string, int> characterExpressionCounters = new();
 		Dictionary<string, string> characterAges = new();
@@ -130,6 +130,7 @@ public static class Compiler {
 									string[] characters = value.Split(',');
 									if (characters.Length > 5) throw new Exception("Unsupported number of characters");
 									if (characters.Any(c => c != "" && !characterNames.ContainsKey(c.TrimStart('!')))) throw new Exception("Missing character name.");
+									if (characters.Any(c => c.TrimStart('!') == "author")) throw new Exception("Author can't be non-thinker.");
 									activeCharacters = characters;
 								}
 								break;
@@ -212,6 +213,7 @@ public static class Compiler {
 									int zy = int.Parse(zvals[2]);
 									zcss += $"; background-position: {zx}% {zy}% {(zn.Contains("-a") ? "!important" : "")}";
 								}
+
 								styleBuilder.AppendLine($".speaker-back[style*='background-image: url(images/c-{zn}.'], .speaker-back[style*='background-image: url(images/c-{zn}-'] {{ {zcss}; }}");
 								break;
 							case 'f':

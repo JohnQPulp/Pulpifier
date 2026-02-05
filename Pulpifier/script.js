@@ -23,13 +23,23 @@ function buildPulp(i) {
   if (i < 0 || i >= htmlArr.length) {
     return `<div id='pulp'></div>`;
   }
-  var background = backgrounds[backgroundIds[i]].split(';');
+  let background = backgrounds[backgroundIds[i]].split(';');
+  let speakerBack = "";
+  if (speakers[i] === "c-author.webp") {
+    speakerBack = `<div class='speaker-back ed' style='background-image: url(images/c-author-abased.webp)'></div>`;
+    if (i === 0) {
+      speakerBack += `<div class='speaker-back ned' style='background-image: url(images/c-author.webp)'></div>`;
+    }
+  } else if (speakers[i] !== "") {
+    speakerBack = `<div class='speaker-back' style='background-image: url(images/${speakers[i]})'></div>`;
+  }
+
   return (
 `<div id='pulp'>
   <div id='back' style='background-image: url("images/b-${background[0]}.webp");${background.length === 1 ? "" : ("filter:" + background[1])}'></div>
   ${imageHtmls[i]}
   <div id='foot'>
-    <div>${speakers[i] === "" ? "" : ("<div class='speaker-back' style='background-image: url(images/" + speakers[i] + ")'></div>")}</div>
+    <div>${speakerBack}</div>
     <div id='text'>${htmlArr[i]}</div>
     <div></div>
   </div>
