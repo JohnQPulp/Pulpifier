@@ -14,6 +14,7 @@ public class Metadata {
 	public required string Repo { get; init; }
 	public required Dictionary<string, string> Links { get; init; }
 	public required string Blurb { get; init; }
+	public string? Blurb2 { get; init; }
 
 	public static Metadata Parse(string json) {
 		Metadata metadata = JsonSerializer.Deserialize<Metadata>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
