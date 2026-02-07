@@ -5,6 +5,8 @@ html, body {
 html {
   --ed: block;
   --ned: none;
+  --edi: inline;
+  --nedi: none;
 }
 body {
   --vwUnit: 1vw;
@@ -15,6 +17,12 @@ body {
 }
 .ned {
   display: var(--ned); /* okily dokily */
+}
+.edi {
+  display: var(--edi);
+}
+.nedi {
+  display: var(--nedi); /* okily dokily */
 }
 #app {
   position: relative;
