@@ -90,6 +90,8 @@ public static class Compiler {
 					string pulpLine = pulpLines[p].Replace("\uFEFF", string.Empty).Replace("\u200A…", "…").Replace("\u00a0", " ").Replace("“\u200a’", "“’").Replace("’\u200a”", "’”");
 
 					string cleanPulpLine = Regex.Replace(pulpLine, "<e>.*?</e>", "");
+					cleanPulpLine = Regex.Replace(cleanPulpLine, "<div class='[a-z ]+'>(.*?)</div>", "$1");
+					cleanPulpLine = Regex.Replace(cleanPulpLine, "<span class='[a-z ]+'>(.*?)</span>", "$1");
 					if (cleanPulpLine == "") {
 						if (pulpLine == "") throw new Exception("Should only have empty lines if there are editor's notes.");
 					} else {
