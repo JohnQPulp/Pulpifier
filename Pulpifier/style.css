@@ -180,3 +180,10 @@ img.p-3\/4 { left: 75%; }
 .big {
   font-size: 1.2em;
 }
+.margin {
+  padding: 0 2.5em;
+  box-sizing: border-box;
+}
+.fright {
+  float: right;
+}

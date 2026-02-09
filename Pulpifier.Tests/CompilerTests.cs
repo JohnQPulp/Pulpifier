@@ -152,6 +152,9 @@ public class CompilerTests {
 
 	[TestMethod]
 	[DataRow("Foo\n", "Foo\n\n", "Foo")]
+	[DataRow("Foo\n", "Foo\n\n", "<div>Foo</div>")]
+	[DataRow("Foo. Bar.\n", "Foo.\nd=margin\n\nBar.\nd=\n", "<div class='margin'>Foo.</div>")]
+	[DataRow("Foo. Bar.\n", "Foo.\nd=margin\n\nBar.\nd=\n", "<div>Bar.</div>")]
 	[DataRow("*Foo*\n", "*Foo*\n\n", "<i>Foo</i>")]
 	[DataRow("**Foo**\n", "**Foo**\n\n", "<span class='upper'>Foo</span>")]
 	[DataRow("***Foo***\n", "***Foo***\n\n", "<i class='upper'>Foo</i>")]

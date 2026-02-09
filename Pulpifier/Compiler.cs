@@ -59,6 +59,7 @@ public static class Compiler {
 		string activeBackground = "";
 		string activeObject = "";
 		Tuple<int, int> viewScale = null;
+		bool marginDiv = false;
 
 		int r = 0, p = 0;
 		try {
@@ -237,6 +238,13 @@ public static class Compiler {
 								if (p != 0) throw new Exception("Header settings can only be declared on the first pulp line.");
 								if (value == "no-speaker-counter") _sSpeakerCounterEnabled = false;
 								break;
+							case 'd':
+								if (value == "margin") {
+									marginDiv = true;
+								} else if (value == "" || value == "none") {
+									marginDiv = false;
+								} else throw new Exception("Bad decoration value.");
+								break;
 							default: throw new Exception($"Unrecognized key: '{key}'.");
 						}
 					}
@@ -367,7 +375,7 @@ public static class Compiler {
 						//Console.WriteLine(p);
 						//}
 					}
-					sb.Append("<div>");
+					sb.Append(marginDiv ? "<div class='margin'>" : "<div>");
 					sb.Append(htmlLine);
 					sb.Append("</div>");
 					sb.Append("`, ");
