@@ -60,6 +60,8 @@ public static class Compiler {
 		string activeObject = "";
 		Tuple<int, int> viewScale = null;
 		bool marginDiv = false;
+		bool joined = false;
+		string joinedLine = "";
 
 		int r = 0, p = 0;
 		try {
@@ -243,8 +245,11 @@ public static class Compiler {
 							case 'd':
 								if (value == "margin") {
 									marginDiv = true;
+								} else if (value == "joined") {
+									joined = true;
 								} else if (value == "" || value == "none") {
 									marginDiv = false;
+									joined = false;
 								} else throw new Exception("Bad decoration value.");
 								break;
 							default: throw new Exception($"Unrecognized key: '{key}'.");
@@ -321,7 +326,7 @@ public static class Compiler {
 					imageHtmls.Add(images);
 
 					List<string> htmlParts = new List<string>();
-					string[] parts = Regex.Split(pulpLine, @"(<e>(.*?)</e>)", RegexOptions.Singleline);
+					string[] parts = Regex.Split(joinedLine + pulpLine, @"(<e>(.*?)</e>)", RegexOptions.Singleline);
 					bool editorLine = false;
 					for (int i = 0; i < parts.Length; i++) {
 						string part = parts[i];
@@ -381,6 +386,12 @@ public static class Compiler {
 					sb.Append(htmlLine);
 					sb.Append("</div>");
 					sb.Append("`, ");
+
+					if (joined) {
+						joinedLine += pulpLine + ' ';
+					} else {
+						joinedLine = "";
+					}
 
 					p += 3;
 				}
