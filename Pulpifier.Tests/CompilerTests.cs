@@ -47,6 +47,7 @@ public class CompilerTests {
 	[DataRow("Foo\n", "Foo\nn:foo=Foo;n:bar=Bar;c=foo,bar\n")]
 	[DataRow("Foo\n", "Foo\nn:foo=Foo;n:bar=Bar;c=foo,,bar\n")]
 	[DataRow("Foo\n", "Foo\nn:foo=Foo;n:bar=Bar;c=,foo,,bar,\n")]
+	[DataRow("Foo\n\nBar\n", "Foo\n\n\nBar\n\n")]
 	[DataRow("Foo\n\nBar\n", "Foo\nn:foo=Foo\n\nBar\nn:foo=FOO\n")]
 	[DataRow("Foo\n\nBar\n", "Foo\nn:foo=Foo;c=foo\n\nBar\nc=\n")]
 	[DataRow("Foo\n\nBar\n", "Foo\nn:foo=Foo\n\nBar\nc=foo\n")]
@@ -158,6 +159,7 @@ public class CompilerTests {
 	[DataRow("Foo\n", "<div>Foof</div>\n\n")]
 	[DataRow("Foo\n", "Foo\nb=foo;f:b:bar=blur(5px)\n")]
 	[DataRow("Foo\n", "Foo\nb=foo;f:c:foo=blur(5px)\n")]
+	[DataRow("Foo\n\nBar\n", "Foo\nm=joined\n\nBar\n\n")]
 	public void Compiler_BuildHtml_BadText(string rawText, string pulpText) {
 		Assert.IsFalse(Compiler.TryBuildHtml(rawText, pulpText, out string _));
 	}

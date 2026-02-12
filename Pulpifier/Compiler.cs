@@ -70,6 +70,7 @@ public static class Compiler {
 				string rawLine = rawLines[r].Replace("\uFEFF", string.Empty).Replace("\u200A…", "…").Replace("\u00a0", " ").Replace("“\u200a’", "“’").Replace("’\u200a”", "’”") + ' ';
 				if (rawLine == " ") throw new Exception("Empty raw line.");
 				if (rawLines[r + 1] != string.Empty) throw new Exception("Missing raw line break.");
+				if (joinedLine != "") throw new Exception("Joined line across paragraph break.");
 
 				string constructedLine = string.Empty;
 				while (rawLine != constructedLine || (r + 2 == rawLines.Length && p < pulpLines.Length)) {
