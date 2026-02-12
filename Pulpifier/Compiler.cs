@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -7,6 +8,12 @@ namespace Pulp.Pulpifier;
 public class ImageMetadata(int pulpLine) {
 	public int PulpLine { get; } = pulpLine;
 	public int? ForegroundPulpLine { get; set; }
+}
+
+internal enum Modifier {
+	Margin = 1,
+	Joined = 2,
+	NoSpace = 3
 }
 
 public static class Compiler {
@@ -59,8 +66,7 @@ public static class Compiler {
 		string activeBackground = "";
 		string activeObject = "";
 		Tuple<int, int> viewScale = null;
-		bool marginDiv = false;
-		bool joined = false;
+		HashSet<Modifier> modifiers = new();
 		string joinedLine = "";
 
 		int r = 0, p = 0;
@@ -86,7 +92,7 @@ public static class Compiler {
 						throw new Exception($"Mismatched pulp line.\nBook: {rawLine}\n\nPulp: {constructedLine}\n\nDiff Char: {diff}\n");
 					}
 
-					if (constructedLine != string.Empty && !joined && !(Regex.IsMatch(constructedLine, "[\\.!?:;—…]['’\\\"”\\*\\)\\]]* $") || (constructedLine.EndsWith(", ", StringComparison.Ordinal) && IsOpenQuote(rawLine[constructedLine.Length])))) {
+					if (constructedLine != string.Empty && !modifiers.Contains(Modifier.Joined) && !(Regex.IsMatch(constructedLine, "[\\.!?:;—…]['’\\\"”\\*\\)\\]]* $") || (constructedLine.EndsWith(", ", StringComparison.Ordinal) && IsOpenQuote(rawLine[constructedLine.Length])))) {
 						throw new Exception("Line break in the middle of a sentence.");
 					}
 
@@ -162,6 +168,7 @@ public static class Compiler {
 								activeObject = "";
 								activeCharacters = [];
 								viewScale = null;
+								modifiers.Clear();
 								break;
 							case 'e':
 								if (!Regex.IsMatch(value, "^[a-z]*$")) throw new Exception("Unexpected expression name.");
@@ -234,12 +241,13 @@ public static class Compiler {
 								break;
 							case 'm':
 								if (value == "margin") {
-									marginDiv = true;
+									modifiers.Add(Modifier.Margin);
 								} else if (value == "joined") {
-									joined = true;
+									modifiers.Add(Modifier.Joined);
+								} else if (value == "nospace") {
+									modifiers.Add(Modifier.NoSpace);
 								} else if (value == "" || value == "none") {
-									marginDiv = false;
-									joined = false;
+									modifiers.Clear();
 								} else throw new Exception("Bad modifier value.");
 								break;
 							default: throw new Exception($"Unrecognized key: '{key}'.");
@@ -368,15 +376,26 @@ public static class Compiler {
 						//Console.WriteLine(p);
 						//}
 					}
-					sb.Append(marginDiv ? "<div class='margin'>" : "<div>");
+					sb.Append(modifiers.Contains(Modifier.Margin) ? "<div class='margin'>" : "<div>");
 					sb.Append(htmlLine);
 					sb.Append("</div>");
 					sb.Append("`, ");
 
-					if (joined) {
+					if (modifiers.Contains(Modifier.Joined)) {
 						joinedLine += pulpLine + ' ';
 					} else {
 						joinedLine = "";
+					}
+
+					if (modifiers.Contains(Modifier.NoSpace)) {
+						if (joinedLine != "") {
+							Debug.Assert(joinedLine.EndsWith(' '));
+							joinedLine = joinedLine[..^1];
+						}
+						if (constructedLine != "") {
+							Debug.Assert(constructedLine.EndsWith(' '));
+							constructedLine = constructedLine[..^1];
+						}
 					}
 
 					p += 3;
