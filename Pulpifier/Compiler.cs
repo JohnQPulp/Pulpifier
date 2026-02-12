@@ -231,7 +231,7 @@ public static class Compiler {
 								if (p != 0) throw new Exception("Header settings can only be declared on the first pulp line.");
 								if (value == "no-speaker-counter") _sSpeakerCounterEnabled = false;
 								break;
-							case 'd':
+							case 'm':
 								if (value == "margin") {
 									marginDiv = true;
 								} else if (value == "joined") {
@@ -239,7 +239,7 @@ public static class Compiler {
 								} else if (value == "" || value == "none") {
 									marginDiv = false;
 									joined = false;
-								} else throw new Exception("Bad decoration value.");
+								} else throw new Exception("Bad modifier value.");
 								break;
 							default: throw new Exception($"Unrecognized key: '{key}'.");
 						}
