@@ -70,6 +70,7 @@ public class CompilerTests {
 	[DataRow("Foo\n", "Foo\nn:foo=Foo;z:foo=95\n")]
 	[DataRow("Foo\n", "Foo\nn:foo=Foo;z:foo=95,46,5\n")]
 	[DataRow("Foo\n", "<div class='upper'>Foo</div>\n\n")]
+	[DataRow("Foo\n", "Foo\nb=foo;f:b:foo=blur(5px)\n")]
 	public void Compiler_BuildHtml_GoodText(string rawText, string pulpText) {
 		Compiler.BuildHtml(rawText, pulpText);
 		Assert.IsTrue(Compiler.TryBuildHtml(rawText, pulpText, out string _));
@@ -155,6 +156,8 @@ public class CompilerTests {
 	[DataRow("Foo\n", "<div id='upper'>Foo</div>\n\n")]
 	[DataRow("Foo\n", "<div class='up-per'>Foo</div>\n\n")]
 	[DataRow("Foo\n", "<div>Foof</div>\n\n")]
+	[DataRow("Foo\n", "Foo\nb=foo;f:b:bar=blur(5px)\n")]
+	[DataRow("Foo\n", "Foo\nb=foo;f:c:foo=blur(5px)\n")]
 	public void Compiler_BuildHtml_BadText(string rawText, string pulpText) {
 		Assert.IsFalse(Compiler.TryBuildHtml(rawText, pulpText, out string _));
 	}
@@ -251,11 +254,6 @@ public class CompilerTests {
 	[DataRow("Foo\n", "Foo\no=myobj\n", "class='c'")]
 	[DataRow("Foo\n", "Foo\nb=p\n", "'p'")]
 	[DataRow("Foo\n", "Foo\nr=p\n", "'p'")]
-	[DataRow("Foo\n", "Foo\nb=p;m:p=foo,bar\n", "'p-mod-bar-foo'")]
-	[DataRow("Foo. Bar.\n", "Foo.\nb=p;m:p=foo\n\nBar.\nm:p=bar\n", "'p-mod-foo'")]
-	[DataRow("Foo. Bar.\n", "Foo.\nb=p;m:p=foo\n\nBar.\nm:p=bar\n", "'p-mod-bar'")]
-	[DataRow("Foo. Bar.\n", "Foo.\nb=p;m:p=foo\n\nBar.\nr=p\n", "'p-mod-foo'")]
-	[DataRow("Foo. Bar.\n", "Foo.\nb=p;m:p=foo\n\nBar.\nr=p\n", "'p'")]
 	[DataRow("“Foo” said Foo. “Bar.”\n", "“Foo” said Foo. “Bar.”\nn:f=Foo;s=f\n", "<span class='d'>“Foo”</span> said Foo. <span class='d'>“Bar.”</span>")]
 	public void Compiler_BuildHtml_ContainsHtml(string rawText, string pulpText, string htmlSnippet) {
 		string html = Compiler.BuildHtml(rawText, pulpText);

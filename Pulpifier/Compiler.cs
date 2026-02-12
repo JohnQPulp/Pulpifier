@@ -52,7 +52,7 @@ public static class Compiler {
 		imageFiles = new();
 		List<string> headers = new();
 		string[] activeCharacters = [];
-		Dictionary<string, string[]> backgroundModifiers = new();
+		HashSet<string> backgroundNames = new();
 		Dictionary<string, string> backgroundFilters = new();
 		string activeSpeaker = "";
 		string activeThinker = "";
@@ -146,12 +146,11 @@ public static class Compiler {
 							case 'b':
 								ThrowIfBadKey(key);
 								activeBackground = value;
-								backgroundModifiers.TryAdd(value, []);
+								backgroundNames.Add(activeBackground);
 								break;
 							case 'r':
 								ThrowIfBadKey(key);
 								activeBackground = value;
-								backgroundModifiers.TryAdd(value, []);
 								characterExtras.Clear();
 								characterExpressions.Clear();
 								characterExpressionCounters.Clear();
@@ -161,17 +160,7 @@ public static class Compiler {
 								activeThinker = "";
 								activeObject = "";
 								activeCharacters = [];
-								foreach (string bkey in backgroundModifiers.Keys) {
-									backgroundModifiers[bkey] = [];
-								}
 								viewScale = null;
-								break;
-							case 'm':
-								string bname = key.Split(':')[1];
-								string[] bvalues = value == "" ? [] : value.Split(',');
-								bvalues.Sort();
-								if (!backgroundModifiers.ContainsKey(bname)) throw new Exception("Can't set modifiers on non-existent background.");
-								backgroundModifiers[bname] = bvalues;
 								break;
 							case 'e':
 								if (!Regex.IsMatch(value, "^[a-z]*$")) throw new Exception("Unexpected expression name.");
@@ -225,7 +214,7 @@ public static class Compiler {
 								if (key.StartsWith("f:c:")) {
 									SetCharacterAttribute(key.Substring(2), value, characterNames, characterFilters);
 								} else if (key.StartsWith("f:b:")) {
-									SetCharacterAttribute(key.Substring(2), value, backgroundModifiers, backgroundFilters);
+									SetAttribute(key.Substring(2), value, backgroundNames, backgroundFilters);
 								} else {
 									throw new Exception($"Invalid filter key \"{key}\".");
 								}
@@ -257,10 +246,6 @@ public static class Compiler {
 					}
 
 					string backgroundFullName = activeBackground;
-					if (backgroundModifiers.TryGetValue(activeBackground, out string[] bmods) && bmods.Length > 0) {
-						backgroundFullName += "-mod-";
-						backgroundFullName += string.Join('-', bmods);
-					}
 					imageFiles.TryAdd("b-" + backgroundFullName, new ImageMetadata(p));
 					if (activeCharacters.Length > 0) imageFiles["b-" + backgroundFullName].ForegroundPulpLine = p;
 					if (backgroundFilters.TryGetValue(activeBackground, out string bfilter) && bfilter != "") {
@@ -458,9 +443,13 @@ public static class Compiler {
 	}
 
 	private static void SetCharacterAttribute<T, T2>(string key, T value, Dictionary<string, T2> characterNames, Dictionary<string, T> characterAttributes) {
+		SetAttribute(key, value, characterNames.Keys, characterAttributes);
+	}
+
+	private static void SetAttribute<T>(string key, T value, IEnumerable<string> names, Dictionary<string, T> attributes) {
 		string name = key.Split(':')[1];
-		if (!characterNames.ContainsKey(name)) throw new Exception($"Missing character name \"{name}\" for expression.");
-		characterAttributes[name] = value;
+		if (!names.Contains(name)) throw new Exception($"Missing name \"{name}\" for expression.");
+		attributes[name] = value;
 	}
 
 	private static bool IsOpenQuote(char c) {
