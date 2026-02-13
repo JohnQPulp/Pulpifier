@@ -73,7 +73,7 @@ public static class Compiler {
 		try {
 			while (r < rawLines.Length) {
 				ThrowIfContainsInvalidChars(rawLines[r]);
-				string rawLine = rawLines[r].Replace("\uFEFF", string.Empty).Replace("\u200A…", "…").Replace("\u00a0", " ").Replace("“\u200a’", "“’").Replace("’\u200a”", "’”") + ' ';
+				string rawLine = rawLines[r].Replace("\uFEFF", string.Empty).Replace("\u200A…", "…").Replace("\u00a0", " ").Replace("“\u200a’", "“’").Replace("“\u200a‘", "“‘").Replace("’\u200a”", "’”") + ' ';
 				if (rawLine == " ") throw new Exception("Empty raw line.");
 				if (rawLines[r + 1] != string.Empty) throw new Exception("Missing raw line break.");
 				if (joinedLine != "") throw new Exception("Joined line across paragraph break.");
@@ -96,7 +96,7 @@ public static class Compiler {
 						throw new Exception("Line break in the middle of a sentence.");
 					}
 
-					string pulpLine = pulpLines[p].Replace("\uFEFF", string.Empty).Replace("\u200A…", "…").Replace("\u00a0", " ").Replace("“\u200a’", "“’").Replace("’\u200a”", "’”");
+					string pulpLine = pulpLines[p].Replace("\uFEFF", string.Empty).Replace("\u200A…", "…").Replace("\u00a0", " ").Replace("“\u200a’", "“’").Replace("“\u200a‘", "“‘").Replace("’\u200a”", "’”");
 
 					string cleanPulpLine = Regex.Replace(pulpLine, "<e>.*?</e>", "");
 					cleanPulpLine = Regex.Replace(cleanPulpLine, "<div class='[a-z ]+'>(.*?)</div>", "$1");
