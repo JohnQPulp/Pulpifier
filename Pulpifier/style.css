@@ -187,3 +187,9 @@ img.p-3\/4 { left: 75%; }
 .fright {
   float: right;
 }
+.italics {
+  font-style: italic;
+}
+.mono {
+  font-family: monospace;
+}
