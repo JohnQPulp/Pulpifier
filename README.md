@@ -1,12 +1,12 @@
-### The Pulpifier
+## The Pulpifier
 
 The repository contains the C# library and CLI tool for "compiling" metadata-enhanced public domain text files into visual novel html content.
 
-#### Library
+### Library
 
 The ASP.NET website https://github.com/JohnQPulp/PublicDomainPulp includes the Pulpifier as a submodule, calling it during startup to build local visual novels that can then be accessed via localhost. You can also just access the pre-built visual novels online at https://publicdomainpulp.com/. See the website and source repo for more details and for example library-type usage.
 
-#### CLI
+### CLI
 
 The Pulpifier also works as a standalone CLI tool. To start, ensure you have .NET 10 installed: https://dotnet.microsoft.com/download
 
