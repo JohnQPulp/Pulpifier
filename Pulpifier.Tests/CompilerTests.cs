@@ -5,6 +5,7 @@ public class CompilerTests {
 	[TestMethod]
 	[DataRow("Foo\n", "Foo\n\n")]
 	[DataRow("Foo Bar\n", "Foo Bar\n\n")]
+	[DataRow("Foo Bar\n", "Foo&nbsp;Bar\n\n")]
 	[DataRow("Foo. Bar.\n", "Foo.\n\n\nBar.\n\n")]
 	[DataRow("Foo. Bar.\n", "Foo. \nm=nospace\n\nBar.\nm=\n")]
 	[DataRow("Foo. Bar.\n", "Foo.\nm=nospace;m=joined\n\n Bar.\nm=\n")]

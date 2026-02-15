@@ -101,6 +101,7 @@ public static class Compiler {
 					string cleanPulpLine = Regex.Replace(pulpLine, "<e>.*?</e>", "");
 					cleanPulpLine = Regex.Replace(cleanPulpLine, "<div class='[a-z ]+'>(.*?)</div>", "$1");
 					cleanPulpLine = Regex.Replace(cleanPulpLine, "<span class='[a-z ]+'>(.*?)</span>", "$1");
+					cleanPulpLine = cleanPulpLine.Replace("&nbsp;", " ");
 					if (cleanPulpLine == "") {
 						if (pulpLine == "") throw new Exception("Should only have empty lines if there are editor's notes.");
 					} else {
