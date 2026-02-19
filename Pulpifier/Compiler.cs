@@ -383,6 +383,7 @@ public static class Compiler {
 					sb.Append("`, ");
 
 					if (modifiers.Contains(Modifier.Joined)) {
+						Debug.Assert(activeSpeaker == "");
 						joinedLine += pulpLine + ' ';
 					} else {
 						joinedLine = "";
