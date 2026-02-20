@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -383,7 +382,7 @@ public static class Compiler {
 					sb.Append("`, ");
 
 					if (modifiers.Contains(Modifier.Joined)) {
-						Debug.Assert(activeSpeaker == "");
+						if (activeSpeaker != "") throw new Exception("Don't join speaker lines.");
 						joinedLine += pulpLine + ' ';
 					} else {
 						joinedLine = "";
@@ -391,11 +390,11 @@ public static class Compiler {
 
 					if (modifiers.Contains(Modifier.NoSpace)) {
 						if (joinedLine != "") {
-							Debug.Assert(joinedLine.EndsWith(' '));
+							if (!joinedLine.EndsWith(' ')) throw new Exception("Unexpected non-space joined line ending.");
 							joinedLine = joinedLine[..^1];
 						}
 						if (constructedLine != "") {
-							Debug.Assert(constructedLine.EndsWith(' '));
+							if (!constructedLine.EndsWith(' ')) throw new Exception("Unexpected non-space constructed line ending.");
 							constructedLine = constructedLine[..^1];
 						}
 					}
