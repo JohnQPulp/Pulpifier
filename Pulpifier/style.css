@@ -193,3 +193,6 @@ img.p-3\/4 { left: 75%; }
 .mono {
   font-family: monospace;
 }
+.dialogue {
+  font-weight: var(--vnDialogueFontWeight);
+}
