@@ -12,7 +12,8 @@ public class ImageMetadata(int pulpLine) {
 internal enum Modifier {
 	Margin = 1,
 	Joined = 2,
-	NoSpace = 3
+	NoSpace = 3,
+	AllowBreak = 4,
 }
 
 public static class Compiler {
@@ -75,7 +76,7 @@ public static class Compiler {
 				string rawLine = rawLines[r].Replace("\uFEFF", string.Empty).Replace("\u200A…", "…").Replace("\u00a0", " ").Replace("“\u200a’", "“’").Replace("“\u200a‘", "“‘").Replace("’\u200a”", "’”") + ' ';
 				if (rawLine == " ") throw new Exception("Empty raw line.");
 				if (rawLines[r + 1] != string.Empty) throw new Exception("Missing raw line break.");
-				if (joinedLine != "") throw new Exception("Joined line across paragraph break.");
+				if (joinedLine != "" || modifiers.Contains(Modifier.AllowBreak) || modifiers.Contains(Modifier.Joined)) throw new Exception("Bad modifier across paragraph break.");
 
 				string constructedLine = string.Empty;
 				while (rawLine != constructedLine || (r + 2 == rawLines.Length && p < pulpLines.Length)) {
@@ -91,7 +92,7 @@ public static class Compiler {
 						throw new Exception($"Mismatched pulp line.\nBook: {rawLine}\n\nPulp: {constructedLine}\n\nDiff Char: {diff}\n");
 					}
 
-					if (constructedLine != string.Empty && !modifiers.Contains(Modifier.Joined) && !(Regex.IsMatch(constructedLine, "[\\.!?:;—…]['’\\\"”\\*\\)\\]]* $") || (constructedLine.EndsWith(", ", StringComparison.Ordinal) && IsOpenQuote(rawLine[constructedLine.Length])))) {
+					if (constructedLine != string.Empty && !modifiers.Contains(Modifier.Joined) && !modifiers.Contains(Modifier.AllowBreak) && !(Regex.IsMatch(constructedLine, "[\\.!?:;—…]['’\\\"”\\*\\)\\]]* $") || (constructedLine.EndsWith(", ", StringComparison.Ordinal) && IsOpenQuote(rawLine[constructedLine.Length])))) {
 						throw new Exception("Line break in the middle of a sentence.");
 					}
 
@@ -246,6 +247,8 @@ public static class Compiler {
 									modifiers.Add(Modifier.Joined);
 								} else if (value == "nospace") {
 									modifiers.Add(Modifier.NoSpace);
+								} else if (value == "allowbreak") {
+									modifiers.Add(Modifier.AllowBreak);
 								} else if (value == "" || value == "none") {
 									modifiers.Clear();
 								} else throw new Exception("Bad modifier value.");
