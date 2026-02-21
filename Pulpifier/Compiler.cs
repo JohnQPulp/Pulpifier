@@ -14,6 +14,7 @@ internal enum Modifier {
 	Joined = 2,
 	NoSpace = 3,
 	AllowBreak = 4,
+	Dialogue = 5,
 }
 
 public static class Compiler {
@@ -249,6 +250,8 @@ public static class Compiler {
 									modifiers.Add(Modifier.NoSpace);
 								} else if (value == "allowbreak") {
 									modifiers.Add(Modifier.AllowBreak);
+								} else if (value == "dialogue") {
+									modifiers.Add(Modifier.Dialogue);
 								} else if (value == "" || value == "none") {
 									modifiers.Clear();
 								} else throw new Exception("Bad modifier value.");
@@ -380,6 +383,7 @@ public static class Compiler {
 						//}
 					}
 					sb.Append(modifiers.Contains(Modifier.Margin) ? "<div class='margin'>" : "<div>");
+					if (modifiers.Contains(Modifier.Dialogue)) sb.Append("<span class='d-signal'></span>");
 					sb.Append(htmlLine);
 					sb.Append("</div>");
 					sb.Append("`, ");

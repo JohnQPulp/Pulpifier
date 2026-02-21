@@ -122,7 +122,7 @@ b.speaker {
   background: linear-gradient(to right, transparent 0, #f8efd4f0 0.5em, #f8efd4f0 calc(100% - 0.5em), transparent 100%);
   font-size: var(--vnFontSizeReally);
 }
-b.speaker + div > span.d {
+b.speaker + div > span.d, span.d-signal ~ span.d {
   font-weight: var(--vnDialogueFontWeight);
 }
 p.e {
@@ -192,7 +192,4 @@ img.p-3\/4 { left: 75%; }
 }
 .mono {
   font-family: monospace;
-}
-.dialogue {
-  font-weight: var(--vnDialogueFontWeight);
 }
