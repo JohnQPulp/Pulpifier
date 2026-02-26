@@ -46,6 +46,7 @@ public static class Compiler {
 		string[] rawLines = rawText.Split('\n');
 		string[] pulpLines = pulpText.Split('\n');
 
+		bool speakerCounterEnabled = true;
 		Dictionary<string, string> characterNames = new() { { "author", "" } };
 		Dictionary<string, string> characterExpressions = new();
 		Dictionary<string, int> characterExpressionCounters = new();
@@ -239,7 +240,7 @@ public static class Compiler {
 								break;
 							case 'h':
 								if (p != 0) throw new Exception("Header settings can only be declared on the first pulp line.");
-								if (value == "no-speaker-counter") _sSpeakerCounterEnabled = false;
+								if (value == "no-speaker-counter") speakerCounterEnabled = false;
 								break;
 							case 'm':
 								if (value == "margin") {
@@ -304,7 +305,7 @@ public static class Compiler {
 								}
 
 								if (name.Contains('!')) throw new Exception("Name should not contain exclamations.");
-								string file = GetCharacterFile(name, characterAges, characterExpressions, characterExpressionCounters, characterExtras, activeSpeaker, activeThinker);
+								string file = GetCharacterFile(name, characterAges, characterExpressions, characterExpressionCounters, characterExtras, activeSpeaker, activeThinker, speakerCounterEnabled);
 								imageFiles.TryAdd(file, new ImageMetadata(p));
 								images += $"<img src='{directory}{file}.webp' class='{(flip ? "f " : "")}p-{i + 1}/{denominator}' ";
 								if (characterFilters.TryGetValue(name, out string filter) && name != "") {
@@ -368,7 +369,7 @@ public static class Compiler {
 							sb.Append($"<b class='speaker'>{characterNames[active]}{(activeThinker != "" ? " (Thinking)" : "")}</b>");
 						}
 
-						string file = GetCharacterFile(active, characterAges, characterExpressions, characterExpressionCounters, characterExtras, activeSpeaker, activeThinker);
+						string file = GetCharacterFile(active, characterAges, characterExpressions, characterExpressionCounters, characterExtras, activeSpeaker, activeThinker, speakerCounterEnabled);
 						imageFiles.TryAdd(file, new ImageMetadata(p));
 
 						if (activeCharacters.All(c => c.TrimStart('!') != active)) {
@@ -445,9 +446,8 @@ public static class Compiler {
 	}
 
 	private static readonly string[] ExpressionVariationArr = ["", "2", "", "2", "3", "", "3", "2"];
-	private static bool _sSpeakerCounterEnabled = true;
 
-	private static string GetCharacterFile(string name,  Dictionary<string, string> ages, Dictionary<string, string> expressions, Dictionary<string, int> characterExpressionCounters, Dictionary<string, string[]> extras, string speaker, string thinker) {
+	private static string GetCharacterFile(string name,  Dictionary<string, string> ages, Dictionary<string, string> expressions, Dictionary<string, int> characterExpressionCounters, Dictionary<string, string[]> extras, string speaker, string thinker, bool speakerCounterEnabled) {
 		string file = "c-" + name;
 		if (ages.TryGetValue(name, out string age) && age != string.Empty) file += "-a" + age;
 		if (extras.TryGetValue(name, out string[] xarr)) {
@@ -461,7 +461,7 @@ public static class Compiler {
 		if (name == speaker) {
 			file += "-s";
 			int counterIndex = (characterExpressionCounters[name] - 1) % ExpressionVariationArr.Length;
-			if (_sSpeakerCounterEnabled) file += ExpressionVariationArr[counterIndex];
+			if (speakerCounterEnabled) file += ExpressionVariationArr[counterIndex];
 		}
 		return file;
 	}
