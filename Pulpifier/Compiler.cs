@@ -379,9 +379,6 @@ public static class Compiler {
 						}
 					} else {
 						speakers.Add("");
-						//if (cleanPulpLine.Contains('"')) {
-						//Console.WriteLine(p);
-						//}
 					}
 					sb.Append(modifiers.Contains(Modifier.Margin) ? "<div class='margin'>" : "<div>");
 					if (modifiers.Contains(Modifier.Dialogue)) sb.Append("<span class='d-signal'></span>");
