@@ -75,11 +75,13 @@ document.addEventListener("keydown", function (e) {
   }
 });
 document.addEventListener("pointerdown", function (e) {
-  if (e.target.tagName === "IMG" || (e.target.tagName === "DIV" && (e.target.id === "back" || e.target.className === "characters"))) {
-    if (e.clientX >= window.innerWidth / 2) {
-      nextPulp();
-    } else {
-      prevPulp();
+  if (e.button === 0) {
+    if (e.target.tagName === "IMG" || (e.target.tagName === "DIV" && (e.target.id === "back" || e.target.className === "characters"))) {
+      if (e.clientX >= window.innerWidth / 2) {
+        nextPulp();
+      } else {
+        prevPulp();
+      }
     }
   }
 });
