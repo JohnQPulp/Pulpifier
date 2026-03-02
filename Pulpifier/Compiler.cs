@@ -215,10 +215,10 @@ public static class Compiler {
 								styleBuilder.AppendLine($".characters > img[src^='images/c-{zn}.'], .characters > img[src^='images/c-{zn}-'] {{ height: {ch}% {(zn.Contains("-a") ? "!important" : "")}; }}");
 
 								if (zvals.Length >= 4 && zvals[3] != "") zzoom = int.Parse(zvals[3]);
-								int sh = zzoom * 2 / 5;
-								int zx = (zvals.Length < 2 || zvals[1] == "") ? 48 : int.Parse(zvals[1]);
-								int zy = (zvals.Length < 3 || zvals[2] == "") ? 1 : int.Parse(zvals[2]);
-								string zcss = $"background-size: {sh}em {(zn.Contains("-a") ? "!important" : "")}; background-position: {zx}% {zy}% {(zn.Contains("-a") ? "!important" : "")}";
+								int sh = zzoom * 3 / 5;
+								int zx = (zvals.Length < 2 || zvals[1] == "") ? 50 : int.Parse(zvals[1]);
+								int zy = (zvals.Length < 3 || zvals[2] == "") ? 60 : int.Parse(zvals[2]) * 5 + 60;
+								string zcss = $"background-size: {sh}em {(zn.Contains("-a") ? "!important" : "")}; background-position: {zx}% 0 {(zn.Contains("-a") ? "!important" : "")}; --offset: {zy}% {(zn.Contains("-a") ? "!important" : "")};";
 								styleBuilder.AppendLine($".speaker-back[style*='background-image: url(images/c-{zn}.'], .speaker-back[style*='background-image: url(images/c-{zn}-'] {{ {zcss}; }}");
 								break;
 							case 'f':
