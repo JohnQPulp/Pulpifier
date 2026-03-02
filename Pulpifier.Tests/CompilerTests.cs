@@ -74,7 +74,10 @@ public class CompilerTests {
 	[DataRow("\"Foo.\" Bar.\n", "\"Foo.\"\nn:f=foo;s=f\n\nBar.\ns=;t=f\n")]
 	[DataRow("Foo. \"Bar.\"\n", "Foo.\nn:f=foo;t=f\n\n\"Bar.\"\nt=;s=f\n")]
 	[DataRow("Foo\n", "Foo\nn:foo=Foo;z:foo=95\n")]
+	[DataRow("Foo\n", "Foo\nn:foo=Foo;z:foo=95,46\n")]
 	[DataRow("Foo\n", "Foo\nn:foo=Foo;z:foo=95,46,5\n")]
+	[DataRow("Foo\n", "Foo\nn:foo=Foo;z:foo=95,46,5,105\n")]
+	[DataRow("Foo\n", "Foo\nn:foo=Foo;z:foo=95,,,105\n")]
 	[DataRow("Foo\n", "<div class='upper'>Foo</div>\n\n")]
 	[DataRow("Foo\n", "Foo\nb=foo;f:b:foo=blur(5px)\n")]
 	public void Compiler_BuildHtml_GoodText(string rawText, string pulpText) {
@@ -160,7 +163,6 @@ public class CompilerTests {
 	[DataRow("Foo. Bar.\n", "<e>1</e>\n\n\nFoo.<e>2</e>\n\n\n<e>3</e>\n\n\nBar.<e>4</e>\n\n\n<e>5</e>\n\n\n\n\n")]
 	[DataRow("Foo\n", "Foo\nn:foo=Foo;z=foo:95\n")]
 	[DataRow("Foo\n", "Foo\nn:foo=Foo;z:bar=95\n")]
-	[DataRow("Foo\n", "Foo\nn:foo=Foo;z:foo=95,46\n")]
 	[DataRow("Foo\n", "<p class='upper'>Foo</p>\n\n")]
 	[DataRow("Foo\n", "<div class=\"upper\">Foo</div>\n\n")]
 	[DataRow("Foo\n", "<div id='upper'>Foo</div>\n\n")]

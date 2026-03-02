@@ -210,17 +210,15 @@ public static class Compiler {
 								if (!characterZooms.Add(zn)) throw new Exception("Can't add already added zoom.");
 								string[] zvals = value.Split(',');
 
-								int zzoom = int.Parse(zvals[0]);
+								int zzoom = zvals[0] == "" ? 100 : int.Parse(zvals[0]);
 								int ch = zzoom * 13 / 10;
 								styleBuilder.AppendLine($".characters > img[src^='images/c-{zn}.'], .characters > img[src^='images/c-{zn}-'] {{ height: {ch}% {(zn.Contains("-a") ? "!important" : "")}; }}");
-								int sh = zzoom * 2 / 5;
-								string zcss = $"background-size: {sh}em {(zn.Contains("-a") ? "!important" : "")}";
-								if (zvals.Length > 1) {
-									int zx = int.Parse(zvals[1]);
-									int zy = int.Parse(zvals[2]);
-									zcss += $"; background-position: {zx}% {zy}% {(zn.Contains("-a") ? "!important" : "")}";
-								}
 
+								if (zvals.Length >= 4 && zvals[3] != "") zzoom = int.Parse(zvals[3]);
+								int sh = zzoom * 2 / 5;
+								int zx = (zvals.Length < 2 || zvals[1] == "") ? 48 : int.Parse(zvals[1]);
+								int zy = (zvals.Length < 3 || zvals[2] == "") ? 1 : int.Parse(zvals[2]);
+								string zcss = $"background-size: {sh}em {(zn.Contains("-a") ? "!important" : "")}; background-position: {zx}% {zy}% {(zn.Contains("-a") ? "!important" : "")}";
 								styleBuilder.AppendLine($".speaker-back[style*='background-image: url(images/c-{zn}.'], .speaker-back[style*='background-image: url(images/c-{zn}-'] {{ {zcss}; }}");
 								break;
 							case 'f':
