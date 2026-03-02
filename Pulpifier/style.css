@@ -31,7 +31,7 @@ body {
   width: calc(100 * var(--vwUnit));
   height: calc(100 * var(--vhUnit));
   align-self: center;
-  --vnFontSize: 1.5;
+  --vnFontSize: 1.65;
   --vnDialogueFontWeight: 600;
   --vnLineHeight: 1.4;
   --vnFontSizeReally: 1.05em;
