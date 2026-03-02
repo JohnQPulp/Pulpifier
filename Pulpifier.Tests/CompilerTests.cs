@@ -272,6 +272,13 @@ public class CompilerTests {
 	[DataRow("Foo\n", "Foo\nb=p\n", "'p'")]
 	[DataRow("Foo\n", "Foo\nr=p\n", "'p'")]
 	[DataRow("“Foo” said Foo. “Bar.”\n", "“Foo” said Foo. “Bar.”\nn:f=Foo;s=f\n", "<span class='d'>“Foo”</span> said Foo. <span class='d'>“Bar.”</span>")]
+	[DataRow("Foo\n", "Foo\nn:foo=Foo;c=foo;v=110,120\n", "'width:110%;height:120%;'")]
+	[DataRow("Foo\n", "Foo\nn:foo=Foo;c=foo;v=,120\n", "'height:120%;'")]
+	[DataRow("Foo\n", "Foo\nn:foo=Foo;c=foo;v=110\n", "'width:110%;'")]
+	[DataRow("Foo\n", "Foo\nn:foo=Foo;c=foo;v=110,,\n", "'width:110%;'")]
+	[DataRow("Foo\n", "Foo\nn:foo=Foo;c=foo;v=110,120,40\n", "'width:110%;height:120%;top:40%;'")]
+	[DataRow("Foo\n", "Foo\nn:foo=Foo;c=foo;v=,120,40\n", "'height:120%;top:40%;'")]
+	[DataRow("Foo\n", "Foo\nn:foo=Foo;c=foo;v=,,40\n", "'top:40%;'")]
 	public void Compiler_BuildHtml_ContainsHtml(string rawText, string pulpText, string htmlSnippet) {
 		string html = Compiler.BuildHtml(rawText, pulpText);
 		Assert.Contains(htmlSnippet, html);

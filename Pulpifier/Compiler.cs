@@ -17,6 +17,8 @@ internal enum Modifier {
 	Dialogue = 5,
 }
 
+public readonly record struct ViewScale(int? Width, int? Height, int? Top);
+
 public static class Compiler {
 	public static bool TryBuildHtml(string rawText, string pulpText, out string html) {
 		try {
@@ -67,7 +69,7 @@ public static class Compiler {
 		string activeThinker = "";
 		string activeBackground = "";
 		string activeObject = "";
-		Tuple<int, int> viewScale = null;
+		ViewScale? viewScale = null;
 		HashSet<Modifier> modifiers = new();
 		string joinedLine = "";
 
@@ -234,8 +236,12 @@ public static class Compiler {
 								if (value == "") {
 									viewScale = null;
 								} else {
-									string[] viewWxH = value.Split(',');
-									viewScale = new Tuple<int, int>(int.Parse(viewWxH[0]), int.Parse(viewWxH[1]));
+									string[] viewScaleParts = value.Split(',');
+									viewScale = new ViewScale {
+										Width = viewScaleParts[0] == "" ? null : int.Parse(viewScaleParts[0]),
+										Height = (viewScaleParts.Length < 2 || viewScaleParts[1] == "") ? null : int.Parse(viewScaleParts[1]),
+										Top = (viewScaleParts.Length < 3 || viewScaleParts[2] == "") ? null : int.Parse(viewScaleParts[2]),
+									};
 								}
 								break;
 							case 'h':
@@ -286,13 +292,17 @@ public static class Compiler {
 					}
 
 					string directory = "images/";
-					string images = "";
+					StringBuilder images = new();
 					if (activeCharacters.Length > 0) {
-						if (viewScale == null) {
-							images = "<div class='characters'>";
-						} else {
-							images = $"<div class='characters' style='width:{viewScale.Item1}%; height:{viewScale.Item2}%;'>";
+						images.Append("<div class='characters'");
+						if (viewScale != null) {
+							images.Append(" style='");
+							if (viewScale.Value.Width != null) images.Append($"width:{viewScale.Value.Width}%;");
+							if (viewScale.Value.Height != null) images.Append($"height:{viewScale.Value.Height}%;");
+							if (viewScale.Value.Top != null) images.Append($"top:{viewScale.Value.Top}%;");
+							images.Append('\'');
 						}
+						images.Append('>');
 
 						int denominator = activeCharacters.Length + 1;
 						for (int i = 0; i < activeCharacters.Length; i++) {
@@ -307,24 +317,24 @@ public static class Compiler {
 								if (name.Contains('!')) throw new Exception("Name should not contain exclamations.");
 								string file = GetCharacterFile(name, characterAges, characterExpressions, characterExpressionCounters, characterExtras, activeSpeaker, activeThinker, speakerCounterEnabled);
 								imageFiles.TryAdd(file, new ImageMetadata(p));
-								images += $"<img src='{directory}{file}.webp' class='{(flip ? "f " : "")}p-{i + 1}/{denominator}' ";
+								images.Append($"<img src='{directory}{file}.webp' class='{(flip ? "f " : "")}p-{i + 1}/{denominator}' ");
 								if (characterFilters.TryGetValue(name, out string filter) && name != "") {
-									images += $"style='filter:{filter}' ";
+									images.Append($"style='filter:{filter}' ");
 								}
 
-								images += "/>";
+								images.Append("/>");
 							}
 						}
 
-						images += "</div>";
+						images.Append("</div>");
 					}
 
 					if (activeObject != "") {
 						string file = "o-" + activeObject;
 						imageFiles.TryAdd(file, new ImageMetadata(p));
-						images += $"<img src='{directory}{file}.webp' class='c' />";
+						images.Append($"<img src='{directory}{file}.webp' class='c' />");
 					}
-					imageHtmls.Add(images);
+					imageHtmls.Add(images.ToString());
 
 					List<string> htmlParts = new List<string>();
 					string[] parts = Regex.Split(joinedLine + pulpLine, @"(<e>(.*?)</e>)", RegexOptions.Singleline);
