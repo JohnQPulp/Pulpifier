@@ -98,7 +98,7 @@ body {
   justify-content: end;
 }
 .speaker-back {
-  --offset: 60%;
+  --offset: 9em;
   width: 100%;
   height: calc(100% + var(--offset));
   background-position: 50% 0;
