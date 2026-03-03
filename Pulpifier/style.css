@@ -35,6 +35,7 @@ body {
   --vnDialogueFontWeight: 600;
   --vnLineHeight: 1.4;
   --vnFontSizeReally: 1.05em;
+  --speakerSize: 1em;
 }
 #pulp {
   width: calc(100 * var(--vwUnit));
@@ -92,19 +93,14 @@ body {
   max-width: 200px;
 }
 #foot > div:first-child {
-  width: 21em;
+  width: 20em;
+  padding-left: 1em;
   background: linear-gradient(to left, #f8efd4f0, #f8efd4f0 1em, #f8efd445 20em, transparent 21em);
-  display: flex;
-  justify-content: end;
 }
 #foot > div:first-child > div {
-  margin-left: 1em;
   width: 100%;
   height: 100%;
-}
-#foot > div:first-child > div:hover {
-  font-size: 0;
-  transition: font-size 5s ease-out;
+  font-size: var(--speakerSize);
 }
 .speaker-back {
   --offset: 9em;
