@@ -46,10 +46,10 @@ function buildPulp(i) {
 </div>`);
 }
 function appendPulp(i) {
-  app.innerHTML += buildPulp(i);
+  app.insertAdjacentHTML("beforeend", buildPulp(i));
 }
 function prependPulp(i) {
-  app.innerHTML = buildPulp(i) + app.innerHTML;
+  app.insertAdjacentHTML("afterbegin", buildPulp(i));
 }
 function nextPulp(isAutoNext) {
   if (pos + 1 < htmlArr.length) {
@@ -95,9 +95,15 @@ document.addEventListener("wheel", function (e) {
   }
 });
 function setPos(i) {
-  pos = i;
-  app.innerHTML = buildPulp(i - 1) + buildPulp(i) + buildPulp(i + 1);
-  onPosUpdate();
+  if (pos + 1 === i) {
+    nextPulp();
+  } else if (pos - 1 === i) {
+    prevPulp();
+  } else {
+    pos = i;
+    app.innerHTML = buildPulp(i - 1) + buildPulp(i) + buildPulp(i + 1);
+    onPosUpdate();
+  }
 }
 window.addEventListener("load", e => {
   setPos(pos, true);
