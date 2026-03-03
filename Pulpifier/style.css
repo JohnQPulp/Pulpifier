@@ -107,7 +107,7 @@ body {
   width: 200%;
   left: -50%;
   height: calc(100% + var(--offset));
-  background-position: 50% 0;
+  background-position: center top;
   background-size: 60em;
   background-repeat: no-repeat;
   position: relative;
