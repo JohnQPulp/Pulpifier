@@ -24,15 +24,16 @@ function buildPulp(i) {
     return `<div id='pulp'></div>`;
   }
   let background = backgrounds[backgroundIds[i]].split(';');
-  let speakerBack = "";
+  let speakerBack = "<div>";
   if (speakers[i] === "c-author.webp") {
-    speakerBack = `<div class='speaker-back ed' style='background-image: url(images/c-author-abased.webp)'></div>`;
+    speakerBack += `<div class='speaker-back ed' style='background-image: url(images/c-author-abased.webp)'></div>`;
     if (i === 0) {
       speakerBack += `<div class='speaker-back ned' style='background-image: url(images/c-author.webp)'></div>`;
     }
   } else if (speakers[i] !== "") {
-    speakerBack = `<div class='speaker-back' style='background-image: url(images/${speakers[i]})'></div>`;
+    speakerBack += `<div class='speaker-back' style='background-image: url(images/${speakers[i]})'></div>`;
   }
+  speakerBack += `</div>`;
 
   return (
 `<div id='pulp'>
