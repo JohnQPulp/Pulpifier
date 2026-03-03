@@ -450,7 +450,7 @@ public static class Compiler {
 		return sb.ToString();
 	}
 
-	private static readonly string[] ExpressionVariationArr = ["", "2", "", "2", "3", "", "3", "2"];
+	private static readonly string?[] ExpressionVariationArr = [null, "2", null, "2", "3", null, "3", "2"];
 
 	private static string GetCharacterFile(string name,  Dictionary<string, string> ages, Dictionary<string, string> expressions, Dictionary<string, int> characterExpressionCounters, Dictionary<string, string[]> extras, string speaker, string thinker, bool speakerCounterEnabled) {
 		string file = "c-" + name;
@@ -466,7 +466,10 @@ public static class Compiler {
 		if (name == speaker) {
 			file += "-s";
 			int counterIndex = (characterExpressionCounters[name] - 1) % ExpressionVariationArr.Length;
-			if (speakerCounterEnabled) file += ExpressionVariationArr[counterIndex];
+			if (speakerCounterEnabled) file += (ExpressionVariationArr[counterIndex] ?? "");
+		} else if (characterExpressionCounters.TryGetValue(name, out int counter)) {
+			int counterIndex = (counter - 1) % ExpressionVariationArr.Length;
+			if (speakerCounterEnabled) file += "-" + (ExpressionVariationArr[counterIndex] ?? "1");
 		}
 		return file;
 	}
