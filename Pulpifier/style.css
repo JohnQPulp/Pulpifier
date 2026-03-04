@@ -103,17 +103,18 @@ body {
   font-size: var(--speakerSize);
 }
 .speaker-back {
-  --offset: 9em;
+  --offsetY: 9em;
+  --offsetX: 50%;
   width: 200%;
-  left: -50%;
-  height: calc(100% + var(--offset));
+  left: calc(-1 * var(--offsetX));
+  height: calc(100% + var(--offsetY));
   background-position: center top;
   background-size: 60em;
   background-repeat: no-repeat;
   position: relative;
-  top: calc(-1 * var(--offset));
+  top: calc(-1 * var(--offsetY));
   z-index: 10;
-  mask-image: linear-gradient(to left, transparent, #00000024 25%, black 30%);
+  mask-image: linear-gradient(to left, transparent, #00000024 calc(50% - var(--offsetX) / 2), black calc(55% - var(--offsetX) / 2));
 }
 #foot > div:last-child {
   flex-grow: 1;
