@@ -15,6 +15,7 @@ internal enum Modifier {
 	NoSpace = 3,
 	AllowBreak = 4,
 	Dialogue = 5,
+	NoSpeakerCounter = 6,
 }
 
 public readonly record struct ViewScale(int? Width, int? Height, int? Top);
@@ -257,6 +258,8 @@ public static class Compiler {
 									modifiers.Add(Modifier.AllowBreak);
 								} else if (value == "dialogue") {
 									modifiers.Add(Modifier.Dialogue);
+								} else if (value == "nocounter") {
+									modifiers.Add(Modifier.NoSpeakerCounter);
 								} else if (value == "" || value == "none") {
 									modifiers.Clear();
 								} else throw new Exception("Bad modifier value.");
@@ -313,7 +316,7 @@ public static class Compiler {
 								}
 
 								if (name.Contains('!')) throw new Exception("Name should not contain exclamations.");
-								string file = GetCharacterFile(name, characterAges, characterExpressions, characterExpressionCounters, characterExtras, activeSpeaker, activeThinker, speakerCounterEnabled);
+								string file = GetCharacterFile(name, characterAges, characterExpressions, characterExpressionCounters, characterExtras, activeSpeaker, activeThinker, speakerCounterEnabled && !modifiers.Contains(Modifier.NoSpeakerCounter));
 								imageFiles.TryAdd(file, new ImageMetadata(p));
 								imageFiles[file].ForegroundPulpLine ??= p;
 								images.Append($"<img src='{directory}{file}.webp' class='{(flip ? "f " : "")}p-{i + 1}/{denominator}' ");
@@ -378,7 +381,7 @@ public static class Compiler {
 							sb.Append($"<b class='speaker'>{characterNames[active]}{(activeThinker != "" ? " (Thinking)" : "")}</b>");
 						}
 
-						string file = GetCharacterFile(active, characterAges, characterExpressions, characterExpressionCounters, characterExtras, activeSpeaker, activeThinker, speakerCounterEnabled);
+						string file = GetCharacterFile(active, characterAges, characterExpressions, characterExpressionCounters, characterExtras, activeSpeaker, activeThinker, speakerCounterEnabled && !modifiers.Contains(Modifier.NoSpeakerCounter));
 						imageFiles.TryAdd(file, new ImageMetadata(p));
 
 						if (activeCharacters.All(c => c.TrimStart('!') != active)) {
