@@ -475,7 +475,7 @@ public static class Compiler {
 			if (speakerCounterEnabled) file += (ExpressionVariationArr[counterIndex] ?? "");
 		} else if (characterExpressionCounters.TryGetValue(name, out int counter)) {
 			int counterIndex = (counter - 1) % ExpressionVariationArr.Length;
-			if (speakerCounterEnabled) file += "-" + (ExpressionVariationArr[counterIndex] ?? "1");
+			//if (speakerCounterEnabled) file += "-" + (ExpressionVariationArr[counterIndex] ?? "1");
 		}
 		return file;
 	}
