@@ -46,7 +46,6 @@ if (args.Length == 1) {
 		foreach (string file in filesToPrint) {
 			bool found = File.Exists(Path.Combine(imageDir, $"{file}.webp"));
 			int? fore = imageFiles[file].ForegroundPulpLine;
-			Debug.Assert(fore == null || file.StartsWith("b-"));
 			Console.WriteLine($"{fore,5} {imageFiles[file].PulpLine,5} {file}{(found ? "" : " (missing)")}");
 		}
 	} else if (args.Length == 3 && args[1] == "-c") {

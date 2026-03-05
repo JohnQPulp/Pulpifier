@@ -315,6 +315,7 @@ public static class Compiler {
 								if (name.Contains('!')) throw new Exception("Name should not contain exclamations.");
 								string file = GetCharacterFile(name, characterAges, characterExpressions, characterExpressionCounters, characterExtras, activeSpeaker, activeThinker, speakerCounterEnabled);
 								imageFiles.TryAdd(file, new ImageMetadata(p));
+								imageFiles[file].ForegroundPulpLine = p;
 								images.Append($"<img src='{directory}{file}.webp' class='{(flip ? "f " : "")}p-{i + 1}/{denominator}' ");
 								if (characterFilters.TryGetValue(name, out string filter) && name != "") {
 									images.Append($"style='filter:{filter}' ");
