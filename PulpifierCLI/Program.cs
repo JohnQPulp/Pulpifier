@@ -58,7 +58,8 @@ if (args.Length == 1) {
 				if (!m2.Success) throw new Exception($"Bad character file name: \"{file}\"");
 				if (m1.Groups[1].Value == m2.Groups[1].Value && m1.Groups[2].Value == m2.Groups[2].Value && m1.Groups[3].Value == m2.Groups[3].Value && m1.Groups[4].Value == m2.Groups[4].Value) {
 					if (m2.Groups[5].Value != "" || m2.Groups[6].Value != "") {
-						Console.WriteLine($"{m2.Groups[5].Value}{m2.Groups[6].Value}");
+						string extra = imageFiles[file].ForegroundPulpLine != null ? "|" : "";
+						Console.WriteLine($"{m2.Groups[5].Value}{m2.Groups[6].Value}{extra}");
 					}
 				}
 			}
