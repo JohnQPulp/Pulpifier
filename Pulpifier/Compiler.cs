@@ -210,6 +210,7 @@ public static class Compiler {
 								if (!characterNames.ContainsKey(zn.Split('-')[0])) throw new Exception($"Missing character name \"{zn}\" for zoom.");
 								if (!characterZooms.Add(zn)) throw new Exception("Can't add already added zoom.");
 								string[] zvals = value.Split(',');
+								if (zvals.Length > 4) throw new Exception("Too many z args.");
 
 								int zzoom = zvals[0] == "" ? 100 : int.Parse(zvals[0]);
 								int ch = zzoom * 13 / 10;
@@ -236,6 +237,7 @@ public static class Compiler {
 									viewScale = null;
 								} else {
 									string[] viewScaleParts = value.Split(',');
+									if (viewScaleParts.Length > 3) throw new Exception("Too many v args.");
 									viewScale = new ViewScale {
 										Width = viewScaleParts[0] == "" ? null : int.Parse(viewScaleParts[0]),
 										Height = (viewScaleParts.Length < 2 || viewScaleParts[1] == "") ? null : int.Parse(viewScaleParts[1]),

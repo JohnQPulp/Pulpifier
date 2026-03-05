@@ -78,6 +78,11 @@ public class CompilerTests {
 	[DataRow("Foo\n", "Foo\nn:foo=Foo;z:foo=95,46,5\n")]
 	[DataRow("Foo\n", "Foo\nn:foo=Foo;z:foo=95,46,5,105\n")]
 	[DataRow("Foo\n", "Foo\nn:foo=Foo;z:foo=95,,,105\n")]
+	[DataRow("Foo\n", "Foo\nn:foo=Foo;z:foo=,,-1,\n")]
+	[DataRow("Foo\n", "Foo\nn:foo=Foo;z:foo=,,,\n")]
+	[DataRow("Foo\n", "Foo\nv=100,150,40\n")]
+	[DataRow("Foo\n", "Foo\nv=,150,\n")]
+	[DataRow("Foo\n", "Foo\nv=,,\n")]
 	[DataRow("Foo\n", "<div class='upper'>Foo</div>\n\n")]
 	[DataRow("Foo\n", "Foo\nb=foo;f:b:foo=blur(5px)\n")]
 	public void Compiler_BuildHtml_GoodText(string rawText, string pulpText) {
@@ -171,6 +176,8 @@ public class CompilerTests {
 	[DataRow("Foo\n", "Foo\nb=foo;f:b:bar=blur(5px)\n")]
 	[DataRow("Foo\n", "Foo\nb=foo;f:c:foo=blur(5px)\n")]
 	[DataRow("Foo\n\nBar\n", "Foo\nm=joined\n\nBar\n\n")]
+	[DataRow("Foo\n", "Foo\nn:foo=Foo;z:foo=,,,,\n")]
+	[DataRow("Foo\n", "Foo\nv=,,,\n")]
 	public void Compiler_BuildHtml_BadText(string rawText, string pulpText) {
 		Assert.IsFalse(Compiler.TryBuildHtml(rawText, pulpText, out string _));
 	}
