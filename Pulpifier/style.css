@@ -115,6 +115,7 @@ body {
   top: calc(-1 * var(--offsetY));
   z-index: 10;
   mask-image: linear-gradient(to left, transparent, #00000024 calc(50% - var(--offsetX) / 2), black calc(55% - var(--offsetX) / 2));
+  pointer-events: none;
 }
 #foot > div:last-child {
   flex-grow: 1;
