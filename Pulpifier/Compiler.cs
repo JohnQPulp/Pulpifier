@@ -147,8 +147,8 @@ public static class Compiler {
 								} else {
 									string[] characters = value.Split(',');
 									if (characters.Length > 5) throw new Exception("Unsupported number of characters");
-									if (characters.Any(c => c != "" && !characterNames.ContainsKey(c.TrimStart('!')))) throw new Exception("Missing character name.");
-									if (characters.Any(c => c.TrimStart('!') == "author")) throw new Exception("Author can't be non-thinker.");
+									if (characters.Any(c => c != "" && !characterNames.ContainsKey(c))) throw new Exception("Missing character name.");
+									if (characters.Any(c => c == "author")) throw new Exception("Author can't be non-thinker.");
 									activeCharacters = characters;
 								}
 								break;
@@ -284,7 +284,7 @@ public static class Compiler {
 					backgroundIds.Add(bIndex);
 
 					foreach (string counterKey in characterExpressionCounters.Keys) {
-						if (counterKey != activeSpeaker && activeCharacters.All(ac => ac.Trim('!') != counterKey)) {
+						if (counterKey != activeSpeaker && activeCharacters.All(ac => ac != counterKey)) {
 							 characterExpressionCounters.Remove(counterKey);
 						}
 					}
@@ -311,17 +311,11 @@ public static class Compiler {
 						for (int i = 0; i < activeCharacters.Length; i++) {
 							string name = activeCharacters[i];
 							if (name != "") {
-								bool flip = false;
-								if (name[0] == '!') {
-									flip = true;
-									name = name.Substring(1);
-								}
-
 								if (name.Contains('!')) throw new Exception("Name should not contain exclamations.");
 								string file = GetCharacterFile(name, characterAges, characterExpressions, characterExpressionCounters, characterExtras, activeSpeaker, activeThinker, speakerCounterEnabled && !modifiers.Contains(Modifier.NoSpeakerCounter));
 								imageFiles.TryAdd(file, new ImageMetadata(p));
 								imageFiles[file].ForegroundPulpLine ??= p;
-								images.Append($"<img src='{directory}{file}.webp' class='{(flip ? "f " : "")}p-{i + 1}/{denominator}' ");
+								images.Append($"<img src='{directory}{file}.webp' class='p-{i + 1}/{denominator}' ");
 								if (characterFilters.TryGetValue(name, out string filter) && name != "") {
 									images.Append($"style='filter:{filter}' ");
 								}
@@ -386,7 +380,7 @@ public static class Compiler {
 						string file = GetCharacterFile(active, characterAges, characterExpressions, characterExpressionCounters, characterExtras, activeSpeaker, activeThinker, speakerCounterEnabled && !modifiers.Contains(Modifier.NoSpeakerCounter));
 						imageFiles.TryAdd(file, new ImageMetadata(p));
 
-						if (activeCharacters.All(c => c.TrimStart('!') != active)) {
+						if (activeCharacters.All(c => c != active)) {
 							speakers.Add(file + ".webp");
 						} else {
 							speakers.Add("");
