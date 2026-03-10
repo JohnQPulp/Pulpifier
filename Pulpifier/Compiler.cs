@@ -16,6 +16,7 @@ internal enum Modifier {
 	AllowBreak = 4,
 	Dialogue = 5,
 	NoSpeakerCounter = 6,
+	NoSpeaker = 7,
 }
 
 public readonly record struct ViewScale(int? Width, int? Height, int? Top);
@@ -262,6 +263,8 @@ public static class Compiler {
 									modifiers.Add(Modifier.Dialogue);
 								} else if (value == "nocounter") {
 									modifiers.Add(Modifier.NoSpeakerCounter);
+								} else if (value == "nospeaker") {
+									modifiers.Add(Modifier.NoSpeaker);
 								} else if (value == "" || value == "none") {
 									modifiers.Clear();
 								} else throw new Exception("Bad modifier value.");
@@ -377,13 +380,17 @@ public static class Compiler {
 							sb.Append($"<b class='speaker'>{characterNames[active]}{(activeThinker != "" ? " (Thinking)" : "")}</b>");
 						}
 
-						string file = GetCharacterFile(active, characterAges, characterExpressions, characterExpressionCounters, characterExtras, activeSpeaker, activeThinker, speakerCounterEnabled && !modifiers.Contains(Modifier.NoSpeakerCounter));
-						imageFiles.TryAdd(file, new ImageMetadata(p));
-
-						if (activeCharacters.All(c => c != active)) {
-							speakers.Add(file + ".webp");
-						} else {
+						if (modifiers.Contains(Modifier.NoSpeaker)) {
 							speakers.Add("");
+						} else {
+							string file = GetCharacterFile(active, characterAges, characterExpressions, characterExpressionCounters, characterExtras, activeSpeaker, activeThinker, speakerCounterEnabled && !modifiers.Contains(Modifier.NoSpeakerCounter));
+							imageFiles.TryAdd(file, new ImageMetadata(p));
+
+							if (activeCharacters.All(c => c != active)) {
+								speakers.Add(file + ".webp");
+							} else {
+								speakers.Add("");
+							}
 						}
 					} else {
 						speakers.Add("");

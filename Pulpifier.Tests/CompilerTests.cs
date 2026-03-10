@@ -298,8 +298,17 @@ public class CompilerTests {
 	[DataRow("Foo\n", "Foo\nn:foo=Foo;c=foo;v=110,120,40\n", "'width:110%;height:120%;top:40%;'")]
 	[DataRow("Foo\n", "Foo\nn:foo=Foo;c=foo;v=,120,40\n", "'height:120%;top:40%;'")]
 	[DataRow("Foo\n", "Foo\nn:foo=Foo;c=foo;v=,,40\n", "'top:40%;'")]
+	[DataRow("\"Foo\"\n", "\"Foo\"\nn:name=Name;s=name\n", "Name")]
+	[DataRow("\"Foo\"\n", "\"Foo\"\nn:name=Name;s=name;m=nospeaker\n", "Name")]
+	[DataRow("\"Foo\"\n", "\"Foo\"\nn:name=Name;s=name\n", "c-name-s.webp")]
 	public void Compiler_BuildHtml_ContainsHtml(string rawText, string pulpText, string htmlSnippet) {
 		string html = Compiler.BuildHtml(rawText, pulpText);
 		Assert.Contains(htmlSnippet, html);
+	}
+
+	[DataRow("\"Foo\"\n", "\"Foo\"\nn:name=Name;s=name;m=nospeaker\n", "c-name-s.webp")]
+	public void Compiler_BuildHtml_DoesNotContainsHtml(string rawText, string pulpText, string htmlSnippet) {
+		string html = Compiler.BuildHtml(rawText, pulpText);
+		Assert.DoesNotContain(htmlSnippet, html);
 	}
 }
