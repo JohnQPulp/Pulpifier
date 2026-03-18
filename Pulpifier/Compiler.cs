@@ -15,7 +15,6 @@ internal enum Modifier {
 	NoSpace = 3,
 	AllowBreak = 4,
 	Dialogue = 5,
-	NoSpeakerCounter = 6,
 	NoSpeaker = 7,
 }
 
@@ -263,8 +262,6 @@ public static class Compiler {
 									modifiers.Add(Modifier.AllowBreak);
 								} else if (value == "dialogue") {
 									modifiers.Add(Modifier.Dialogue);
-								} else if (value == "nocounter") {
-									modifiers.Add(Modifier.NoSpeakerCounter);
 								} else if (value == "nospeaker") {
 									modifiers.Add(Modifier.NoSpeaker);
 								} else if (value == "" || value == "none") {
@@ -321,7 +318,7 @@ public static class Compiler {
 							string name = activeCharacters[i];
 							if (name != "") {
 								if (name.Contains('!')) throw new Exception("Name should not contain exclamations.");
-								string file = GetCharacterFile(name, characterAges, characterExpressions, characterExpressionCounters, characterExtras, activeSpeaker, activeThinker, speakerCounterEnabled && !modifiers.Contains(Modifier.NoSpeakerCounter), variationOverride);
+								string file = GetCharacterFile(name, characterAges, characterExpressions, characterExpressionCounters, characterExtras, activeSpeaker, activeThinker, speakerCounterEnabled, variationOverride);
 								imageFiles.TryAdd(file, new ImageMetadata(p));
 								imageFiles[file].ForegroundPulpLine ??= p;
 								images.Append($"<img src='{directory}{file}.webp' class='p-{i + 1}/{denominator}' ");
@@ -389,7 +386,7 @@ public static class Compiler {
 						if (modifiers.Contains(Modifier.NoSpeaker)) {
 							speakers.Add("");
 						} else {
-							string file = GetCharacterFile(active, characterAges, characterExpressions, characterExpressionCounters, characterExtras, activeSpeaker, activeThinker, speakerCounterEnabled && !modifiers.Contains(Modifier.NoSpeakerCounter), variationOverride);
+							string file = GetCharacterFile(active, characterAges, characterExpressions, characterExpressionCounters, characterExtras, activeSpeaker, activeThinker, speakerCounterEnabled, variationOverride);
 							imageFiles.TryAdd(file, new ImageMetadata(p));
 
 							if (activeCharacters.All(c => c != active)) {
