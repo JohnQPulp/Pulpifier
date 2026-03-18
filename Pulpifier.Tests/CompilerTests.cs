@@ -84,6 +84,9 @@ public class CompilerTests {
 	[DataRow("Foo\n", "Foo\nv=,,\n")]
 	[DataRow("Foo\n", "<div class='upper'>Foo</div>\n\n")]
 	[DataRow("Foo\n", "Foo\nb=foo;f:b:foo=blur(5px)\n")]
+	[DataRow("Foo\n", "Foo\nn:foo=Foo;c=foo;i:foo=2\n")]
+	[DataRow("“Foo.”\n", "“Foo.”\nn:foo=Foo;s=foo;i:foo=2\n")]
+	[DataRow("“Foo.”\n", "“Foo.”\nn:foo=Foo;s=foo;i=2\n")]
 	public void Compiler_BuildHtml_GoodText(string rawText, string pulpText) {
 		Compiler.BuildHtml(rawText, pulpText);
 		Assert.IsTrue(Compiler.TryBuildHtml(rawText, pulpText, out string _));
@@ -178,6 +181,9 @@ public class CompilerTests {
 	[DataRow("Foo\n\nBar\n", "Foo\nm=joined\n\nBar\n\n")]
 	[DataRow("Foo\n", "Foo\nn:foo=Foo;z:foo=,,,,\n")]
 	[DataRow("Foo\n", "Foo\nv=,,,\n")]
+	[DataRow("Foo\n", "Foo\nn:foo=Foo;i:foo=2\n")]
+	[DataRow("Foo\n", "Foo\nn:foo=Foo;c=foo;i=2\n")]
+	[DataRow("Foo\n", "Foo\nn:foo=Foo;i=2\n")]
 	public void Compiler_BuildHtml_BadText(string rawText, string pulpText) {
 		Assert.IsFalse(Compiler.TryBuildHtml(rawText, pulpText, out string _));
 	}
@@ -256,13 +262,13 @@ public class CompilerTests {
 	[DataRow("\"Foo. Foo.\" Bar.\n", "\"Foo.\"\nn:r=R;s=r;c=r\n\n\"Foo.\"\n\n\nBar.\ns=\n", "c-r-s.webp")]
 	[DataRow("\"Foo. Foo.\" Bar.\n", "\"Foo.\"\nn:r=R;s=r;c=r\n\n\"Foo.\"\n\n\nBar.\ns=\n", "c-r-s2.webp")]
 	[DataRow("\"Foo. Foo.\" Bar.\n", "\"Foo.\"\nn:r=R;s=r;c=r\n\n\"Foo.\"\n\n\nBar.\ns=\n", "c-r-2.webp")]
-	[DataRow("\"Foo. Foo.\" Bar.\n", "\"Foo.\"\nn:r=R;s=r;c=r\n\n\"Foo.\"\n\n\nBar.\ns=;i=\n", "c-r.webp")]
+	[DataRow("\"Foo. Foo.\" Bar.\n", "\"Foo.\"\nn:r=R;s=r;c=r\n\n\"Foo.\"\n\n\nBar.\ns=;i:r=\n", "c-r.webp")]
 	[DataRow("\"Foo. Foo.\" Bar.\n", "\"Foo.\"\nn:r=R;s=r;c=r\n\n\"Foo.\"\ne:r=h\n\nBar.\ns=\n", "c-r-eh-s.webp")]
 	[DataRow("\"Foo. Foo.\" Bar.\n", "\"Foo.\"\nn:r=R;s=r;c=r\n\n\"Foo.\"\ne:r=h\n\nBar.\ns=\n", "c-r-eh-1.webp")]
 	[DataRow("\"Foo. Foo.\" Bar.\n", "\"Foo.\"\nn:r=R;s=r;c=r;e:r=u\n\n\"Foo.\"\n\n\nBar.\ns=\n", "c-r-eu-s.webp")]
 	[DataRow("\"Foo. Foo.\" Bar.\n", "\"Foo.\"\nn:r=R;s=r;c=r;e:r=u\n\n\"Foo.\"\n\n\nBar.\ns=\n", "c-r-eu-s2.webp")]
 	[DataRow("\"Foo. Foo.\" Bar.\n", "\"Foo.\"\nn:r=R;s=r;c=r;e:r=u\n\n\"Foo.\"\n\n\nBar.\ns=\n", "c-r-eu-2.webp")]
-	[DataRow("\"Foo. Foo.\" Bar.\n", "\"Foo.\"\nn:r=R;s=r;c=r;e:r=u\n\n\"Foo.\"\n\n\nBar.\ns=;i=\n", "c-r-eu.webp")]
+	[DataRow("\"Foo. Foo.\" Bar.\n", "\"Foo.\"\nn:r=R;s=r;c=r;e:r=u\n\n\"Foo.\"\n\n\nBar.\ns=;i:r=\n", "c-r-eu.webp")]
 	[DataRow("\"Foo. Bar.\"\n", "\"Foo.\"\nn:r=R;e:r=g;s=r\n\n\"Bar.\"\n\n", "c-r-eg-s.webp")]
 	[DataRow("\"Foo. Bar.\"\n", "\"Foo.\"\nn:r=R;e:r=g;s=r\n\n\"Bar.\"\n\n", "c-r-eg-s2.webp")]
 	[DataRow("\"Foo. Bar.\"\n", "\"Foo.\"\nn:r=R;s=r\n\n\"Bar.\"\ne:r=g\n", "c-r-s.webp")]
@@ -302,14 +308,20 @@ public class CompilerTests {
 	[DataRow("\"Foo\"\n", "\"Foo\"\nn:name=Name;s=name;m=nospeaker\n", "Name")]
 	[DataRow("\"Foo\"\n", "\"Foo\"\nn:name=Name;s=name\n", "c-name-s.webp")]
 	[DataRow("\"Foo. Bar.\"\n", "\"Foo.\"\nn:r=R;s=r\n\n\"Bar.\"\ni=3\n", "c-r-s3.webp")]
-	[DataRow("\"Foo. Foo.\" Bar.\n", "\"Foo.\"\nn:r=R;s=r;c=r\n\n\"Foo.\"\ne:r=h\n\nBar.\ns=;i=\n", "c-r-eh.webp")]
-	[DataRow("\"Foo. Foo.\" Bar.\n", "\"Foo.\"\nn:r=R;s=r;c=r\n\n\"Foo.\"\ne:r=h\n\nBar.\ns=;i=1\n", "c-r-eh-1.webp")]
-	[DataRow("\"Foo. Foo.\" Bar.\n", "\"Foo.\"\nn:r=R;s=r;c=r\n\n\"Foo.\"\ne:r=h\n\nBar.\ns=;i=2\n", "c-r-eh-2.webp")]
-	[DataRow("\"Foo. Foo.\" Bar.\n", "\"Foo.\"\nn:r=R;s=r;c=r\n\n\"Foo.\"\ne:r=h\n\nBar.\ns=;i=3\n", "c-r-eh-3.webp")]
+	[DataRow("\"Foo. Foo.\" Bar.\n", "\"Foo.\"\nn:r=R;s=r;c=r\n\n\"Foo.\"\ne:r=h\n\nBar.\ns=;i:r=\n", "c-r-eh.webp")]
+	[DataRow("\"Foo. Foo.\" Bar.\n", "\"Foo.\"\nn:r=R;s=r;c=r\n\n\"Foo.\"\ne:r=h\n\nBar.\ns=;i:r=1\n", "c-r-eh-1.webp")]
+	[DataRow("\"Foo. Foo.\" Bar.\n", "\"Foo.\"\nn:r=R;s=r;c=r\n\n\"Foo.\"\ne:r=h\n\nBar.\ns=;i:r=2\n", "c-r-eh-2.webp")]
+	[DataRow("\"Foo. Foo.\" Bar.\n", "\"Foo.\"\nn:r=R;s=r;c=r\n\n\"Foo.\"\ne:r=h\n\nBar.\ns=;i:r=3\n", "c-r-eh-3.webp")]
 	[DataRow("\"Foo. Bar.\"\n", "\"Foo.\"\nn:r=R;s=r;i=2\n\n\"Bar.\"\ne:r=g\n", "c-r-s2.webp")]
 	[DataRow("\"Foo. Bar.\"\n", "\"Foo.\"\nn:r=R;s=r;i=2\n\n\"Bar.\"\ne:r=g\n", "c-r-eg-s.webp")]
 	[DataRow("\"Foo. Bar.\"\n", "\"Foo.\"\nn:r=R;s=r\n\n\"Bar.\"\ne:r=g;i=2\n", "c-r-s.webp")]
 	[DataRow("\"Foo. Bar.\"\n", "\"Foo.\"\nn:r=R;s=r\n\n\"Bar.\"\ne:r=g;i=2\n", "c-r-eg-s2.webp")]
+	[DataRow("\"Foo.\"\n\n\"Bar.\"\n\n\"Fizz.\"\n", "\"Foo.\"\nn:r=R;n:j=J;s=r;c=r,j;i=3\n\n\"Bar.\"\ns=j\n\n\"Fizz.\"\ns=r\n", "c-r-s3.webp")]
+	[DataRow("\"Foo.\"\n\n\"Bar.\"\n\n\"Fizz.\"\n", "\"Foo.\"\nn:r=R;n:j=J;s=r;c=r,j;i:r=3\n\n\"Bar.\"\ns=j\n\n\"Fizz.\"\ns=r\n", "c-r-s3.webp")]
+	[DataRow("\"Foo.\"\n\n\"Bar.\"\n\n\"Fizz.\"\n", "\"Foo.\"\nn:r=R;n:j=J;s=r;c=r,j;i:j=3\n\n\"Bar.\"\ns=j\n\n\"Fizz.\"\ns=r\n", "c-j-3.webp")]
+	[DataRow("\"Foo.\"\n\n\"Bar.\"\n\n\"Fizz.\"\n", "\"Foo.\"\nn:r=R;n:j=J;s=r;c=r,j\n\n\"Bar.\"\ns=j;i=3\n\n\"Fizz.\"\ns=r\n", "c-j-s3.webp")]
+	[DataRow("\"Foo.\"\n\n\"Bar.\"\n\n\"Fizz.\"\n", "\"Foo.\"\nn:r=R;n:j=J;s=r;c=r,j\n\n\"Bar.\"\ns=j;i:r=3\n\n\"Fizz.\"\ns=r\n", "c-r-3.webp")]
+	[DataRow("\"Foo.\"\n\n\"Bar.\"\n\n\"Fizz.\"\n", "\"Foo.\"\nn:r=R;n:j=J;s=r;c=r,j\n\n\"Bar.\"\ns=j;i:j=3\n\n\"Fizz.\"\ns=r\n", "c-j-s3.webp")]
 	public void Compiler_BuildHtml_ContainsHtml(string rawText, string pulpText, string htmlSnippet) {
 		string html = Compiler.BuildHtml(rawText, pulpText);
 		Assert.Contains(htmlSnippet, html);
@@ -317,6 +329,9 @@ public class CompilerTests {
 
 	[DataRow("\"Foo\"\n", "\"Foo\"\nn:name=Name;s=name;m=nospeaker\n", "c-name-s.webp")]
 	[DataRow("\"Foo. Bar.\"\n", "\"Foo.\"\nn:r=R;s=r\n\n\"Bar.\"\ni=\n", "c-r-s2.webp")]
+	[DataRow("\"Foo.\"\n\n\"Bar.\"\n\n\"Fizz.\"\n", "\"Foo.\"\nn:r=R;n:j=J;s=r;c=r,j;i=3\n\n\"Bar.\"\ns=j\n\n\"Fizz.\"\ns=r\n", "c-j-3.webp")]
+	[DataRow("\"Foo.\"\n\n\"Bar.\"\n\n\"Fizz.\"\n", "\"Foo.\"\nn:r=R;n:j=J;s=r;c=r,j;i:r=3\n\n\"Bar.\"\ns=j\n\n\"Fizz.\"\ns=r\n", "c-j-3.webp")]
+	[DataRow("\"Foo.\"\n\n\"Bar.\"\n\n\"Fizz.\"\n", "\"Foo.\"\nn:r=R;n:j=J;s=r;c=r,j;i:j=3\n\n\"Bar.\"\ns=j\n\n\"Fizz.\"\ns=r\n", "c-r-s3.webp")]
 	public void Compiler_BuildHtml_DoesNotContainsHtml(string rawText, string pulpText, string htmlSnippet) {
 		string html = Compiler.BuildHtml(rawText, pulpText);
 		Assert.DoesNotContain(htmlSnippet, html);

@@ -73,6 +73,7 @@ public static class Compiler {
 		ViewScale? viewScale = null;
 		HashSet<Modifier> modifiers = new();
 		string joinedLine = "";
+		Dictionary<string, string> characterCounterOverrides = new();
 
 		int r = 0, p = 0;
 		try {
@@ -126,7 +127,8 @@ public static class Compiler {
 
 					if (pulpLines[p + 2] != string.Empty) throw new Exception("Missing pulp line break.");
 
-					string? variationOverride = null;
+					string? speakerCounterOverride = null;
+					characterCounterOverrides.Clear();
 
 					string[] metadata = pulpLines[p + 1].Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 					foreach (string data in metadata) {
@@ -270,7 +272,12 @@ public static class Compiler {
 								break;
 							case 'i':
 								if (value != "" && value != "1" && value != "2" && value != "3") throw new Exception("Invalid variation override.");
-								variationOverride = value;
+								string[] iparts = key.Split(':');
+								if (iparts.Length == 1) {
+									speakerCounterOverride = value;
+								} else {
+									characterCounterOverrides[iparts[1]] = value;
+								}
 								break;
 							default: throw new Exception($"Unrecognized key: '{key}'.");
 						}
@@ -300,6 +307,12 @@ public static class Compiler {
 						characterExpressionCounters[activeSpeaker] = expressionCounter + 1;
 					}
 
+					if (characterCounterOverrides.Keys.Any(c => c != activeSpeaker && !activeCharacters.Contains(c))) throw new Exception("Bad character override.");
+					if (speakerCounterOverride != null) {
+						if (activeSpeaker == "") throw new Exception("Bad speaker override.");
+						characterCounterOverrides[activeSpeaker] = speakerCounterOverride;
+					}
+
 					string directory = "images/";
 					StringBuilder images = new();
 					if (activeCharacters.Length > 0) {
@@ -318,7 +331,7 @@ public static class Compiler {
 							string name = activeCharacters[i];
 							if (name != "") {
 								if (name.Contains('!')) throw new Exception("Name should not contain exclamations.");
-								string file = GetCharacterFile(name, characterAges, characterExpressions, characterExpressionCounters, characterExtras, activeSpeaker, activeThinker, speakerCounterEnabled, variationOverride);
+								string file = GetCharacterFile(name, characterAges, characterExpressions, characterExpressionCounters, characterExtras, activeSpeaker, activeThinker, speakerCounterEnabled, characterCounterOverrides);
 								imageFiles.TryAdd(file, new ImageMetadata(p));
 								imageFiles[file].ForegroundPulpLine ??= p;
 								images.Append($"<img src='{directory}{file}.webp' class='p-{i + 1}/{denominator}' ");
@@ -386,7 +399,7 @@ public static class Compiler {
 						if (modifiers.Contains(Modifier.NoSpeaker)) {
 							speakers.Add("");
 						} else {
-							string file = GetCharacterFile(active, characterAges, characterExpressions, characterExpressionCounters, characterExtras, activeSpeaker, activeThinker, speakerCounterEnabled, variationOverride);
+							string file = GetCharacterFile(active, characterAges, characterExpressions, characterExpressionCounters, characterExtras, activeSpeaker, activeThinker, speakerCounterEnabled, characterCounterOverrides);
 							imageFiles.TryAdd(file, new ImageMetadata(p));
 
 							if (activeCharacters.All(c => c != active)) {
@@ -462,7 +475,7 @@ public static class Compiler {
 
 	private static readonly string?[] ExpressionVariationArr = [null, "2", null, "2", "3", null, "3", "2"];
 
-	private static string GetCharacterFile(string name,  Dictionary<string, string> ages, Dictionary<string, string> expressions, Dictionary<string, int> characterExpressionCounters, Dictionary<string, string[]> extras, string speaker, string thinker, bool speakerCounterEnabled, string? expressionVariationOverride) {
+	private static string GetCharacterFile(string name,  Dictionary<string, string> ages, Dictionary<string, string> expressions, Dictionary<string, int> characterExpressionCounters, Dictionary<string, string[]> extras, string speaker, string thinker, bool speakerCounterEnabled, Dictionary<string, string> counterOverrides) {
 		string file = "c-" + name;
 		if (ages.TryGetValue(name, out string age) && age != string.Empty) file += "-a" + age;
 		if (extras.TryGetValue(name, out string[] xarr)) {
@@ -473,12 +486,13 @@ public static class Compiler {
 		if (expressions.TryGetValue(name, out string? expression) && !IsNeutralExpression(expression)) {
 			file += "-e" + expression;
 		}
+		counterOverrides.TryGetValue(name, out string? expressionVariationOverride);
 		if (name == speaker) {
 			file += "-s";
 			int counterIndex = (characterExpressionCounters[name] - 1) % ExpressionVariationArr.Length;
 			if (expressionVariationOverride == "1") throw new Exception("Bad override value.");
 			if (speakerCounterEnabled) file += (expressionVariationOverride ?? ExpressionVariationArr[counterIndex] ?? "");
-		} else if (characterExpressionCounters.TryGetValue(name, out int counter)) {
+		} else if (characterExpressionCounters.TryGetValue(name, out int counter) || expressionVariationOverride != null) {
 			int counterIndex = (counter - 1) % ExpressionVariationArr.Length;
 			if (speakerCounterEnabled && expressionVariationOverride != "") file += "-" + (expressionVariationOverride ?? ExpressionVariationArr[counterIndex] ?? "1");
 		}
