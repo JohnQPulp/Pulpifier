@@ -127,6 +127,8 @@ public static class Compiler {
 
 					if (pulpLines[p + 2] != string.Empty) throw new Exception("Missing pulp line break.");
 
+					string? variationOverride = null;
+
 					string[] metadata = pulpLines[p + 1].Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 					foreach (string data in metadata) {
 						string[] kvp = data.Split('=');
@@ -269,6 +271,10 @@ public static class Compiler {
 									modifiers.Clear();
 								} else throw new Exception("Bad modifier value.");
 								break;
+							case 'i':
+								if (value != "" && value != "1" && value != "2" && value != "3") throw new Exception("Invalid variation override.");
+								variationOverride = value;
+								break;
 							default: throw new Exception($"Unrecognized key: '{key}'.");
 						}
 					}
@@ -315,7 +321,7 @@ public static class Compiler {
 							string name = activeCharacters[i];
 							if (name != "") {
 								if (name.Contains('!')) throw new Exception("Name should not contain exclamations.");
-								string file = GetCharacterFile(name, characterAges, characterExpressions, characterExpressionCounters, characterExtras, activeSpeaker, activeThinker, speakerCounterEnabled && !modifiers.Contains(Modifier.NoSpeakerCounter));
+								string file = GetCharacterFile(name, characterAges, characterExpressions, characterExpressionCounters, characterExtras, activeSpeaker, activeThinker, speakerCounterEnabled && !modifiers.Contains(Modifier.NoSpeakerCounter), variationOverride);
 								imageFiles.TryAdd(file, new ImageMetadata(p));
 								imageFiles[file].ForegroundPulpLine ??= p;
 								images.Append($"<img src='{directory}{file}.webp' class='p-{i + 1}/{denominator}' ");
@@ -383,7 +389,7 @@ public static class Compiler {
 						if (modifiers.Contains(Modifier.NoSpeaker)) {
 							speakers.Add("");
 						} else {
-							string file = GetCharacterFile(active, characterAges, characterExpressions, characterExpressionCounters, characterExtras, activeSpeaker, activeThinker, speakerCounterEnabled && !modifiers.Contains(Modifier.NoSpeakerCounter));
+							string file = GetCharacterFile(active, characterAges, characterExpressions, characterExpressionCounters, characterExtras, activeSpeaker, activeThinker, speakerCounterEnabled && !modifiers.Contains(Modifier.NoSpeakerCounter), variationOverride);
 							imageFiles.TryAdd(file, new ImageMetadata(p));
 
 							if (activeCharacters.All(c => c != active)) {
@@ -459,7 +465,7 @@ public static class Compiler {
 
 	private static readonly string?[] ExpressionVariationArr = [null, "2", null, "2", "3", null, "3", "2"];
 
-	private static string GetCharacterFile(string name,  Dictionary<string, string> ages, Dictionary<string, string> expressions, Dictionary<string, int> characterExpressionCounters, Dictionary<string, string[]> extras, string speaker, string thinker, bool speakerCounterEnabled) {
+	private static string GetCharacterFile(string name,  Dictionary<string, string> ages, Dictionary<string, string> expressions, Dictionary<string, int> characterExpressionCounters, Dictionary<string, string[]> extras, string speaker, string thinker, bool speakerCounterEnabled, string? expressionVariationOverride) {
 		string file = "c-" + name;
 		if (ages.TryGetValue(name, out string age) && age != string.Empty) file += "-a" + age;
 		if (extras.TryGetValue(name, out string[] xarr)) {
@@ -473,10 +479,11 @@ public static class Compiler {
 		if (name == speaker) {
 			file += "-s";
 			int counterIndex = (characterExpressionCounters[name] - 1) % ExpressionVariationArr.Length;
-			if (speakerCounterEnabled) file += (ExpressionVariationArr[counterIndex] ?? "");
+			if (expressionVariationOverride == "1") throw new Exception("Bad override value.");
+			if (speakerCounterEnabled) file += (expressionVariationOverride ?? ExpressionVariationArr[counterIndex] ?? "");
 		} else if (characterExpressionCounters.TryGetValue(name, out int counter)) {
 			int counterIndex = (counter - 1) % ExpressionVariationArr.Length;
-			//if (speakerCounterEnabled) file += "-" + (ExpressionVariationArr[counterIndex] ?? "1");
+			if (speakerCounterEnabled && expressionVariationOverride != "") file += "-" + (expressionVariationOverride ?? ExpressionVariationArr[counterIndex] ?? "1");
 		}
 		return file;
 	}

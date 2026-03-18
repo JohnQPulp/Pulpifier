@@ -301,12 +301,22 @@ public class CompilerTests {
 	[DataRow("\"Foo\"\n", "\"Foo\"\nn:name=Name;s=name\n", "Name")]
 	[DataRow("\"Foo\"\n", "\"Foo\"\nn:name=Name;s=name;m=nospeaker\n", "Name")]
 	[DataRow("\"Foo\"\n", "\"Foo\"\nn:name=Name;s=name\n", "c-name-s.webp")]
+	[DataRow("\"Foo. Bar.\"\n", "\"Foo.\"\nn:r=R;s=r\n\n\"Bar.\"\ni=3\n", "c-r-s3.webp")]
+	[DataRow("\"Foo. Foo.\" Bar.\n", "\"Foo.\"\nn:r=R;s=r;c=r\n\n\"Foo.\"\ne:r=h\n\nBar.\ns=;i=\n", "c-r-eh.webp")]
+	[DataRow("\"Foo. Foo.\" Bar.\n", "\"Foo.\"\nn:r=R;s=r;c=r\n\n\"Foo.\"\ne:r=h\n\nBar.\ns=;i=1\n", "c-r-eh-1.webp")]
+	[DataRow("\"Foo. Foo.\" Bar.\n", "\"Foo.\"\nn:r=R;s=r;c=r\n\n\"Foo.\"\ne:r=h\n\nBar.\ns=;i=2\n", "c-r-eh-2.webp")]
+	[DataRow("\"Foo. Foo.\" Bar.\n", "\"Foo.\"\nn:r=R;s=r;c=r\n\n\"Foo.\"\ne:r=h\n\nBar.\ns=;i=3\n", "c-r-eh-3.webp")]
+	[DataRow("\"Foo. Bar.\"\n", "\"Foo.\"\nn:r=R;s=r;i=2\n\n\"Bar.\"\ne:r=g\n", "c-r-s2.webp")]
+	[DataRow("\"Foo. Bar.\"\n", "\"Foo.\"\nn:r=R;s=r;i=2\n\n\"Bar.\"\ne:r=g\n", "c-r-eg-s.webp")]
+	[DataRow("\"Foo. Bar.\"\n", "\"Foo.\"\nn:r=R;s=r\n\n\"Bar.\"\ne:r=g;i=2\n", "c-r-s.webp")]
+	[DataRow("\"Foo. Bar.\"\n", "\"Foo.\"\nn:r=R;s=r\n\n\"Bar.\"\ne:r=g;i=2\n", "c-r-eg-s2.webp")]
 	public void Compiler_BuildHtml_ContainsHtml(string rawText, string pulpText, string htmlSnippet) {
 		string html = Compiler.BuildHtml(rawText, pulpText);
 		Assert.Contains(htmlSnippet, html);
 	}
 
 	[DataRow("\"Foo\"\n", "\"Foo\"\nn:name=Name;s=name;m=nospeaker\n", "c-name-s.webp")]
+	[DataRow("\"Foo. Bar.\"\n", "\"Foo.\"\nn:r=R;s=r\n\n\"Bar.\"\ni=\n", "c-r-s2.webp")]
 	public void Compiler_BuildHtml_DoesNotContainsHtml(string rawText, string pulpText, string htmlSnippet) {
 		string html = Compiler.BuildHtml(rawText, pulpText);
 		Assert.DoesNotContain(htmlSnippet, html);
