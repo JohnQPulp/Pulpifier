@@ -39,6 +39,7 @@ public static class Compiler {
 		sb.AppendLine("<style>");
 		sb.Append(ReadResource("style.css"));
 		sb.Append("</style>");
+		sb.Append("<svg width='0' height='0'><filter id='green-desmudger'><feColorMatrix in='SourceGraphic' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1 2 -1 0 0' result='green-mask' /><feComponentTransfer in='SourceGraphic' result='green-func'><feFuncR type='linear' slope='1.2' /><feFuncG type='linear' slope='0.95' /></feComponentTransfer><feComposite in='green-func' in2='green-mask' operator='in' result='green-fix' /><feComposite in='green-fix' in2='SourceGraphic' operator='over' /></filter></svg>");
 		sb.Append("<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">");
 		sb.Append("<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>");
 		sb.Append("<link href=\"https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap\" rel=\"stylesheet\">");

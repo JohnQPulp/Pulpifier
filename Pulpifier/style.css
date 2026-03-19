@@ -116,6 +116,7 @@ body {
   z-index: 10;
   mask-image: linear-gradient(to left, transparent, #00000024 calc(50% - var(--offsetX) / 2), black calc(55% - var(--offsetX) / 2));
   pointer-events: none;
+  filter: url(#green-desmudger);
 }
 #foot > div:last-child {
   flex-grow: 1;
@@ -156,6 +157,7 @@ p.e {
   bottom: -45%;
   height: 130%;
   user-select: none;
+  filter: url(#green-desmudger);
 }
 .characters > img.f {
   transform: translateX(-50%) scaleX(-1);
