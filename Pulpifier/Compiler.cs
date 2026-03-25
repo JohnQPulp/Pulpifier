@@ -51,6 +51,7 @@ public static class Compiler {
 		string[] pulpLines = pulpText.Split('\n');
 
 		bool speakerCounterEnabled = true;
+		string imageExtension = "webp";
 		Dictionary<string, string> characterNames = new() { { "author", "" } };
 		Dictionary<string, string> characterExpressions = new();
 		Dictionary<string, int> characterExpressionCounters = new();
@@ -335,7 +336,7 @@ public static class Compiler {
 								string file = GetCharacterFile(name, characterAges, characterExpressions, characterExpressionCounters, characterExtras, activeSpeaker, activeThinker, speakerCounterEnabled, characterCounterOverrides);
 								imageFiles.TryAdd(file, new ImageMetadata(p));
 								imageFiles[file].ForegroundPulpLine ??= p;
-								images.Append($"<img src='{directory}{file}.webp' class='p-{i + 1}/{denominator}' ");
+								images.Append($"<img src='{directory}{file}.{imageExtension}' class='p-{i + 1}/{denominator}' ");
 								if (characterFilters.TryGetValue(name, out string filter) && name != "") {
 									images.Append($"style='filter:{filter}' ");
 								}
@@ -350,7 +351,7 @@ public static class Compiler {
 					if (activeObject != "") {
 						string file = "o-" + activeObject;
 						imageFiles.TryAdd(file, new ImageMetadata(p));
-						images.Append($"<img src='{directory}{file}.webp' class='c' />");
+						images.Append($"<img src='{directory}{file}.{imageExtension}' class='c' />");
 					}
 					imageHtmls.Add(images.ToString());
 
@@ -404,7 +405,7 @@ public static class Compiler {
 							imageFiles.TryAdd(file, new ImageMetadata(p));
 
 							if (activeCharacters.All(c => c != active)) {
-								speakers.Add(file + ".webp");
+								speakers.Add($"{file}.{imageExtension}");
 							} else {
 								speakers.Add("");
 							}
@@ -466,7 +467,7 @@ public static class Compiler {
 		sb.Append("headers=[`");
 		sb.Append(string.Join("`,`", headers));
 		sb.Append("`];");
-		sb.Append("</script><script>");
+		sb.Append($"</script><script>const imageExt = '{imageExtension}';");
 		sb.Append(ReadResource("script.js"));
 		sb.Append("</script><style>");
 		sb.Append(styleBuilder);

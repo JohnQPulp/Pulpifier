@@ -25,10 +25,10 @@ function buildPulp(i) {
   }
   let background = backgrounds[backgroundIds[i]].split(';');
   let speakerBack = "<div>";
-  if (speakers[i] === "c-author.webp") {
-    speakerBack += `<div class='speaker-back ed' style='background-image: url(images/c-author-abased.webp)'></div>`;
+  if (speakers[i] === `c-author.${imageExt}`) {
+    speakerBack += `<div class='speaker-back ed' style='background-image: url(images/c-author-abased.${imageExt})'></div>`;
     if (i === 0) {
-      speakerBack += `<div class='speaker-back ned' style='background-image: url(images/c-author.webp)'></div>`;
+      speakerBack += `<div class='speaker-back ned' style='background-image: url(images/c-author.${imageExt})'></div>`;
     }
   } else if (speakers[i] !== "") {
     speakerBack += `<div class='speaker-back' style='background-image: url(images/${speakers[i]})'></div>`;
@@ -37,7 +37,7 @@ function buildPulp(i) {
 
   return (
 `<div id='pulp'>
-  <div id='back' style='background-image: url("images/b-${background[0]}.webp");${background.length === 1 ? "" : ("filter:" + background[1])}'></div>
+  <div id='back' style='background-image: url("images/b-${background[0]}.${imageExt}");${background.length === 1 ? "" : ("filter:" + background[1])}'></div>
   ${imageHtmls[i]}
   <div id='foot'>
     <div>${speakerBack}</div>
