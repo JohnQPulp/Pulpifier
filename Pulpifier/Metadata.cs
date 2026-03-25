@@ -15,6 +15,8 @@ public class Metadata {
 	public required Dictionary<string, string> Links { get; init; }
 	public required string Blurb { get; init; }
 	public string? Blurb2 { get; init; }
+	public bool? UseAvif { get; init; }
+	public string ImageExtension => UseAvif == true ? "avif" : "webp";
 
 	public static Metadata Parse(string json) {
 		Metadata metadata = JsonSerializer.Deserialize<Metadata>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });

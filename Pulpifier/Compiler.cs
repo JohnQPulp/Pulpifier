@@ -33,7 +33,7 @@ public static class Compiler {
 
 	public static string BuildHtml(string rawText, string pulpText) => BuildHtml(rawText, pulpText, out _);
 
-	public static string BuildHtml(string rawText, string pulpText, out Dictionary<string, ImageMetadata> imageFiles) {
+	public static string BuildHtml(string rawText, string pulpText, out Dictionary<string, ImageMetadata> imageFiles, string imageExtension = "webp") {
 		StringBuilder sb = new StringBuilder();
 		sb.AppendLine("<div id='app'></div>");
 		sb.AppendLine("<style>");
@@ -51,7 +51,6 @@ public static class Compiler {
 		string[] pulpLines = pulpText.Split('\n');
 
 		bool speakerCounterEnabled = true;
-		string imageExtension = "webp";
 		Dictionary<string, string> characterNames = new() { { "author", "" } };
 		Dictionary<string, string> characterExpressions = new();
 		Dictionary<string, int> characterExpressionCounters = new();

@@ -4,12 +4,12 @@ using Pulp.Pulpifier;
 
 string directory = Path.GetFullPath(args[0], Directory.GetCurrentDirectory());
 string jsonText = File.ReadAllText(Path.Combine(directory, "metadata.json"));
-Metadata.Parse(jsonText);
+Metadata metadata = Metadata.Parse(jsonText);
 
 string rawText = File.ReadAllText(Path.Combine(directory, "book.txt"));
 string pulpText = File.ReadAllText(Path.Combine(directory, "pulp.txt"));
 
-string html = Compiler.BuildHtml(rawText, pulpText, out Dictionary<string, ImageMetadata> imageFiles);
+string html = Compiler.BuildHtml(rawText, pulpText, out Dictionary<string, ImageMetadata> imageFiles, metadata.ImageExtension);
 File.WriteAllText(Path.Combine(directory, "out.html"), html);
 
 if (args.Length == 1) {
@@ -44,7 +44,7 @@ if (args.Length == 1) {
 
 		string imageDir = Path.Combine(directory, "images");
 		foreach (string file in filesToPrint) {
-			bool found = File.Exists(Path.Combine(imageDir, $"{file}.webp"));
+			bool found = File.Exists(Path.Combine(imageDir, $"{file}.{metadata.ImageExtension}"));
 			int? fore = imageFiles[file].ForegroundPulpLine;
 			Console.WriteLine($"{fore,5} {imageFiles[file].PulpLine,5} {file}{(found ? "" : " (missing)")}");
 		}
