@@ -9,7 +9,14 @@ Metadata metadata = Metadata.Parse(jsonText);
 string rawText = File.ReadAllText(Path.Combine(directory, "book.txt"));
 string pulpText = File.ReadAllText(Path.Combine(directory, "pulp.txt"));
 
-string html = Compiler.BuildHtml(rawText, pulpText, out Dictionary<string, ImageMetadata> imageFiles, metadata.ImageExtension);
+Dictionary<string, ImageMetadata> imageFiles;
+string html;
+try {
+	html = Compiler.BuildHtml(rawText, pulpText, out imageFiles, metadata.ImageExtension);
+} catch (Exception ex) {
+	Console.WriteLine(ex);
+	return 1;
+}
 File.WriteAllText(Path.Combine(directory, "out.html"), html);
 
 if (args.Length == 1) {
@@ -68,3 +75,5 @@ if (args.Length == 1) {
 		throw new Exception($"Invalid arg \"{args[1]}\".");
 	}
 }
+
+return 0;
