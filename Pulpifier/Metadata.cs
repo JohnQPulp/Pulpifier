@@ -23,6 +23,7 @@ public class Metadata {
 		Metadata metadata = JsonSerializer.Deserialize<Metadata>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 		if (metadata.Title == "" || metadata.ShortTitle == "" || metadata.Author == "" || metadata.Year == 0 || metadata.Source == "" || metadata.Words == 0 || metadata.Repo == "" || metadata.Links.Count == 0 || metadata.Links.Any(kvp => kvp.Key == "" || kvp.Value == "") || metadata.Blurb == "") throw new Exception("Missing required metadata.");
 		if (metadata.PulpDate != null && metadata.PulpDate < new DateOnly(2026, 1, 1)) throw new Exception("Bad date.");
+		if (!metadata.Title.Contains(metadata.ShortTitle)) throw new Exception("Bad short title.");
 		return metadata;
 	}
 }
