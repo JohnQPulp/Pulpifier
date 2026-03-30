@@ -7,6 +7,7 @@ public class Metadata {
 	public required string ShortTitle { get; init; }
 	public string VNTitle => ShortTitle + ": The Visual Novel";
 	public required string Author { get; init; }
+	public string? Translator { get; init; }
 	public required int Year { get; init; }
 	public required string Source { get; init; }
 	public required int Words { get; init; }
