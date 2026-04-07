@@ -97,7 +97,7 @@ body {
 #foot > div:first-child {
   width: 20em;
   padding-left: 1em;
-  background: linear-gradient(to left, #f8efd4f0, #f8efd4f0 4em, #f8efd445 20em, transparent 21em);
+  background: linear-gradient(to left, #f8efd4f0, #f8efd4e0 4em, #f8efd445 20em, transparent 21em);
 }
 #foot > div:first-child > div {
   width: 100%;
@@ -122,7 +122,7 @@ body {
 }
 #foot > div:last-child {
   flex-grow: 1;
-  background: linear-gradient(to right, #f8efd4f0, #f8efd4f0 4em, #f8efd445 20em, transparent 21em);
+  background: linear-gradient(to right, #f8efd4f0, #f8efd4e0 4em, #f8efd445 20em, transparent 21em);
   max-width: 21em;
   min-width: var(--vwUnit);
 }
@@ -133,7 +133,7 @@ b.speaker {
   padding: 0.25em 5em;
   min-width: 2em;
   text-align: center;
-  background: linear-gradient(to right, transparent 0, #f8efd4f0 4.5em, #f8efd4f0 calc(100% - 4.5em), transparent 100%);
+  background: linear-gradient(to right, transparent 0, #f8efd4e0 4em, #f8efd4f0 5em, #f8efd4f0 calc(100% - 5em), #f8efd4e0 calc(100% - 4em), transparent 100%);
   font-size: calc(var(--vnFontSizeReally) * 1.1);
   white-space: nowrap;
 }
