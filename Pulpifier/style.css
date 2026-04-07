@@ -83,6 +83,8 @@ body {
   display: flow-root;
   font-size: var(--vnFontSizeReally);
   line-height: var(--vnLineHeight);
+  position: relative;
+  z-index: 100;
 }
 #text h1, #text h2, #text h3, #text h4, #text h5, #text h6 {
   text-align: center;
