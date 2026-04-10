@@ -30,6 +30,10 @@ if (args.Length == 1) {
 				return imageFiles[s1].PulpLine - imageFiles[s2].PulpLine;
 			}
 
+			if (s1.StartsWith("o-") && s2.StartsWith("o-")) {
+				return imageFiles[s1].PulpLine - imageFiles[s2].PulpLine;
+			}
+
 			if (s1.StartsWith("b-") || s1.StartsWith("o-") || s2.StartsWith("b-") || s2.StartsWith("o-")) {
 				return string.Compare(s1, s2, StringComparison.Ordinal);
 			}
