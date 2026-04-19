@@ -121,7 +121,7 @@ body {
   top: calc(-1 * var(--offsetY));
   z-index: 10;
   pointer-events: none;
-  filter: url(#green-desmudger);
+  filter: url(#green-desmudger) drop-shadow(0 0 0.75em black);
 }
 #foot > div:last-child {
   flex-grow: 1;
