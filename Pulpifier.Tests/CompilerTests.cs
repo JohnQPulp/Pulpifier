@@ -322,6 +322,10 @@ public class CompilerTests {
 	[DataRow("\"Foo.\"\n\n\"Bar.\"\n\n\"Fizz.\"\n", "\"Foo.\"\nn:r=R;n:j=J;s=r;c=r,j\n\n\"Bar.\"\ns=j;i=3\n\n\"Fizz.\"\ns=r\n", "c-j-s3.webp")]
 	[DataRow("\"Foo.\"\n\n\"Bar.\"\n\n\"Fizz.\"\n", "\"Foo.\"\nn:r=R;n:j=J;s=r;c=r,j\n\n\"Bar.\"\ns=j;i:r=3\n\n\"Fizz.\"\ns=r\n", "c-r-3.webp")]
 	[DataRow("\"Foo.\"\n\n\"Bar.\"\n\n\"Fizz.\"\n", "\"Foo.\"\nn:r=R;n:j=J;s=r;c=r,j\n\n\"Bar.\"\ns=j;i:j=3\n\n\"Fizz.\"\ns=r\n", "c-j-s3.webp")]
+	[DataRow("\"Foo\"\n", "\"Foo\"\nn:r=R;e:r=g;s=r;e:r=z\n", "c-r-ez-s.webp")]
+	[DataRow("\"Foo\"\n", "\"Foo\"\nn:r=R;e:r=g;i=2;s=r;i=3\n", "c-r-eg-s3.webp")]
+	[DataRow("\"Foo\"\n", "\"Foo\"\nn:r=R;c=r;e:r=g;i:r=2;e:r=x;i:r=1\n", "c-r-ex-1.webp")]
+	[DataRow("\"Foo\"\n", "\"Foo\"\nn:r=R;c=r;e:r=g;i:r=2;e:r=x;i:r=\n", "c-r-ex.webp")]
 	public void Compiler_BuildHtml_ContainsHtml(string rawText, string pulpText, string htmlSnippet) {
 		string html = Compiler.BuildHtml(rawText, pulpText);
 		Assert.Contains(htmlSnippet, html);
