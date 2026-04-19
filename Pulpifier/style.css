@@ -111,8 +111,8 @@ body {
   font-size: var(--speakerSize);
   --offsetY: 9em;
   --offsetX: 50%;
-  width: 200%;
-  left: calc(-1 * var(--offsetX));
+  width: calc(200% + 60em);
+  left: calc(-1 * var(--offsetX) - 30em);
   height: calc(100 * var(--vhUnit) + var(--offsetY));
   background-position: center top;
   background-size: 60em;
