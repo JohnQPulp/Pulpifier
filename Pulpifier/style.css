@@ -63,7 +63,7 @@ body {
 #foot {
   width: 102%;
   font-size: calc(var(--vnFontSize) * var(--vhUnit));
-  min-height: 15em;
+  min-height: 15.5em;
   display: flex;
   position: absolute;
   bottom: 1em;
@@ -76,6 +76,11 @@ body {
   width: 40em;
   position: relative;
   color: black;
+  box-sizing: border-box;
+  border: 3px double black;
+  padding: 0 0.2em;
+  z-index: 20;
+  box-shadow: 0 0 10px black, 0 0 10px black;
 }
 #text > div {
   width: calc(100% - 12px);
@@ -84,7 +89,6 @@ body {
   font-size: var(--vnFontSizeReally);
   line-height: var(--vnLineHeight);
   position: relative;
-  z-index: 100;
 }
 #text h1, #text h2, #text h3, #text h4, #text h5, #text h6 {
   text-align: center;
@@ -97,45 +101,47 @@ body {
 #foot > div:first-child {
   width: 20em;
   padding-left: 1em;
-  background: linear-gradient(to left, #f8efd4f0, #f8efd4e0 4em, #f8efd445 20em, transparent 21em);
+  display: flex;
+  align-items: flex-end;
 }
 #foot > div:first-child > div {
   width: 100%;
-  height: 100%;
-  font-size: var(--speakerSize);
+  height: 15.5em;
 }
 .speaker-back {
+  font-size: var(--speakerSize);
   --offsetY: 9em;
   --offsetX: 50%;
   width: 200%;
   left: calc(-1 * var(--offsetX));
-  height: calc(100% + var(--offsetY));
+  height: calc(100 * var(--vhUnit));
   background-position: center top;
   background-size: 60em;
   background-repeat: no-repeat;
   position: relative;
   top: calc(-1 * var(--offsetY));
   z-index: 10;
-  mask-image: linear-gradient(to left, transparent, #00000010 10%, #00000010 calc(45% - var(--offsetX) / 2), black calc(58% - var(--offsetX) / 2));
   pointer-events: none;
   filter: url(#green-desmudger);
 }
 #foot > div:last-child {
   flex-grow: 1;
-  background: linear-gradient(to right, #f8efd4f0, #f8efd4e0 4em, #f8efd445 20em, transparent 21em);
   max-width: 21em;
   min-width: var(--vwUnit);
 }
 b.speaker {
   position: absolute;
-  top: -2.1em;
-  left: -5em;
-  padding: 0.25em 5em;
+  top: -2.6em;
+  left: calc(-0.22em + 3px);
+  padding: 0.25em 0.4em;
   min-width: 2em;
   text-align: center;
-  background: linear-gradient(to right, transparent 0, #f8efd4e0 4em, #f8efd4f0 5em, #f8efd4f0 calc(100% - 5em), #f8efd4e0 calc(100% - 4em), transparent 100%);
   font-size: calc(var(--vnFontSizeReally) * 1.1);
   white-space: nowrap;
+  background-color: #f8efd4f0;
+  box-sizing: border-box;
+  border: 3px double black;
+  box-shadow: 0 0 10px black, 0 0 10px black;
 }
 b.speaker + div > span.d, span.d-signal ~ span.d {
   font-weight: var(--vnDialogueFontWeight);
@@ -197,7 +203,7 @@ img.p-3\/4 { left: 75%; }
   font-size: 1.2em;
 }
 .margin {
-  padding: 0 2.5em;
+  padding: 0 1.5em;
   box-sizing: border-box;
 }
 .fright {
