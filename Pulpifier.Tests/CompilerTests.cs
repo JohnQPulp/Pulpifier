@@ -94,6 +94,7 @@ public class CompilerTests {
 	[DataRow("“‘Foo. Fizz. Buzz. Bar.’”\n", "“‘Foo.’”\n\n\n“‘Fizz. Buzz.’”\n\n\n“‘Bar.’”\n\n")]
 	[DataRow("“‘Foo. Fizz. Buzz. Bar.’”\n", "“‘Foo.’”\n\n\n“‘Fizz.’”\n\n\n“‘Buzz.’”\n\n\n“‘Bar.’”\n\n")]
 	[DataRow("“‘Foo. Fizz,’ says the guy. So I says to the guy. I says: ‘Buzz. Bar.’”\n", "“‘Foo.’”\n\n\n“‘Fizz,’ says the guy. So I says to the guy. I says: ‘Buzz.’”\n\n\n“‘Bar.’”\n\n")]
+	[DataRow("Ăß©\n", "Ăß©\n\n")]
 	public void Compiler_BuildHtml_GoodText(string rawText, string pulpText) {
 		Compiler.BuildHtml(rawText, pulpText);
 		Assert.IsTrue(Compiler.TryBuildHtml(rawText, pulpText, out string _));
@@ -194,6 +195,8 @@ public class CompilerTests {
 	[DataRow("“‘Foo. Bar.’”\n", "“‘Foo.”\n\n\n“Bar.’”\n\n")]
 	[DataRow("“‘Foo. Bar.’”\n", "“‘Foo.”\n\n\n“‘Bar.’”\n\n")]
 	[DataRow("“‘Foo. Bar.’”\n", "“‘Foo.’”\n\n\n“Bar.’”\n\n")]
+	[DataRow("♔\n", "♔\n\n")]
+	[DataRow("Foo. ₿ar.\n", "Foo.\n\n\n₿ar.\n\n")]
 	public void Compiler_BuildHtml_BadText(string rawText, string pulpText) {
 		Assert.IsFalse(Compiler.TryBuildHtml(rawText, pulpText, out string _));
 	}

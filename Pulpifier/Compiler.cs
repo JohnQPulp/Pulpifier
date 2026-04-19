@@ -20,7 +20,7 @@ internal enum Modifier {
 
 public readonly record struct ViewScale(int? Width, int? Height, int? Top);
 
-public static class Compiler {
+public static partial class Compiler {
 	public static bool TryBuildHtml(string rawText, string pulpText, out string html) {
 		try {
 			html = BuildHtml(rawText, pulpText);
@@ -104,6 +104,7 @@ public static class Compiler {
 					string pulpLine = pulpLines[p].Replace("\uFEFF", string.Empty).Replace("\u200A…", "…").Replace("\u00a0", " ").Replace("“\u200a’", "“’").Replace("“\u200a‘", "“‘").Replace("’\u200a”", "’”");
 
 					string cleanPulpLine = Regex.Replace(pulpLine, "<e>.*?</e>", "");
+					ThrowIfContainsUnsupportedFontChars(cleanPulpLine);
 					cleanPulpLine = Regex.Replace(cleanPulpLine, "<div class='[a-z ]+'>(.*?)</div>", "$1");
 					cleanPulpLine = Regex.Replace(cleanPulpLine, "<span class='[a-z ]+'>(.*?)</span>", "$1");
 					cleanPulpLine = cleanPulpLine.Replace("&nbsp;", " ");
@@ -533,6 +534,15 @@ public static class Compiler {
 		if (line.ContainsAny(InvalidChars)) throw new Exception("Contains invalid char.");
 		if (line.Contains("...") || line.Contains(". . .") || line.Contains("--")) throw new Exception("Contains invalid sequence.");
 		if (line != line.Trim()) throw new Exception("Contains leading/trailing whitespace.");
+	}
+
+	// If more characters are needed, update this regex, and regenerate the fonts files to match:
+	// pyftsubset "NotoSerif[wdth,wght].ttf" --unicodes="U+0000-017F,U+2000-206f" --layout-features="*" --flavor="woff2" --output-file="NotoSerif-Variable-Pulp.woff2"
+	// pyftsubset "NotoSerif-Italic[wdth,wght].ttf" --unicodes="U+0000-017F,U+2000-206f" --layout-features="*" --flavor="woff2" --output-file="NotoSerif-Italic-Variable-Pulp.woff2"
+	[GeneratedRegex("^[\u0000-\u017f\u2000-\u206f]*$")]
+	private static partial Regex SupportedFontChars();
+	private static void ThrowIfContainsUnsupportedFontChars(string line) {
+		if (!SupportedFontChars().IsMatch(line)) throw new Exception("Contains character outside font's supported unicode ranges.");
 	}
 
 	private static void ThrowIfBadKey(string key) {
