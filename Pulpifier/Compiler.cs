@@ -75,6 +75,7 @@ public static class Compiler {
 		HashSet<Modifier> modifiers = new();
 		string joinedLine = "";
 		Dictionary<string, string> characterCounterOverrides = new();
+		bool singleQuoteEnding = false;
 
 		int r = 0, p = 0;
 		try {
@@ -111,20 +112,31 @@ public static class Compiler {
 					cleanPulpLine = cleanPulpLine.Replace("&nbsp;", " ");
 					if (cleanPulpLine == "") {
 						if (pulpLine == "") throw new Exception("Should only have empty lines if there are editor's notes.");
+					} else if (singleQuoteEnding && !cleanPulpLine.StartsWith("“‘")) {
+						throw new Exception("Failed to continue single quotes.");
 					} else {
+						singleQuoteEnding = false;
 						if (constructedLine.Count(c => c == '"') % 2 == 1 && !cleanPulpLine.StartsWith('"')) throw new Exception("Pulp line should continue ongoing quote.");
 						string constructionPulpLine = cleanPulpLine;
 						if ((constructionPulpLine.StartsWith('"') && rawLine[constructedLine.Length] != '"') || (constructionPulpLine.StartsWith('“') && rawLine[constructedLine.Length] != '“')) {
 							constructionPulpLine = constructionPulpLine[1..];
+							if (constructionPulpLine.StartsWith('‘') && rawLine[constructedLine.Length] != '‘') {
+								constructionPulpLine = constructionPulpLine[1..];
+							}
 						}
 						if ((constructionPulpLine.EndsWith('"') && rawLine[constructedLine.Length + constructionPulpLine.Length - 1] != '"') || (constructionPulpLine.EndsWith('”') && rawLine[constructedLine.Length + constructionPulpLine.Length - 1] != '”')) {
 							constructionPulpLine = constructionPulpLine[..^1];
+							if (constructionPulpLine.EndsWith('’') && rawLine[constructedLine.Length + constructionPulpLine.Length - 1] != '’') {
+								constructionPulpLine = constructionPulpLine[..^1];
+								singleQuoteEnding = true;
+							}
 						}
 						constructedLine += constructionPulpLine + ' ';
 					}
 
 					if (cleanPulpLine.Count(c => c == '"') % 2 == 1) throw new Exception("Unmatched quotes in pulp line.");
 					if (cleanPulpLine.Count(c => c == '“') != cleanPulpLine.Count(c => c == '”')) throw new Exception("Unmatched quotes in pulp line.");
+					if (cleanPulpLine.Count(c => c == '‘') > cleanPulpLine.Count(c => c == '’')) throw new Exception("Unmatched single quotes in pulp line.");
 
 					if (pulpLines[p + 2] != string.Empty) throw new Exception("Missing pulp line break.");
 
