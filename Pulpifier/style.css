@@ -61,14 +61,13 @@ body {
   background-size: cover;
 }
 #foot {
-  width: 102%;
+  width: 100%;
   font-size: calc(var(--vnFontSize) * var(--vhUnit));
   min-height: 15.5em;
   display: flex;
   position: absolute;
   bottom: 1em;
   justify-content: center;
-  left: -1%;
 }
 #text {
   background-color: #f8efd4f0;
@@ -146,7 +145,7 @@ b.speaker + div > span.d, span.d-signal ~ span.d {
   font-weight: var(--vnDialogueFontWeight);
 }
 p.e {
-  margin: 0.25em 0.25em 0.25em 1em;
+  margin: 0.25em 0.5em;
   font-size: 0.8em;
   display: var(--ed);
 }
@@ -187,7 +186,10 @@ img.p-3\/4 { left: 75%; }
   left: calc(50 * var(--vwUnit));
   height: calc(60 * var(--vhUnit));
   filter: opacity(96%);
-  box-shadow: 0 0 20px black;
+  border: 3px double black;
+  box-sizing: border-box;
+  background-color: #f1dfbb;
+  box-shadow: 0 0 1em black, 0 0 1em black;
 }
 .upper {
   font-variant: small-caps;
