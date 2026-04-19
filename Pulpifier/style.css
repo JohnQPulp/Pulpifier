@@ -26,7 +26,7 @@ body {
 }
 #app {
   position: relative;
-  font-family: "Noto Serif", serif;
+  font-family: "Noto Serif Variable", "Noto Serif", serif;
   line-height: 1.4;
   width: calc(100 * var(--vwUnit));
   height: calc(100 * var(--vhUnit));

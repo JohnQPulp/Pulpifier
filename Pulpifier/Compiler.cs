@@ -40,9 +40,6 @@ public static class Compiler {
 		sb.Append(ReadResource("style.css"));
 		sb.Append("</style>");
 		sb.Append("<svg width='0' height='0'><filter id='green-desmudger'><feColorMatrix in='SourceGraphic' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -2 4.3 0 0 -1' result='green-mask' /><feComponentTransfer in='SourceGraphic' result='green-func'><feFuncR type='linear' slope='1.3' /><feFuncG type='table' tableValues='0 0.2 0.4 0.6 0.75 0.9' /><feFuncB type='table' tableValues='0 0.2 0.4 0.6 0.85 1.3' /></feComponentTransfer><feComposite in='green-func' in2='green-mask' operator='in' result='green-fix' /><feComposite in='green-fix' in2='SourceGraphic' operator='over' result='green-done' /><feColorMatrix in='green-done' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -1 2 -1 0 0' result='green-mask-2' /><feComponentTransfer in='green-done' result='green-func-2'><feFuncR type='linear' slope='1.2' /><feFuncG type='linear' slope='0.95' /></feComponentTransfer><feComposite in='green-func-2' in2='green-mask-2' operator='in' result='green-fix-2' /><feComposite in='green-fix-2' in2='green-done' operator='over' result='green-done-2' /><feColorMatrix in='green-done-2' type='matrix' values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 -1 -1 0 0' result='red-mask' /><feComponentTransfer in='green-done-2' result='red-func'><feFuncR type='linear' slope='0.9' /> </feComponentTransfer><feComposite in='red-func' in2='red-mask' operator='in' result='red-fix' /><feComposite in='red-fix' in2='green-done-2' operator='over' /></filter></svg>");
-		sb.Append("<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">");
-		sb.Append("<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>");
-		sb.Append("<link href=\"https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap\" rel=\"stylesheet\">");
 		sb.Append("<script>let i = 0; const htmlArr = [");
 
 		StringBuilder styleBuilder = new StringBuilder();
