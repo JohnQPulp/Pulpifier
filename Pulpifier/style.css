@@ -76,7 +76,7 @@ body {
   position: relative;
   color: black;
   box-sizing: border-box;
-  border: 3px double black;
+  border: min(3px, 0.3em) double black;
   z-index: 20;
   box-shadow: 0 0 0.4em black, 0 0 0.4em black;
 }
@@ -131,14 +131,14 @@ body {
 b.speaker {
   position: absolute;
   padding: 0.25em 0.4em;
-  left: -3px;
+  left: calc(-1 * min(3px, 0.3em));
   bottom: calc(100% + 0.5em);
   min-width: 2em;
   text-align: center;
   font-size: calc(var(--vnFontSizeReally) * 1.1);
   white-space: nowrap;
   background-color: #f8efd4f0;
-  border: 3px double black;
+  border: min(3px, 0.3em) double black;
   box-shadow: 0 0 0.35em black, 0 0 0.35em black;
 }
 b.speaker + div > span.d, span.d-signal ~ span.d {
@@ -186,7 +186,7 @@ img.p-3\/4 { left: 75%; }
   left: calc(50 * var(--vwUnit));
   height: calc(60 * var(--vhUnit));
   filter: opacity(96%);
-  border: 3px double black;
+  border: min(3px, 0.3em) double black;
   box-sizing: border-box;
   background-color: #f1dfbb;
   box-shadow: 0 0 1em black, 0 0 1em black;
