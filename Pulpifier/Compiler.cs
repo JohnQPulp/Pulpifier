@@ -390,6 +390,13 @@ public static partial class Compiler {
 								headers.Add($"{p / 3}|{level}|{text}");
 								return $"<h{level} class='upper'>{text}</h{level}>";
 							}, RegexOptions.Singleline);
+
+							if (p == 0 && part.Contains("<br>")) {
+								string[] partParts = part.Split("<br>");
+								if (partParts.Length != 2 && partParts.Length != 3) throw new Exception("Bad title text.");
+								part = "<div class='titletext center'>" + string.Join("<br>", partParts.Select(pp => $"<span>{pp}</span>")) + "</div>";
+							}
+
 							htmlParts.Add(part);
 						}
 					}

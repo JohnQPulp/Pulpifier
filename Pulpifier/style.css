@@ -203,6 +203,12 @@ img.p-3\/4 { left: 75%; }
 .big {
   font-size: 1.2em;
 }
+.bigger {
+  font-size: 2em;
+}
+.bold {
+  font-weight: bold;
+}
 .margin {
   padding: 0 1.5em;
   box-sizing: border-box;
@@ -215,4 +221,17 @@ img.p-3\/4 { left: 75%; }
 }
 .mono {
   font-family: monospace;
+}
+.titletext {
+  margin: 0.5em 0;
+}
+.titletext > span {
+  font-size: 1.2em;
+  font-variant: small-caps;
+}
+.titletext > span:first-child {
+  font-size: 2em;
+}
+.titletext > span:not(:last-child) {
+  font-weight: bold;
 }

@@ -339,6 +339,10 @@ public class CompilerTests {
 	[DataRow("\"Foo\"\n", "\"Foo\"\nn:r=R;e:r=g;i=2;s=r;i=3\n", "c-r-eg-s3.webp")]
 	[DataRow("\"Foo\"\n", "\"Foo\"\nn:r=R;c=r;e:r=g;i:r=2;e:r=x;i:r=1\n", "c-r-ex-1.webp")]
 	[DataRow("\"Foo\"\n", "\"Foo\"\nn:r=R;c=r;e:r=g;i:r=2;e:r=x;i:r=\n", "c-r-ex.webp")]
+	[DataRow("Foo. Bar.\n\nFizz. Buzz.\n", "Foo. Bar.\n\n\nFizz.\n\n\nBuzz.\n\n", "<div>Foo. Bar.</div>")]
+	[DataRow("Foo. Bar.\n\nFizz. Buzz.\n", "Foo. Bar.\n\n\nFizz.\n\n\nBuzz.\n\n", "<div>Fizz.</div>")]
+	[DataRow("Foo.<br>Bar.\n\nFizz. Buzz.\n", "Foo.<br>Bar.\n\n\nFizz.\n\n\nBuzz.\n\n", "<div class='titletext center'><span>Foo.</span><br><span>Bar.</span></div>")]
+	[DataRow("Foo.<br>Bar.\n\nFizz. Buzz.\n", "Foo.<br>Bar.\n\n\nFizz.\n\n\nBuzz.\n\n", "<div>Buzz.</div>")]
 	public void Compiler_BuildHtml_ContainsHtml(string rawText, string pulpText, string htmlSnippet) {
 		string html = Compiler.BuildHtml(rawText, pulpText);
 		Assert.Contains(htmlSnippet, html);
