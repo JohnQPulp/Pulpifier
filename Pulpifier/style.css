@@ -190,6 +190,7 @@ img.p-3\/4 { left: 75%; }
   box-sizing: border-box;
   background-color: #f1dfbb;
   box-shadow: 0 0 1em black, 0 0 1em black;
+  pointer-events: none;
 }
 .upper {
   font-variant: small-caps;
