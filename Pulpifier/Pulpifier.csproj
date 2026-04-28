@@ -9,5 +9,6 @@
     <EmbeddedResource Include="script.js" />
     <EmbeddedResource Include="style.css" />
     <EmbeddedResource Include="books.json" />
+    <EmbeddedResource Include="authors.json" />
   </ItemGroup>
 </Project>

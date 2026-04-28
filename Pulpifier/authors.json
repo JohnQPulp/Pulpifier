@@ -1,0 +1,11 @@
+{
+  "John Steinbeck": ["Cup of Gold", "Tortilla Flat", "In Dubious Battle", "The Red Pony", "Of Mice and Men", "The Grapes of Wrath", "The Moon is Down", "Cannery Row", "The Pearl", "East of Eden", "The Winter of Our Discontent", "Travels with Charley"],
+  "John Buchan": ["The Thirty-Nine Steps", "Greenmantle", "Mr. Standfast", "The Three Hostages", "The Island of Sheep"],
+  "Mark Twain": ["The Adventures of Tom Sawyer", "\"The Awful German Language\"", "The Prince and the Pauper", "The Adventures of Huckleberry Finn", "A Connecticut Yankee in King Arthur's Court", "Those Extraordinary Twins", "Pudd’nhead Wilson", "\"Fenimore Cooper's Literary Offenses\"", "Personal Recollections of Joan of Arc"],
+  "Ernest Hemingway": ["The Sun Also Rises", "A Farewell to Arms", "For Whom the Bell Tolls", "The Old Man and the Sea", "A Moveable Feast"],
+  "Robert Louis Stevenson": ["Treasure Island", "Prince Otto", "Dr. Jekyll and Mr. Hyde", "Kidnapped", "The Black Arrow"],
+  "F. Scott Fitzgerald": ["This Side of Paradise", "The Beautiful and the Damned", "The Great Gatsby", "\"Babylon Revisited\"", "Tender is the Night"],
+  "Agatha Christie": ["The Mysterious Affair at Styles", "The Murder of Roger Ackroyd", "The Murder at the Vicarage", "Murder on the Orient Express", "Death on the Nile", "And Then There Were None", "Dead Man's Folly"],
+  "Frances Hodgson Burnett": ["Little Lord Fauntleroy", "Sara Crewe", "The Making of a Marchioness", "A Little Princess", "The Secret Garden"],
+  "Jane Austen": ["Sense and Sensibility", "Pride and Prejudice", "Mansfield Park", "Emma", "Northanger Abbey", "Persuasion"]
+}
