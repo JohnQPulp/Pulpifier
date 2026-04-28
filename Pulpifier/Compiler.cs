@@ -239,10 +239,13 @@ public static partial class Compiler {
 								styleBuilder.AppendLine($".speaker-back[style*='background-image: url(images/c-{zn}.'], .speaker-back[style*='background-image: url(images/c-{zn}-'] {{ {zcss}; }}");
 								break;
 							case 'f':
+								string filterValue = Regex.Replace(value, @"blur\((\d+)px\)", "blur(calc($1 / 15 * var(--vwUnit)))");
+								if (value.Contains("blur") && value == filterValue) throw new Exception("Bad blur filter fixup.");
+
 								if (key.StartsWith("f:c:")) {
-									SetCharacterAttribute(key.Substring(2), value, characterNames, characterFilters);
+									SetCharacterAttribute(key.Substring(2), filterValue, characterNames, characterFilters);
 								} else if (key.StartsWith("f:b:")) {
-									SetAttribute(key.Substring(2), value, backgroundNames, backgroundFilters);
+									SetAttribute(key.Substring(2), filterValue, backgroundNames, backgroundFilters);
 								} else {
 									throw new Exception($"Invalid filter key \"{key}\".");
 								}

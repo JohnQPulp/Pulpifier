@@ -84,6 +84,7 @@ public class CompilerTests {
 	[DataRow("Foo\n", "Foo\nv=,,\n")]
 	[DataRow("Foo\n", "<div class='upper'>Foo</div>\n\n")]
 	[DataRow("Foo\n", "Foo\nb=foo;f:b:foo=blur(5px)\n")]
+	[DataRow("Foo\n", "Foo\nn:foo=Foo;c=foo;f:c:foo=blur(5px)\n")]
 	[DataRow("Foo\n", "Foo\nn:foo=Foo;c=foo;i:foo=2\n")]
 	[DataRow("“Foo.”\n", "“Foo.”\nn:foo=Foo;s=foo;i:foo=2\n")]
 	[DataRow("“Foo.”\n", "“Foo.”\nn:foo=Foo;s=foo;i=2\n")]
@@ -343,6 +344,8 @@ public class CompilerTests {
 	[DataRow("Foo. Bar.\n\nFizz. Buzz.\n", "Foo. Bar.\n\n\nFizz.\n\n\nBuzz.\n\n", "<div>Fizz.</div>")]
 	[DataRow("Foo.<br>Bar.\n\nFizz. Buzz.\n", "Foo.<br>Bar.\n\n\nFizz.\n\n\nBuzz.\n\n", "<div class='titletext center'><span>Foo.</span><br><span>Bar.</span></div>")]
 	[DataRow("Foo.<br>Bar.\n\nFizz. Buzz.\n", "Foo.<br>Bar.\n\n\nFizz.\n\n\nBuzz.\n\n", "<div>Buzz.</div>")]
+	[DataRow("Foo\n", "Foo\nb=foo;f:b:foo=blur(5px)\n", "blur(calc(5 / 15 * var(--vwUnit)))")]
+	[DataRow("Foo\n", "Foo\nn:foo=Foo;c=foo;f:c:foo=blur(3px)\n", "blur(calc(3 / 15 * var(--vwUnit)))")]
 	public void Compiler_BuildHtml_ContainsHtml(string rawText, string pulpText, string htmlSnippet) {
 		string html = Compiler.BuildHtml(rawText, pulpText);
 		Assert.Contains(htmlSnippet, html);
@@ -353,6 +356,8 @@ public class CompilerTests {
 	[DataRow("\"Foo.\"\n\n\"Bar.\"\n\n\"Fizz.\"\n", "\"Foo.\"\nn:r=R;n:j=J;s=r;c=r,j;i=3\n\n\"Bar.\"\ns=j\n\n\"Fizz.\"\ns=r\n", "c-j-3.webp")]
 	[DataRow("\"Foo.\"\n\n\"Bar.\"\n\n\"Fizz.\"\n", "\"Foo.\"\nn:r=R;n:j=J;s=r;c=r,j;i:r=3\n\n\"Bar.\"\ns=j\n\n\"Fizz.\"\ns=r\n", "c-j-3.webp")]
 	[DataRow("\"Foo.\"\n\n\"Bar.\"\n\n\"Fizz.\"\n", "\"Foo.\"\nn:r=R;n:j=J;s=r;c=r,j;i:j=3\n\n\"Bar.\"\ns=j\n\n\"Fizz.\"\ns=r\n", "c-r-s3.webp")]
+	[DataRow("Foo\n", "Foo\nb=foo;f:b:foo=blur(5px)\n", "blur(5px)")]
+	[DataRow("Foo\n", "Foo\nn:foo=Foo;c=foo;f:c:foo=blur(5px)\n", "blur(5px)")]
 	public void Compiler_BuildHtml_DoesNotContainsHtml(string rawText, string pulpText, string htmlSnippet) {
 		string html = Compiler.BuildHtml(rawText, pulpText);
 		Assert.DoesNotContain(htmlSnippet, html);
