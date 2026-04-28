@@ -121,6 +121,8 @@ body {
   top: calc(-1 * var(--offsetY));
   z-index: 10;
   pointer-events: none;
+}
+#pulp:nth-child(2) .speaker-back {
   filter: url(#green-desmudger) drop-shadow(0 0 0.75em black);
 }
 #foot > div:last-child {
