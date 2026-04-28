@@ -559,7 +559,7 @@ public static partial class Compiler {
 		if (key.Length != 1) throw new Exception($"Key \"{key}\" should be single letter.");
 	}
 
-	private static string ReadResource(string name)
+	internal static string ReadResource(string name)
 	{
 		Assembly asm = Assembly.GetExecutingAssembly();
 		using Stream stream = asm.GetManifestResourceStream("Pulp.Pulpifier." + name);
