@@ -67,12 +67,12 @@ function prevPulp() {
   }
 }
 document.addEventListener("keydown", function (e) {
-  if (e.currentTarget.activeElement.tagName !== "INPUT") {
-    if (e.key === "ArrowRight") {
-      nextPulp();
-    } else if (e.key === "ArrowLeft") {
-      prevPulp();
-    }
+  if (e.key === "ArrowRight" || e.key === "d") {
+    document.activeElement.blur();
+    nextPulp();
+  } else if (e.key === "ArrowLeft" || e.key === "a") {
+    document.activeElement.blur();
+    prevPulp();
   }
 });
 document.addEventListener("pointerdown", function (e) {
