@@ -88,6 +88,7 @@ public class CompilerTests {
 	[DataRow("Foo\n", "Foo\nn:foo=Foo;c=foo;i:foo=2\n")]
 	[DataRow("“Foo.”\n", "“Foo.”\nn:foo=Foo;s=foo;i:foo=2\n")]
 	[DataRow("“Foo.”\n", "“Foo.”\nn:foo=Foo;s=foo;i=2\n")]
+	[DataRow("“Foo.”\n", "“Foo.”\nn:foo=Foo;t=foo;i=2\n")]
 	[DataRow("“‘Foo. Bar.’”\n", "“‘Foo.’”\n\n\n“‘Bar.’”\n\n")]
 	[DataRow("“‘Foo. Bar.’ Fizz.”\n", "“‘Foo.’”\n\n\n“‘Bar.’”\n\n\n“Fizz.”\n\n")]
 	[DataRow("“‘Foo. Bar.’ Fizz.”\n", "“‘Foo.’”\n\n\n“‘Bar.’ Fizz.”\n\n")]

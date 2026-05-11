@@ -323,7 +323,7 @@ public static partial class Compiler {
 
 					if (characterCounterOverrides.Keys.Any(c => c != activeSpeaker && !activeCharacters.Contains(c))) throw new Exception("Bad character override.");
 					if (speakerCounterOverride != null) {
-						if (activeSpeaker == "") throw new Exception("Bad speaker override.");
+						if (activeSpeaker == "" && activeThinker == "") throw new Exception("Bad speaker override.");
 						characterCounterOverrides[activeSpeaker] = speakerCounterOverride;
 					}
 
