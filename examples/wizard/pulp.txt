@@ -1,38 +1,41 @@
-"I am a wizard."
-n:w=Wizard;c=w,,,;s=w;z:w=100,20,1
+The Wizard<br>John Q. Pulp
 
-"Here's an apple."
+
+“I am a wizard.”
+n:wizard=Wizard;c=wizard,,,;s=wizard;z:wizard=100,20,1
+
+“Here's an apple.”
 o=apple
 
-"Behold, now it is gone."
+“Behold, now it is gone.”
 o=
 
-"As am I."
-c=
+“As am I.”
+c=;m=nospeaker
 
-"Now I'm back actually."
-c=,w
+“Now I'm back actually.”
+c=,wizard;m=
 
-"And facing the other way!"
-c=,!w
-
-"Now I'm big!"
+“Now I'm big!”
 v=100,125
 
-"Now I'm normal."
+“Now I'm normal.”
 v=100,100
 
-"Now I'm small!"
+“Now I'm small!”
 v=100,75
 
-"Now normal."
+“Now normal.”
 v=
 
-"Now moving."
+“Now moving.”
 v=110,100
 
-"Moving."
+“Moving.”
 v=120,100
 
-"Moving."
+“Moving.”
 v=130,100
+
+The End.<e>No refunds.</e>
+s=;c=

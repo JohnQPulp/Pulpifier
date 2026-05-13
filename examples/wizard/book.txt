@@ -1,7 +1,11 @@
-"I am a wizard. Here's an apple. Behold, now it is gone. As am I.
+The Wizard<br>John Q. Pulp
 
-"Now I'm back actually. And facing the other way!"
+“I am a wizard. Here's an apple. Behold, now it is gone. As am I.”
 
-"Now I'm big! Now I'm normal. Now I'm small! Now normal."
+“Now I'm back actually.”
 
-"Now moving. Moving. Moving."
+“Now I'm big! Now I'm normal. Now I'm small! Now normal.”
+
+“Now moving. Moving. Moving.”
+
+The End.
