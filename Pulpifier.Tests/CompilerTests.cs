@@ -358,6 +358,7 @@ public class CompilerTests {
 		Assert.Contains(htmlSnippet, html);
 	}
 
+	[TestMethod]
 	[DataRow("\"Foo\"\n", "\"Foo\"\nn:name=Name;s=name;m=nospeaker\n", "c-name-s.webp")]
 	[DataRow("\"Foo. Bar.\"\n", "\"Foo.\"\nn:r=R;s=r\n\n\"Bar.\"\ni=\n", "c-r-s2.webp")]
 	[DataRow("\"Foo.\"\n\n\"Bar.\"\n\n\"Fizz.\"\n", "\"Foo.\"\nn:r=R;n:j=J;s=r;c=r,j;i=3\n\n\"Bar.\"\ns=j\n\n\"Fizz.\"\ns=r\n", "c-j-3.webp")]
@@ -369,5 +370,14 @@ public class CompilerTests {
 	public void Compiler_BuildHtml_DoesNotContainsHtml(string rawText, string pulpText, string htmlSnippet) {
 		string html = Compiler.BuildHtml(rawText, pulpText);
 		Assert.DoesNotContain(htmlSnippet, html);
+	}
+
+	[TestMethod]
+	public void Compiler_BuildHtml_Wizard() {
+		string directory = Directory.GetCurrentDirectory().Substring(0, Directory.GetCurrentDirectory().IndexOf("/Pulpifier/", StringComparison.Ordinal)) + "/Pulpifier/examples/wizard/";
+		string book = File.ReadAllText(Path.Combine(directory, "book.txt"));
+		string pulp = File.ReadAllText(Path.Combine(directory, "pulp.txt"));
+		Compiler.BuildHtml(book, pulp, out Dictionary<string, ImageMetadata> files);
+		Assert.IsTrue(files.ContainsKey("o-apple"));
 	}
 }
