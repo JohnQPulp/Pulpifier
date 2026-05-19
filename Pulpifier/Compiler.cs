@@ -387,11 +387,14 @@ public static partial class Compiler {
 							part = Regex.Replace(part, @"“(.*?)”", "<span class='d'>“$1”</span>");
 
 							part = Regex.Replace(part, @"^(#{1,6})\s+(.*)$",m => {
-								int level = Math.Max(1, Math.Min(6, m.Groups[1].Value.Length - 1));
+								int level = m.Groups[1].Value.Length;
 								string text = m.Groups[2].Value;
-								if (text.Contains('|')) throw new Exception("Header should not have a pipe.");
-								headers.Add($"{p / 3}|{level}|{text}");
-								return $"<h{level} class='upper'>{text}</h{level}>";
+								if (text.Contains('|') || text.Contains("<span>")) throw new Exception("Bad header text.");
+								headers.Add($"{p / 3}|{level}|{text.Replace("<br>", ": ")}");
+								string htmlText = Regex.Replace(text, "<br>(.*)$", "<span>$1</span>");
+								if (htmlText.Contains("<br>")) throw new Exception("Rogue line break in heading.");
+								if (!text.Contains("<br>") && level > 1) level--;
+								return $"<h{level} class='heading'>{htmlText}</h{level}>";
 							}, RegexOptions.Singleline);
 
 							if (p == 0 && part.Contains("<br>")) {

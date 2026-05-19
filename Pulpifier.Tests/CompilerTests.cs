@@ -100,6 +100,8 @@ public class CompilerTests {
 	[DataRow("Foo\n", "Foo<e><book>Invisible Man</book></e>\n\n")]
 	[DataRow("Foo\n", "Foo<e><book>\"Invisible Man\"</book></e>\n\n")]
 	[DataRow("Foo\n", "Foo<e><book>The Invisible Man</book></e>\n\n")]
+	[DataRow("## Foo\n", "## Foo\n\n")]
+	[DataRow("## Foo<br>Bar\n", "## Foo<br>Bar\n\n")]
 	public void Compiler_BuildHtml_GoodText(string rawText, string pulpText) {
 		Compiler.BuildHtml(rawText, pulpText);
 		Assert.IsTrue(Compiler.TryBuildHtml(rawText, pulpText, out string _));
@@ -205,6 +207,7 @@ public class CompilerTests {
 	[DataRow("Foo\n", "Foo<e><book>Visible Man</book></e>\n\n")]
 	[DataRow("Foo\n", "Foo<e><book>\"Visible Man\"</book></e>\n\n")]
 	[DataRow("Foo\n", "Foo<e><book>The Visible Man</book></e>\n\n")]
+	[DataRow("## Foo<br>Bar<br>Bar\n", "## Foo<br>Bar<br>Bar\n\n")]
 	public void Compiler_BuildHtml_BadText(string rawText, string pulpText) {
 		Assert.IsFalse(Compiler.TryBuildHtml(rawText, pulpText, out string _));
 	}
@@ -236,11 +239,13 @@ public class CompilerTests {
 	[DataRow("Foo. Bar.\n", "<e>0</e>\n\n\n<e>1</e>\n\n\nFoo.<e>2</e>\n\n\n<e>3</e>\n\n\nBar.<e>4</e>\n\n\n<e>5</e>\n\n\n<e>6</e>\n\n", "<span class='upper'>Editor's Note:</span> 1")]
 	[DataRow("Foo. Bar.\n", "<e>0</e>\n\n\n<e>1</e>\n\n\nFoo.<e>2</e>\n\n\n<e>3</e>\n\n\nBar.<e>4</e>\n\n\n<e>5</e>\n\n\n<e>6</e>\n\n", "<span class='upper'>Editor's Note:</span> 5")]
 	[DataRow("Foo. Bar.\n", "<e>0</e>\n\n\n<e>1</e>\n\n\nFoo.<e>2</e>\n\n\n<e>3</e>\n\n\nBar.<e>4</e>\n\n\n<e>5</e>\n\n\n<e>6</e>\n\n", "<span class='upper'>Editor's Note:</span> 6")]
-	[DataRow("# Foo\n", "# Foo\n\n", "<h1 class='upper'>Foo</h1>")]
-	[DataRow("## Foo\n", "## Foo\n\n", "<h1 class='upper'>Foo</h1>")]
-	[DataRow("### Foo\n", "### Foo\n\n", "<h2 class='upper'>Foo</h2>")]
-	[DataRow("#### Foo\n", "#### Foo\n\n", "<h3 class='upper'>Foo</h3>")]
-	[DataRow("## Foo *Bar*\n", "## Foo *Bar*\n\n", "<h1 class='upper'>Foo <i>Bar</i></h1>")]
+	[DataRow("# Foo\n", "# Foo\n\n", "<h1 class='heading'>Foo</h1>")]
+	[DataRow("## Foo\n", "## Foo\n\n", "<h1 class='heading'>Foo</h1>")]
+	[DataRow("### Foo\n", "### Foo\n\n", "<h2 class='heading'>Foo</h2>")]
+	[DataRow("#### Foo\n", "#### Foo\n\n", "<h3 class='heading'>Foo</h3>")]
+	[DataRow("## Foo *Bar*\n", "## Foo *Bar*\n\n", "<h1 class='heading'>Foo <i>Bar</i></h1>")]
+	[DataRow("## Foo<br>Bar\n", "## Foo<br>Bar\n\n", "<h2 class='heading'>Foo<span>Bar</span></h2>")]
+	[DataRow("### Foo<br>Bar\n", "### Foo<br>Bar\n\n", "<h3 class='heading'>Foo<span>Bar</span></h3>")]
 	[DataRow("Foo\n", "Foo<e>Book: <book>Wisconsin Death Trip</book></e>\n\n", "Book: <i><a href='")]
 	[DataRow("Foo\n", "Foo<e>Book: <book>Wisconsin Death Trip</book></e>\n\n", ">Wisconsin Death Trip</a>")]
 	[DataRow("Foo\n", "Foo<e>Story: <book>\"Wisconsin Death Trip\"</book></e>\n\n", "Story: <a href='")]
@@ -353,6 +358,8 @@ public class CompilerTests {
 	[DataRow("Foo.<br>Bar.\n\nFizz. Buzz.\n", "Foo.<br>Bar.\n\n\nFizz.\n\n\nBuzz.\n\n", "<div>Buzz.</div>")]
 	[DataRow("Foo\n", "Foo\nb=foo;f:b:foo=blur(5px)\n", "blur(calc(5 / 15 * var(--vwUnit)))")]
 	[DataRow("Foo\n", "Foo\nn:foo=Foo;c=foo;f:c:foo=blur(3px)\n", "blur(calc(3 / 15 * var(--vwUnit)))")]
+	[DataRow("## Foo Bar\n", "## Foo Bar\n\n", "2|Foo Bar")]
+	[DataRow("## Foo<br>Bar\n", "## Foo<br>Bar\n\n", "2|Foo: Bar")]
 	public void Compiler_BuildHtml_ContainsHtml(string rawText, string pulpText, string htmlSnippet) {
 		string html = Compiler.BuildHtml(rawText, pulpText);
 		Assert.Contains(htmlSnippet, html);

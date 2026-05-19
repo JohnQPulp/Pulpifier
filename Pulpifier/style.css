@@ -89,9 +89,16 @@ body {
   position: relative;
   margin: 0 0.2em;
 }
-#text h1, #text h2, #text h3, #text h4, #text h5, #text h6 {
+#text .heading {
+  font-variant: small-caps;
   text-align: center;
   margin: 0.25em 0px;
+  text-wrap: balance;
+}
+#text .heading > span {
+  font-weight: normal;
+  font-size: 0.8em;
+  display: block;
 }
 #text hr {
   margin: 1em auto;
@@ -227,6 +234,7 @@ img.p-3\/4 { left: 75%; }
 }
 .titletext {
   margin: 0.5em 0;
+  text-wrap: balance;
 }
 .titletext > span {
   font-size: 1.2em;
