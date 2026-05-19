@@ -246,6 +246,19 @@ img.p-3\/4 { left: 75%; }
 .fright {
   float: right;
 }
+.nowrap {
+  text-wrap: nowrap;
+}
+.faketable {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 1em;
+}
+.faketable > span:first-child {
+  min-width: max(7em, 25%);
+  max-width: max(7em, 25%);
+  text-indent: 0.5em hanging;
+}
 .italics {
   font-style: italic;
 }
