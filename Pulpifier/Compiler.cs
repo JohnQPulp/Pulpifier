@@ -103,7 +103,7 @@ public static partial class Compiler {
 
 					string pulpLine = pulpLines[p].Replace("\uFEFF", string.Empty).Replace("\u200A…", "…").Replace("\u00a0", " ").Replace("“\u200a’", "“’").Replace("“\u200a‘", "“‘").Replace("’\u200a”", "’”");
 
-					string cleanPulpLine = Regex.Replace(pulpLine, "<e>.*?</e>", "");
+					string cleanPulpLine = Regex.Replace(pulpLine, "<[ef]>.*?</[ef]>", "");
 					ThrowIfContainsUnsupportedFontChars(cleanPulpLine);
 					cleanPulpLine = Regex.Replace(cleanPulpLine, "<div class='[a-z ]+'>(.*?)</div>", "$1");
 					cleanPulpLine = Regex.Replace(cleanPulpLine, "<span class='[a-z ]+'>(.*?)</span>", "$1");
@@ -377,6 +377,7 @@ public static partial class Compiler {
 							part = BookTag.FormatText(part);
 							htmlParts.Add($"<p class='e'><span class='upper'>Editor's Note:</span> {part}</p>");
 						} else if (part.StartsWith("<e>")) {
+							if (!part.EndsWith("</e>")) throw new Exception("Bad editor's note end.");
 							editorLine = true;
 						} else {
 							part = Regex.Replace(part, @"^—+$", "<hr>");
@@ -407,6 +408,8 @@ public static partial class Compiler {
 						}
 					}
 					string htmlLine = string.Concat(htmlParts);
+					htmlLine = Regex.Replace(htmlLine, "^(.*?)<f>(.*?)</f>(.*?)$", "$1<sup>†</sup>$3<p class='f'><sup>†</sup>$2</p>");
+					if (Regex.IsMatch(htmlLine, "</?[ef]>")) throw new Exception("Leaked tag.");
 					htmlLine = Regex.Replace(htmlLine, @"(\S)—", "$1&#8288;—");
 					htmlLine = Regex.Replace(htmlLine, @"—(\S)", "—&#8288;$1");
 

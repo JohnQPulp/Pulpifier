@@ -171,9 +171,11 @@ b.speaker {
 b.speaker + div > span.d, span.d-signal ~ span.d {
   font-weight: var(--vnDialogueFontWeight);
 }
-p.e {
+p.e, p.f {
   margin: 0.25em 0.5em;
   font-size: 0.8em;
+}
+p.e {
   display: var(--ed);
 }
 .characters {

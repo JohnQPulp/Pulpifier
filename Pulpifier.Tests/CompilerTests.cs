@@ -102,6 +102,11 @@ public class CompilerTests {
 	[DataRow("Foo\n", "Foo<e><book>The Invisible Man</book></e>\n\n")]
 	[DataRow("## Foo\n", "## Foo\n\n")]
 	[DataRow("## Foo<br>Bar\n", "## Foo<br>Bar\n\n")]
+	[DataRow("Foo. Bar.\n", "Foo.<f>Footnote.</f> Bar.\n\n")]
+	[DataRow("Foo. Bar.\n", "Foo.<f>Footnote.</f>\n\n\nBar.\n\n")]
+	[DataRow("Foo. Bar.\n", "Foo.<f>Footnote.</f>\n\n\n<f>Footnote 2.</f>Bar.\n\n")]
+	[DataRow("Foo. Bar.\n", "Foo. Bar.<e>E</e><f>F</f>\n\n")]
+	[DataRow("Foo. Bar.\n", "Foo. Bar.<f>F</f><e>E</e>\n\n")]
 	public void Compiler_BuildHtml_GoodText(string rawText, string pulpText) {
 		Compiler.BuildHtml(rawText, pulpText);
 		Assert.IsTrue(Compiler.TryBuildHtml(rawText, pulpText, out string _));
@@ -208,6 +213,12 @@ public class CompilerTests {
 	[DataRow("Foo\n", "Foo<e><book>\"Visible Man\"</book></e>\n\n")]
 	[DataRow("Foo\n", "Foo<e><book>The Visible Man</book></e>\n\n")]
 	[DataRow("## Foo<br>Bar<br>Bar\n", "## Foo<br>Bar<br>Bar\n\n")]
+	[DataRow("Foo. Bar.\n", "Foo. <f>Bar.</f>\n\n")]
+	[DataRow("Foo. Bar.\n", "Foo. Bar.<e>Lorem<f>Ipsum</f></e>\n")]
+	[DataRow("Foo. Bar.\n", "Foo. Bar.<e>Lorem<f>Ipsum</e></f>\n")]
+	[DataRow("Foo. Bar.\n", "Foo. Bar.<e><e>E</e></e>\n")]
+	[DataRow("Foo. Bar.\n", "Foo. Bar.<f><f>F</f></f>\n")]
+	[DataRow("Foo. Bar.\n", "Foo.<f>F1</f> Bar.<f>F2</f>\n")]
 	public void Compiler_BuildHtml_BadText(string rawText, string pulpText) {
 		Assert.IsFalse(Compiler.TryBuildHtml(rawText, pulpText, out string _));
 	}
@@ -360,6 +371,11 @@ public class CompilerTests {
 	[DataRow("Foo\n", "Foo\nn:foo=Foo;c=foo;f:c:foo=blur(3px)\n", "blur(calc(3 / 15 * var(--vwUnit)))")]
 	[DataRow("## Foo Bar\n", "## Foo Bar\n\n", "2|Foo Bar")]
 	[DataRow("## Foo<br>Bar\n", "## Foo<br>Bar\n\n", "2|Foo: Bar")]
+	[DataRow("Foo. Bar.\n", "Foo.<f>Footnote.</f> Bar.\n\n", "Foo.<sup>†</sup>")]
+	[DataRow("Foo. Bar.\n", "Foo.<f>Footnote.</f> Bar.\n\n", "<p class='f'><sup>†</sup>Footnote.</p>")]
+	[DataRow("“Foo. Bar.”\n", "“Foo.<f>Footnote.</f> Bar.”\n\n", "Foo.<sup>†</sup>")]
+	[DataRow("“Foo. Bar.”\n", "“Foo.<f>Footnote.</f> Bar.”\n\n", "<p class='f'><sup>†</sup>Footnote.</p>")]
+	[DataRow("“Foo. Bar.”\n", "“Foo.<f>Footnote.</f> Bar.”\n\n", "<span class='d'")]
 	public void Compiler_BuildHtml_ContainsHtml(string rawText, string pulpText, string htmlSnippet) {
 		string html = Compiler.BuildHtml(rawText, pulpText);
 		Assert.Contains(htmlSnippet, html);
