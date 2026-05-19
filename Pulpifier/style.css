@@ -100,6 +100,24 @@ body {
   font-size: 0.8em;
   display: block;
 }
+#text h1.heading {
+  font-size: 2em;
+}
+#text h2.heading {
+  font-size: 1.6em;
+}
+#text h3.heading {
+  font-size: 1.35em;
+}
+#text h4.heading {
+  font-size: 1.2em;
+}
+#text h5.heading {
+  font-size: 1.1em;
+}
+#text h6.heading {
+  font-size: 1em;
+}
 #text hr {
   margin: 1em auto;
   max-width: 200px;
