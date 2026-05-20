@@ -55,8 +55,9 @@ body {
   --vwUnit: calc(0.9 * var(--vwRefUnit));
   --vhUnit: calc(0.9 * var(--vhRefUnit));
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  right: var(--vwRefUnit);
+  left: unset !important;
+  transform: translateY(-50%);
   border: min(3px, 0.3em) double black;
   box-sizing: border-box;
   box-shadow: 0 0 1em black, 0 0 1em black;
@@ -289,6 +290,9 @@ img.p-3\/4 { left: 75%; }
 }
 .mono {
   font-family: monospace;
+}
+.hidden {
+  visibility: hidden;
 }
 .titletext {
   margin: 0.5em 0;

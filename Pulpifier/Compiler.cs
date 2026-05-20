@@ -20,6 +20,8 @@ internal enum Modifier {
 
 public readonly record struct ViewScale(int? Width, int? Height, int? Top);
 
+public readonly record struct FrameNarrative(string Background, string Speaker, int Start);
+
 public static partial class Compiler {
 	public static bool TryBuildHtml(string rawText, string pulpText, out string html) {
 		try {
@@ -73,6 +75,8 @@ public static partial class Compiler {
 		string joinedLine = "";
 		Dictionary<string, string> characterCounterOverrides = new();
 		bool singleQuoteEnding = false;
+		Stack<FrameNarrative> frameNarratives = new();
+		List<string> frameNarrativeStrings = new();
 
 		int r = 0, p = 0;
 		try {
@@ -178,6 +182,7 @@ public static partial class Compiler {
 								break;
 							case 'r':
 								ThrowIfBadKey(key);
+								if (frameNarratives.Count > 0) throw new Exception("Reset without ending frame narratives.");
 								activeBackground = value;
 								characterExtras.Clear();
 								characterExpressions.Clear();
@@ -291,6 +296,20 @@ public static partial class Compiler {
 									speakerCounterOverride = value;
 								} else {
 									characterCounterOverrides[iparts[1]] = value;
+								}
+								break;
+							case 'g':
+								if (value == "") {
+									FrameNarrative frameNarrative = frameNarratives.Pop();
+									frameNarrativeStrings.Add($"['{frameNarrative.Background}','{frameNarrative.Speaker}','{characterNames[frameNarrative.Speaker]}',{frameNarrative.Start},{p / 3}]");
+								} else {
+									if (frameNarratives.Count >= 3) throw new Exception("Unsupported number of nested frame narratives.");
+									string[] frameNarrativeValues = value.Split(',');
+									string frameBackground = frameNarrativeValues[0];
+									if (!backgroundNames.Contains(frameBackground)) throw new Exception($"Missing frame background: {frameBackground}");
+									string frameSpeaker = frameNarrativeValues[1];
+									if (!characterNames.ContainsKey(frameSpeaker)) throw new Exception($"Missing frame speaker: {frameSpeaker}");
+									frameNarratives.Push(new FrameNarrative(frameBackground, frameSpeaker, p / 3));
 								}
 								break;
 							default: throw new Exception($"Unrecognized key: '{key}'.");
@@ -468,6 +487,7 @@ public static partial class Compiler {
 				r += 2;
 			}
 			if (p != pulpLines.Length) throw new Exception("Extra pulp lines.");
+			if (frameNarratives.Count > 0) throw new Exception("Ended without ending frame narratives.");
 		} catch (Exception e) {
 			string error = $"Parsing error at raw line {r} and pulp line {p}.\n";
 			if (rawLines.Length > r) error += '\n' + rawLines[r] + '\n';
@@ -492,6 +512,9 @@ public static partial class Compiler {
 		sb.Append("headers=[`");
 		sb.Append(string.Join("`,`", headers));
 		sb.Append("`];");
+		sb.Append("frameNarratives=[");
+		sb.Append(string.Join(",", frameNarrativeStrings));
+		sb.Append("];");
 		sb.Append($"</script><script>const imageExt = '{imageExtension}';");
 		sb.Append(ReadResource("script.js"));
 		sb.Append("</script><style>");

@@ -35,8 +35,7 @@ function buildPulp(i) {
   }
   speakerBack += `</div>`;
 
-  return (
-`<div id='pulp'>
+  let pulpHtml = `<div id='pulp'>
   <div id='back' style='background-image: url("images/b-${background[0]}.${imageExt}");${background.length === 1 ? "" : ("filter:" + background[1])}'></div>
   ${imageHtmls[i]}
   <div id='foot'>
@@ -44,7 +43,15 @@ function buildPulp(i) {
     <div id='text'>${htmlArr[i]}</div>
     <div></div>
   </div>
-</div>`);
+</div>`;
+
+  frameNarratives.forEach(fn => {
+    if (i >= fn[3] && i < fn[4]) {
+      pulpHtml = `<div id='pulp'><div id='back' style='background-image: url("images/b-${fn[0]}.${imageExt}");'></div><div id='foot'><div><div><div class='speaker-back' style='background-image: url(images/c-${fn[1]}-s.${imageExt})'></div></div></div><div id='text' class='hidden'></div><div></div></div>` + pulpHtml + "</div>";
+    }
+  });
+
+  return pulpHtml;
 }
 function appendPulp(i) {
   app.insertAdjacentHTML("beforeend", buildPulp(i));
