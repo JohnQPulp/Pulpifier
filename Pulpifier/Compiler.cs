@@ -302,12 +302,14 @@ public static partial class Compiler {
 								if (value == "") {
 									FrameNarrative frameNarrative = frameNarratives.Pop();
 									frameNarrativeStrings.Add($"['{frameNarrative.Background}','{frameNarrative.Speaker}','{characterNames[frameNarrative.Speaker]}',{frameNarrative.Start},{p / 3}]");
+									activeBackground = frameNarrative.Background;
+									activeSpeaker = frameNarrative.Speaker;
 								} else {
 									if (frameNarratives.Count >= 2) throw new Exception("Unsupported number of nested frame narratives.");
 									string[] frameNarrativeValues = value.Split(',');
-									string frameBackground = frameNarrativeValues[0];
+									string frameBackground = frameNarrativeValues[0] == "" ? activeBackground : frameNarrativeValues[0];
 									if (!backgroundNames.Contains(frameBackground)) throw new Exception($"Missing frame background: {frameBackground}");
-									string frameSpeaker = frameNarrativeValues[1];
+									string frameSpeaker = frameNarrativeValues[1] == "" ? activeSpeaker : frameNarrativeValues[1];
 									if (!characterNames.ContainsKey(frameSpeaker)) throw new Exception($"Missing frame speaker: {frameSpeaker}");
 									frameNarratives.Push(new FrameNarrative(frameBackground, frameSpeaker, p / 3));
 								}
