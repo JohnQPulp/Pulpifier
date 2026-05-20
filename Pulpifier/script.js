@@ -47,7 +47,7 @@ function buildPulp(i) {
 
   frameNarratives.forEach(fn => {
     if (i >= fn[3] && i < fn[4]) {
-      pulpHtml = `<div id='pulp'><div id='back' style='background-image: url("images/b-${fn[0]}.${imageExt}");'></div><div id='foot'><div><div><div class='speaker-back' style='background-image: url(images/c-${fn[1]}-s.${imageExt})'></div></div></div><div id='text' class='hidden'></div><div></div></div>` + pulpHtml + "</div>";
+      pulpHtml = `<div id='pulp'>` + pulpHtml + `<div id='back' style='background-image: url("images/b-${fn[0]}.${imageExt}");'></div><div id='foot'><div><div><div class='speaker-back' style='background-image: url(images/c-${fn[1]}-s.${imageExt})'></div></div></div><div id='text' class='hidden'></div><div></div></div></div>`;
     }
   });
 
