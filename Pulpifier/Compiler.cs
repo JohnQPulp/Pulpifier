@@ -303,7 +303,7 @@ public static partial class Compiler {
 									FrameNarrative frameNarrative = frameNarratives.Pop();
 									frameNarrativeStrings.Add($"['{frameNarrative.Background}','{frameNarrative.Speaker}','{characterNames[frameNarrative.Speaker]}',{frameNarrative.Start},{p / 3}]");
 								} else {
-									if (frameNarratives.Count >= 3) throw new Exception("Unsupported number of nested frame narratives.");
+									if (frameNarratives.Count >= 2) throw new Exception("Unsupported number of nested frame narratives.");
 									string[] frameNarrativeValues = value.Split(',');
 									string frameBackground = frameNarrativeValues[0];
 									if (!backgroundNames.Contains(frameBackground)) throw new Exception($"Missing frame background: {frameBackground}");
@@ -404,7 +404,13 @@ public static partial class Compiler {
 							part = Regex.Replace(part, @"\*\*\*(.*?)\*\*\*", "<i class='upper'>$1</i>");
 							part = Regex.Replace(part, @"\*\*(.*?)\*\*", "<span class='upper'>$1</span>");
 							part = Regex.Replace(part, @"\*(.*?)\*", "<i>$1</i>");
-							part = Regex.Replace(part, @"“(.*?)”", "<span class='d'>“$1”</span>");
+							if (frameNarratives.Count == 0) {
+								part = Regex.Replace(part, @"“(.*?)”", "<span class='d'>“$1”</span>");
+							} else if (frameNarratives.Count == 1) {
+								part = Regex.Replace(part, @"‘([^‘]*)’", "<span class='d'>‘$1’</span>");
+							} else {
+								part = Regex.Replace(part, @"“([^“]*)”", "<span class='d'>“$1”</span>");
+							}
 
 							part = Regex.Replace(part, @"^(#{1,6})\s+(.*)$",m => {
 								int level = m.Groups[1].Value.Length;

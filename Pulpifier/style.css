@@ -68,11 +68,6 @@ body {
   --vhUnit: calc(0.8 * var(--vhRefUnit));
   z-index: 12;
 }
-#pulp > #pulp > #pulp > #pulp {
-  --vwUnit: calc(0.7 * var(--vwRefUnit));
-  --vhUnit: calc(0.7 * var(--vhRefUnit));
-  z-index: 13;
-}
 #pulp:nth-child(2) {
   z-index: 1;
 }
