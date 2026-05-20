@@ -74,10 +74,10 @@ function prevPulp() {
   }
 }
 document.addEventListener("keydown", function (e) {
-  if (e.key === "ArrowRight" || e.key === "d") {
+  if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") {
     document.activeElement.blur();
     nextPulp();
-  } else if (e.key === "ArrowLeft" || e.key === "a") {
+  } else if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") {
     document.activeElement.blur();
     prevPulp();
   }
