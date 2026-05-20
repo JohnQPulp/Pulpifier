@@ -9,8 +9,10 @@ html {
   --nedi: none;
 }
 body {
-  --vwUnit: 1vw;
-  --vhUnit: 1vh;
+  --vwRefUnit: 1vw;
+  --vhRefUnit: 1vh;
+  --vwUnit: var(--vwRefUnit);
+  --vhUnit: var(--vhRefUnit);
 }
 .ed {
   display: var(--ed);
@@ -48,6 +50,27 @@ body {
   background-color: #f0ddb6;
   z-index: 0;
   overflow: hidden;
+}
+#pulp > #pulp {
+  --vwUnit: calc(0.9 * var(--vwRefUnit));
+  --vhUnit: calc(0.9 * var(--vhRefUnit));
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: min(3px, 0.3em) double black;
+  box-sizing: border-box;
+  box-shadow: 0 0 1em black, 0 0 1em black;
+  z-index: 11;
+}
+#pulp > #pulp > #pulp {
+  --vwUnit: calc(0.8 * var(--vwRefUnit));
+  --vhUnit: calc(0.8 * var(--vhRefUnit));
+  z-index: 12;
+}
+#pulp > #pulp > #pulp > #pulp {
+  --vwUnit: calc(0.7 * var(--vwRefUnit));
+  --vhUnit: calc(0.7 * var(--vhRefUnit));
+  z-index: 13;
 }
 #pulp:nth-child(2) {
   z-index: 1;
