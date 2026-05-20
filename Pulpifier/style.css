@@ -60,8 +60,10 @@ body {
   transform: translateY(-50%);
   border: min(3px, 0.3em) double black;
   box-sizing: border-box;
-  box-shadow: 0 0 1em black, 0 0 1em black;
   z-index: 11;
+}
+#pulp:nth-child(2) > #pulp {
+  box-shadow: 0 0 1em black, 0 0 1em black;
 }
 #pulp > #pulp > #pulp {
   --vwUnit: calc(0.8 * var(--vwRefUnit));
@@ -99,6 +101,8 @@ body {
   box-sizing: border-box;
   border: min(3px, 0.3em) double black;
   z-index: 20;
+}
+#pulp:nth-child(2) #text {
   box-shadow: 0 0 0.4em black, 0 0 0.4em black;
 }
 #text > div {
@@ -187,6 +191,8 @@ b.speaker {
   white-space: nowrap;
   background-color: #f8efd4f0;
   border: min(3px, 0.3em) double black;
+}
+#pulp:nth-child(2) b.speaker {
   box-shadow: 0 0 0.35em black, 0 0 0.35em black;
 }
 b.speaker + div > span.d, span.d-signal ~ span.d {
@@ -241,8 +247,10 @@ img.p-3\/4 { left: 75%; }
   border: min(3px, 0.3em) double black;
   box-sizing: border-box;
   background-color: #f1dfbb;
-  box-shadow: 0 0 1em black, 0 0 1em black;
   pointer-events: none;
+}
+#pulp:nth-child(2) > img.c {
+  box-shadow: 0 0 1em black, 0 0 1em black;
 }
 .upper {
   font-variant: small-caps;
