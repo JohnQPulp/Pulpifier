@@ -213,6 +213,8 @@ p.e {
   bottom: -45%;
   height: 130%;
   user-select: none;
+}
+#pulp:nth-child(2) .characters > img {
   filter: url(#green-desmudger);
 }
 .characters > img.f {
