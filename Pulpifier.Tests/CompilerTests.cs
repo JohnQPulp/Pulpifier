@@ -107,6 +107,10 @@ public class CompilerTests {
 	[DataRow("Foo. Bar.\n", "Foo.<f>Footnote.</f>\n\n\n<f>Footnote 2.</f>Bar.\n\n")]
 	[DataRow("Foo. Bar.\n", "Foo. Bar.<e>E</e><f>F</f>\n\n")]
 	[DataRow("Foo. Bar.\n", "Foo. Bar.<f>F</f><e>E</e>\n\n")]
+	[DataRow("“Foo. ‘Bar.’”\n\n“‘“Fizz.”’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\n\n\n“‘Bar.’”\n\n\n“‘“Fizz.”’”\n\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\n\n\n“Foo.”\n\n")]
+	[DataRow("“Foo. ‘Bar.’”\n\n“‘“Fizz.”’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\nn:s1=S;n:s2=S;n:s3=S;s=s1;b=b1\n\n“‘Bar.’”\ng=,;s=s2;b=b2\n\n“‘“Fizz.”’”\n;g=,;s=s3;b=b3\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\ng=;\n\n“Foo.”\ng=\n")]
+	[DataRow("“Foo. ‘Bar.’”\n\n“‘“Fizz.”’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\nn:s1=S;n:s2=S;n:s3=S;s=s1;b=b1\n\n“‘Bar.’”\ng=,;s=s2;b=b2\n\n“‘“Fizz.”’”\n;g=,;s=s3;b=b3\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\ns=;\n\n“Foo.”\ng=;g=\n")]
+	[DataRow("“Foo. ‘Bar.’”\n\n“‘“Fizz.”’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\nn:s1=S;n:s2=S;n:s3=S;s=s1;b=b1\n\n“‘Bar.’”\ng=,;g=,;s=;b=b2\n\n“‘“Fizz.”’”\ns=s3;b=b3\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\ng=;s=s2;\n\n“Foo.”\ng=\n")]
 	public void Compiler_BuildHtml_GoodText(string rawText, string pulpText) {
 		Compiler.BuildHtml(rawText, pulpText);
 		Assert.IsTrue(Compiler.TryBuildHtml(rawText, pulpText, out string _));
@@ -219,6 +223,10 @@ public class CompilerTests {
 	[DataRow("Foo. Bar.\n", "Foo. Bar.<e><e>E</e></e>\n")]
 	[DataRow("Foo. Bar.\n", "Foo. Bar.<f><f>F</f></f>\n")]
 	[DataRow("Foo. Bar.\n", "Foo.<f>F1</f> Bar.<f>F2</f>\n")]
+	[DataRow("“Foo. ‘Bar.’”\n\n“‘“Fizz.”’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\nn:s1=S;n:s2=S;n:s3=S;s=s1;b=b1\n\n“‘Bar.’”\ng=,;s=s2;b=b2\n\n“‘“Fizz.”’”\n;g=,;s=s3;b=b3\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\ng=;\n\n“Foo.”\n\n")]
+	[DataRow("“Foo. ‘Bar.’”\n\n“‘“Fizz.”’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\nn:s1=S;n:s2=S;n:s3=S;s=s1;b=b1\n\n“‘Bar.’”\ng=,;s=s2;b=b2\n\n“‘“Fizz.”’”\n;g=,;s=s3;b=b3\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\n\n\n“Foo.”\ng=;g=\n")]
+	[DataRow("“Foo. ‘Bar.’”\n\n“‘“Fizz.”’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\nn:s1=S;n:s2=S;n:s3=S;s=s1;b=b1\n\n“‘Bar.’”\ng=,;g=,;s=s3;b=b2\n\n“‘“Fizz.”’”\ns=s3;b=b3\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\ng=;s=s2;\n\n“Foo.”\ng=\n")]
+	[DataRow("“Foo. ‘Bar.’”\n\n“‘“Fizz.”’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\nn:s1=S;n:s2=S;n:s3=S;s=s1;b=b1;g=,;s=s2;b=b2\n\n“‘Bar.’”\ns=s2;b=b2\n\n“‘“Fizz.”’”\n;g=,;s=s3;b=b3\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\ng=;\n\n“Foo.”\ng=\n")]
 	public void Compiler_BuildHtml_BadText(string rawText, string pulpText) {
 		Assert.IsFalse(Compiler.TryBuildHtml(rawText, pulpText, out string _));
 	}
@@ -377,6 +385,11 @@ public class CompilerTests {
 	[DataRow("“Foo. Bar.”\n", "“Foo.<f>Footnote.</f> Bar.”\n\n", "Foo.<sup>†</sup>")]
 	[DataRow("“Foo. Bar.”\n", "“Foo.<f>Footnote.</f> Bar.”\n\n", "<p class='f'><sup>†</sup>Footnote.</p>")]
 	[DataRow("“Foo. Bar.”\n", "“Foo.<f>Footnote.</f> Bar.”\n\n", "<span class='d'")]
+	[DataRow("“Foo. ‘Bar.’”\n\n“‘“Fizz.”’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\nn:s1=S;n:s2=S;n:s3=S;s=s1;b=b1\n\n“‘Bar.’”\ng=,;s=s2;b=b2\n\n“‘“Fizz.”’”\n;g=,;s=s3;b=b3\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\ng=;\n\n“Foo.”\ng=\n", "<span class='d'>“Foo.”</span>")]
+	[DataRow("“Foo. ‘Bar.’”\n\n“‘“Fizz.”’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\nn:s1=S;n:s2=S;n:s3=S;s=s1;b=b1\n\n“‘Bar.’”\ng=,;s=s2;b=b2\n\n“‘“Fizz.”’”\n;g=,;s=s3;b=b3\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\ng=;\n\n“Foo.”\ng=\n", "“<span class='d'>‘Bar.’</span>”")]
+	[DataRow("“Foo. ‘Bar,’ bar.”\n\n“‘“Fizz.”’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\nn:s1=S;n:s2=S;n:s3=S;s=s1;b=b1\n\n“‘Bar,’ bar.”\ng=,;s=s2;b=b2\n\n“‘“Fizz.”’”\n;g=,;s=s3;b=b3\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\ng=;\n\n“Foo.”\ng=\n", "“<span class='d'>‘Bar,’</span> bar.”")]
+	[DataRow("“Foo. ‘Bar.’”\n\n“‘“Fizz.”’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\nn:s1=S;n:s2=S;n:s3=S;s=s1;b=b1\n\n“‘Bar.’”\ng=,;s=s2;b=b2\n\n“‘“Fizz.”’”\n;g=,;s=s3;b=b3\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\ng=;\n\n“Foo.”\ng=\n", "“‘<span class='d'>“Fizz.”</span>’”")]
+	[DataRow("“Foo. ‘Bar.’”\n\n“‘“Fizz,” fizz.’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\nn:s1=S;n:s2=S;n:s3=S;s=s1;b=b1\n\n“‘Bar.’”\ng=,;s=s2;b=b2\n\n“‘“Fizz,” fizz.’”\n;g=,;s=s3;b=b3\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\ng=;\n\n“Foo.”\ng=\n", "“‘<span class='d'>“Fizz,”</span> fizz.’”")]
 	public void Compiler_BuildHtml_ContainsHtml(string rawText, string pulpText, string htmlSnippet) {
 		string html = Compiler.BuildHtml(rawText, pulpText);
 		Assert.Contains(htmlSnippet, html);

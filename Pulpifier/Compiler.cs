@@ -409,9 +409,9 @@ public static partial class Compiler {
 							if (frameNarratives.Count == 0) {
 								part = Regex.Replace(part, @"“(.*?)”", "<span class='d'>“$1”</span>");
 							} else if (frameNarratives.Count == 1) {
-								part = Regex.Replace(part, @"‘([^‘]*)’", "<span class='d'>‘$1’</span>");
+								part = Regex.Replace(part, @"‘([^‘”]*)’", "<span class='d'>‘$1’</span>");
 							} else {
-								part = Regex.Replace(part, @"“([^“]*)”", "<span class='d'>“$1”</span>");
+								part = Regex.Replace(part, @"“([^“”]*)”", "<span class='d'>“$1”</span>");
 							}
 
 							part = Regex.Replace(part, @"^(#{1,6})\s+(.*)$",m => {
@@ -443,6 +443,12 @@ public static partial class Compiler {
 					sb.Append('`');
 					if (activeSpeaker != "" && activeThinker != "") throw new Exception("Can't have both active speaker and active thinker.");
 					if (activeSpeaker != "" && !(cleanPulpLine.Contains('"') || (cleanPulpLine.Contains('“') && cleanPulpLine.Contains('”')))) throw new Exception("Active speaker on a quote-less line.");
+					if (frameNarratives.Count > 0) {
+						int speakerDepth = frameNarratives.Count + ((activeSpeaker != "" || activeThinker != "") ? 1 : 0);
+						if (speakerDepth == 1 && !Regex.IsMatch(cleanPulpLine, "“.+”")) throw new Exception("Active level-1 speaker on a quote-less line.");
+						if (speakerDepth == 2 && !Regex.IsMatch(cleanPulpLine, "“[^“]*‘.+’.*”")) throw new Exception("Active level-2 speaker on a (single) quote-less line.");
+						if (speakerDepth == 3 && !Regex.IsMatch(cleanPulpLine, "“[^“]*‘[^‘]*“.+”.*’.*”")) throw new Exception("Active level-3 speaker on a (inner double) quote-less line.");
+					}
 					if (activeSpeaker != "" || activeThinker != "") {
 						string active = activeSpeaker != "" ? activeSpeaker : activeThinker;
 						string activeName = characterNames[active];
