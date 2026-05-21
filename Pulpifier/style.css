@@ -62,7 +62,7 @@ body {
   box-sizing: border-box;
   z-index: 11;
 }
-#pulp:nth-child(2) > #pulp {
+#pulp:nth-child(2) #pulp {
   box-shadow: 0 0 1em black, 0 0 1em black;
 }
 #pulp > #pulp > #pulp {
@@ -249,7 +249,7 @@ img.p-3\/4 { left: 75%; }
   background-color: #f1dfbb;
   pointer-events: none;
 }
-#pulp:nth-child(2) > img.c {
+#pulp:nth-child(2) img.c {
   box-shadow: 0 0 1em black, 0 0 1em black;
 }
 .upper {
