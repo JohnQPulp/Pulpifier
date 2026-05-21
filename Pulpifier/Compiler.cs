@@ -409,7 +409,7 @@ public static partial class Compiler {
 							if (frameNarratives.Count == 0) {
 								part = Regex.Replace(part, @"“(.*?)”", "<span class='d'>“$1”</span>");
 							} else if (frameNarratives.Count == 1) {
-								part = Regex.Replace(part, @"‘([^‘”]*)’", "<span class='d'>‘$1’</span>");
+								part = Regex.Replace(part, @"‘([^‘]*)’", "<span class='d'>‘$1’</span>");
 							} else {
 								part = Regex.Replace(part, @"“([^“”]*)”", "<span class='d'>“$1”</span>");
 							}
