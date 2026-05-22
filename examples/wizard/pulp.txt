@@ -1,8 +1,8 @@
 The Wizard<br>John Q. Pulp
-
+b=b1
 
 “I am a wizard.”
-n:wizard=Wizard;c=wizard,,,;s=wizard;z:wizard=100,20,1
+n:wizard=Wizard;c=wizard,,,;s=wizard;z:wizard=100,20,1,60
 
 “Here's an apple.”
 o=apple
@@ -36,6 +36,30 @@ v=120,100
 
 “Moving.”
 v=130,100
+
+“Now in the corner.”
+i=;c=
+
+“Now let me explain about frame narratives.”
+i=
+
+“Once upon a time I was walking down the road in background 2.”
+g=b2
+
+“‘Boy, I sure do love walking here in background 2,’ I said. ‘This reminds me of the time I met Douglas Hofstadter.’”
+s=wizard;i=2
+
+“‘I was walking down the road in background 3 when I exclaimed,’”
+i=2
+
+“‘“Holy crap, it's Douglas Hofstadter!” I continued, “What are you doing over here in background 3, Douglas Hofstadter?”’”<e>This Douglas Hofstadter fanfiction inspired by the Douglas Hofstadter fanfiction in <book>House of Leaves</book>.</e>
+g=b3;s=wizard;i=3;n:hofstadter=Douglas Hofstadter;c=hofstadter
+
+“‘And that's the story of how I met Douglas Hofstadter.’”
+g=;i=2;c=
+
+“And that's the story of how I told the story of how I met Douglas Hofstadter.”
+g=;i=
 
 The End.<e>No refunds.</e>
 s=;c=

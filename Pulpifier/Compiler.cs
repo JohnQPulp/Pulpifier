@@ -20,7 +20,7 @@ internal enum Modifier {
 
 public readonly record struct ViewScale(int? Width, int? Height, int? Top);
 
-public readonly record struct FrameNarrative(string Background, string Speaker, int Start);
+public readonly record struct FrameNarrative(string Background, string Speaker, string SpeakerName, string SpeakerImage, int Start);
 
 public static partial class Compiler {
 	public static bool TryBuildHtml(string rawText, string pulpText, out string html) {
@@ -301,23 +301,26 @@ public static partial class Compiler {
 							case 'g':
 								if (value == "") {
 									FrameNarrative frameNarrative = frameNarratives.Pop();
-									frameNarrativeStrings.Add($"['{frameNarrative.Background}','{frameNarrative.Speaker}','{characterNames[frameNarrative.Speaker]}',{frameNarrative.Start},{p / 3}]");
+									frameNarrativeStrings.Add($"['{frameNarrative.Background}','{frameNarrative.Speaker}','{frameNarrative.SpeakerName}',{frameNarrative.Start},{p / 3},'{frameNarrative.SpeakerImage}']");
 									activeBackground = frameNarrative.Background;
 									activeSpeaker = frameNarrative.Speaker;
 								} else {
 									if (frameNarratives.Count >= 2) throw new Exception("Unsupported number of nested frame narratives.");
-									string[] frameNarrativeValues = value.Split(',');
-									string frameBackground = frameNarrativeValues[0] == "" ? activeBackground : frameNarrativeValues[0];
-									if (!backgroundNames.Contains(frameBackground)) throw new Exception($"Missing frame background: {frameBackground}");
-									string frameSpeaker = frameNarrativeValues[1] == "" ? activeSpeaker : frameNarrativeValues[1];
-									if (!characterNames.ContainsKey(frameSpeaker)) throw new Exception($"Missing frame speaker: {frameSpeaker}");
-									frameNarratives.Push(new FrameNarrative(frameBackground, frameSpeaker, p / 3));
+									if (activeThinker != "" || activeCharacters.Length > 0 || activeObject != "") throw new Exception("Unsupported frame narrative context.");
+									string frameSpeakerName = activeSpeaker == "" ? "" : characterNames[activeSpeaker];
+									string frameSpeakerFile = activeSpeaker == "" ? "" : speakers.Last();
+									if (activeSpeaker != "" && !frameSpeakerFile.StartsWith("c-" + activeSpeaker)) throw new Exception("Bad frame speaker.");
+									frameNarratives.Push(new FrameNarrative(activeBackground, activeSpeaker, frameSpeakerName, frameSpeakerFile, p / 3));
+									activeBackground = value;
+									backgroundNames.Add(activeBackground);
+									activeSpeaker = "";
 								}
 								break;
 							default: throw new Exception($"Unrecognized key: '{key}'.");
 						}
 					}
 
+					if (activeBackground.Contains(',')) throw new Exception("Bad background name.");
 					string backgroundFullName = activeBackground;
 					imageFiles.TryAdd("b-" + backgroundFullName, new ImageMetadata(p));
 					if (activeCharacters.Length > 0) imageFiles["b-" + backgroundFullName].ForegroundPulpLine ??= p;

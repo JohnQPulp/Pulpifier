@@ -1,11 +1,17 @@
 The Wizard<br>John Q. Pulp
 
-“I am a wizard. Here's an apple. Behold, now it is gone. As am I.”
+“I am a wizard. Here's an apple. Behold, now it is gone. As am I.
 
-“Now I'm back actually.”
+“Now I'm back actually.
 
-“Now I'm big! Now I'm normal. Now I'm small! Now normal.”
+“Now I'm big! Now I'm normal. Now I'm small! Now normal.
 
 “Now moving. Moving. Moving.”
+
+“Now in the corner. Now let me explain about frame narratives. Once upon a time I was walking down the road in background 2. ‘Boy, I sure do love walking here in background 2,’ I said. ‘This reminds me of the time I met Douglas Hofstadter. I was walking down the road in background 3 when I exclaimed,’”
+
+“‘“Holy crap, it's Douglas Hofstadter!” I continued, “What are you doing over here in background 3, Douglas Hofstadter?”’”
+
+“‘And that's the story of how I met Douglas Hofstadter.’ And that's the story of how I told the story of how I met Douglas Hofstadter.”
 
 The End.
