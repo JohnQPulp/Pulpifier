@@ -391,7 +391,7 @@ public static partial class Compiler {
 					}
 					imageHtmls.Add(images.ToString());
 
-					List<string> htmlParts = new List<string>();
+					List<string> htmlParts = new();
 					string[] parts = Regex.Split(joinedLine + pulpLine, @"(<e>(.*?)</e>)", RegexOptions.Singleline);
 					bool editorLine = false;
 					for (int i = 0; i < parts.Length; i++) {
@@ -409,12 +409,14 @@ public static partial class Compiler {
 							part = Regex.Replace(part, @"\*\*\*(.*?)\*\*\*", "<i class='upper'>$1</i>");
 							part = Regex.Replace(part, @"\*\*(.*?)\*\*", "<span class='upper'>$1</span>");
 							part = Regex.Replace(part, @"\*(.*?)\*", "<i>$1</i>");
-							if (frameNarratives.Count == 0) {
-								part = Regex.Replace(part, @"“(.*?)”", "<span class='d'>“$1”</span>");
-							} else if (frameNarratives.Count == 1) {
-								part = Regex.Replace(part, @"‘([^‘]*)’", "<span class='d'>‘$1’</span>");
-							} else {
-								part = Regex.Replace(part, @"“([^“”]*)”", "<span class='d'>“$1”</span>");
+							if (!part.Contains("<span class='d'>")) {
+								if (frameNarratives.Count == 0) {
+									part = Regex.Replace(part, @"“(.*?)”", "<span class='d'>“$1”</span>");
+								} else if (frameNarratives.Count == 1) {
+									part = Regex.Replace(part, @"‘([^‘]*)’", "<span class='d'>‘$1’</span>");
+								} else {
+									part = Regex.Replace(part, @"“([^“”]*)”", "<span class='d'>“$1”</span>");
+								}
 							}
 
 							part = Regex.Replace(part, @"^(#{1,6})\s+(.*)$",m => {
