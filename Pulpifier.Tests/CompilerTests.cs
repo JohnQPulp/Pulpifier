@@ -432,6 +432,6 @@ public class CompilerTests {
 		string book = File.ReadAllText(Path.Combine(directory, "book.txt"));
 		string pulp = File.ReadAllText(Path.Combine(directory, "pulp.txt"));
 		Compiler.BuildHtml(book, pulp, out Dictionary<string, ImageMetadata> files);
-		Assert.IsTrue(files.ContainsKey("o-apple"));
+		CollectionAssert.AreEquivalent(files.Keys, new List<string> { "o-apple", "c-wizard-s", "c-wizard-s2", "c-wizard-s3", "c-hofstadter", "b-b1", "b-b2", "b-b3" });
 	}
 }
