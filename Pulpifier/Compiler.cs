@@ -233,14 +233,12 @@ public static partial class Compiler {
 								if (zvals.Length > 4) throw new Exception("Too many z args.");
 
 								int zzoom = zvals[0] == "" ? 100 : int.Parse(zvals[0]);
-								int ch = zzoom * 13 / 10;
-								styleBuilder.AppendLine($".characters > img[src^='images/c-{zn}.'], .characters > img[src^='images/c-{zn}-'] {{ height: {ch}% {(zn.Contains("-a") ? "!important" : "")}; }}");
+								styleBuilder.AppendLine($".characters > img[src^='images/c-{zn}.'], .characters > img[src^='images/c-{zn}-'] {{ height: calc({zzoom}% * 13 / 10) {(zn.Contains("-a") ? "!important" : "")}; }}");
 
 								if (zvals.Length >= 4 && zvals[3] != "") zzoom = int.Parse(zvals[3]);
-								int sh = zzoom * 3 / 5;
 								int zx = (zvals.Length < 2 || zvals[1] == "") ? 50 : int.Parse(zvals[1]);
 								float zy = (zvals.Length < 3 || zvals[2] == "") ? 9 : int.Parse(zvals[2]) * 0.75f + 9;
-								string zcss = $"background-size: {sh}em {(zn.Contains("-a") ? "!important" : "")}; --offsetX: {zx}% {(zn.Contains("-a") ? "!important" : "")}; --offsetY: {zy}em {(zn.Contains("-a") ? "!important" : "")};";
+								string zcss = $"background-size: calc({zzoom}em * 3 / 5) {(zn.Contains("-a") ? "!important" : "")}; --offsetX: {zx}% {(zn.Contains("-a") ? "!important" : "")}; --offsetY: {zy}em {(zn.Contains("-a") ? "!important" : "")};";
 								styleBuilder.AppendLine($".speaker-back[style*='background-image: url(images/c-{zn}.'], .speaker-back[style*='background-image: url(images/c-{zn}-'] {{ {zcss}; }}");
 								break;
 							case 'f':
