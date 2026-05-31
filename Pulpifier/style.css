@@ -73,6 +73,9 @@ body {
 #pulp:nth-child(2) {
   z-index: 1;
 }
+#pulp:nth-child(2) #pulp ~ #back, #pulp:nth-child(2) #pulp ~ #foot {
+  filter: brightness(60%);
+}
 #back {
   width: calc(100 * var(--vwUnit));
   height: calc(100 * var(--vhUnit));
