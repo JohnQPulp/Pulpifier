@@ -20,6 +20,7 @@ public class Metadata {
 	public string ImageExtension => UseAvif == true ? "avif" : "webp";
 	public bool? EditedOkay { get; init; }
 	public bool NeedsReediting => !((UseAvif.HasValue && UseAvif.Value) || (EditedOkay.HasValue && EditedOkay.Value));
+	public int? AuthorWidth { get; init; }
 
 	public static Metadata Parse(string json) {
 		Metadata metadata = JsonSerializer.Deserialize<Metadata>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
