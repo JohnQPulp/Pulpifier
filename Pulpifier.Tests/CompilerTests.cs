@@ -429,6 +429,10 @@ public class CompilerTests {
 	[TestMethod]
 	public void Compiler_BuildHtml_Wizard() {
 		string directory = Directory.GetCurrentDirectory().Substring(0, Directory.GetCurrentDirectory().IndexOf("/Pulpifier/", StringComparison.Ordinal)) + "/Pulpifier/examples/wizard/";
+		string json = File.ReadAllText(Path.Combine(directory, "metadata.json"));
+		Metadata metadata = Metadata.Parse(json);
+		Assert.AreEqual("Wizard", metadata.Title);
+
 		string book = File.ReadAllText(Path.Combine(directory, "book.txt"));
 		string pulp = File.ReadAllText(Path.Combine(directory, "pulp.txt"));
 		Compiler.BuildHtml(book, pulp, out Dictionary<string, ImageMetadata> files);

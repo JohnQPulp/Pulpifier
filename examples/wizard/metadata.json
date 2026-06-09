@@ -3,12 +3,10 @@
   "shortTitle": "Wizard",
   "author": "John Q. Pulp",
   "year": 2026,
-  "source": "wizard",
+  "nonStandardSource": true,
+  "source": "https://github.com/JohnQPulp/Pulpifier/tree/main/examples/wizard/book.txt",
   "words": 5,
   "pulpDate": "2026-01-01",
-  "repo": "wizard",
-  "links": {
-    "wizard": "wizard"
-  },
+  "repo": "https://github.com/JohnQPulp/Pulpifier/tree/main/examples/wizard",
   "blurb": "wizard"
 }
