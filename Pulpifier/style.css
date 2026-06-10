@@ -189,9 +189,12 @@ b.speaker {
   left: calc(-1 * min(3px, 0.3em));
   bottom: calc(100% + 0.5em);
   min-width: 2em;
+  max-width: calc(100% - 0.8em);
   text-align: center;
   font-size: calc(var(--vnFontSizeReally) * 1.1);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   background-color: #f8efd4f0;
   border: min(3px, 0.3em) double black;
 }
