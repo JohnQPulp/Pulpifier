@@ -66,16 +66,41 @@ function prependPulp(i) {
 }
 function nextPulp(isAutoNext) {
   if (pos + 1 < htmlArr.length) {
-    app.removeChild(app.firstChild);
-    appendPulp(++pos + 1);
+    pos++;
+    setHtml(() => {
+      app.removeChild(app.firstChild);
+      appendPulp(pos + 1);
+    });
     onPosUpdate(isAutoNext);
   }
 }
 function prevPulp() {
   if (pos - 1 >= 0) {
-    prependPulp(--pos - 1);
-    app.removeChild(app.lastChild);
+    pos--;
+    setHtml(() => {
+      prependPulp(pos - 1);
+      app.removeChild(app.lastChild);
+    });
     onPosUpdate();
+  }
+}
+let prevHtmlUpdate = Date.now() - 1000;
+let setHtmlTimeout = 0;
+function setHtml(cb) {
+  let nowUpdate = Date.now();
+  let diff = nowUpdate - prevHtmlUpdate;
+  prevHtmlUpdate = nowUpdate;
+  clearTimeout(setHtmlTimeout);
+  if (diff > 90) {
+    document.getElementById("app").classList.toggle("appblur", false);
+    if (cb) {
+      cb();
+    } else {
+      app.innerHTML = buildPulp(pos - 1) + buildPulp(pos) + buildPulp(pos + 1);
+    }
+  } else {
+    document.getElementById("app").classList.toggle("appblur", true);
+    setHtmlTimeout = setTimeout(() => setHtml(), 100);
   }
 }
 document.addEventListener("keydown", function (e) {
@@ -114,7 +139,7 @@ function setPos(i) {
     prevPulp();
   } else {
     pos = i;
-    app.innerHTML = buildPulp(i - 1) + buildPulp(i) + buildPulp(i + 1);
+    setHtml();
     onPosUpdate();
   }
 }

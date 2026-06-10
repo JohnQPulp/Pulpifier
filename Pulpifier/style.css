@@ -41,6 +41,9 @@ body {
   --vnFontSizeReally: 1.05em;
   --speakerSize: 1em;
 }
+.appblur {
+  filter: blur(3px);
+}
 #pulp {
   width: calc(100 * var(--vwUnit));
   height: calc(100 * var(--vhUnit));
