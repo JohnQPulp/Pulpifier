@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Pulp.Pulpifier;
 
@@ -32,7 +33,7 @@ public class Metadata {
 
 	public static Metadata Parse(string json) {
 		try {
-			Metadata metadata = JsonSerializer.Deserialize<Metadata>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+			Metadata metadata = JsonSerializer.Deserialize<Metadata>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true, AllowTrailingCommas = true, UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow });
 			if (metadata.Title == "" || metadata.ShortTitle == "" || metadata.Author == "" || metadata.Year == 0 || metadata.Words == 0 || metadata.Blurb == "") throw new Exception("Missing required metadata.");
 			if (!metadata.Repo.StartsWith("https://github.com/JohnQPulp/")) throw new Exception("Bad source link.");
 			if (!metadata.NonStandardSource) {

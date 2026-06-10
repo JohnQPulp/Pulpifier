@@ -9,14 +9,14 @@ public static partial class BookTag {
 	private static readonly Dictionary<Regex, BookLink> BookUrls;
 	private static readonly Dictionary<string, string[]> AuthorWorks;
 	static BookTag() {
-		Dictionary<string, string> urls = JsonSerializer.Deserialize<Dictionary<string, string>>(Compiler.ReadResource("books.json"))!;
+		Dictionary<string, string> urls = JsonSerializer.Deserialize<Dictionary<string, string>>(Compiler.ReadResource("books.json"), new JsonSerializerOptions { AllowTrailingCommas = true })!;
 		BookUrls = new Dictionary<Regex, BookLink>();
 		foreach (KeyValuePair<string, string> kvp in urls) {
 			if (!UrlRegex().IsMatch(kvp.Value)) throw new Exception($"Bad book link for '{kvp.Key}': {kvp.Value}");
 			BookUrls[new Regex($"^\"?{kvp.Key}\"?$")] = new BookLink(GetTitleFromRegex(kvp.Key), kvp.Value);
 		}
 
-		Dictionary<string, string[]> works = JsonSerializer.Deserialize<Dictionary<string, string[]>>(Compiler.ReadResource("authors.json"))!;
+		Dictionary<string, string[]> works = JsonSerializer.Deserialize<Dictionary<string, string[]>>(Compiler.ReadResource("authors.json"), new JsonSerializerOptions { AllowTrailingCommas = true })!;
 		AuthorWorks = new Dictionary<string, string[]>();
 		foreach (KeyValuePair<string, string[]> kvp in works) {
 			AuthorWorks[kvp.Key] = kvp.Value.Select(book => CreateBookLink(book, true)).ToArray();
