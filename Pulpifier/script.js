@@ -35,7 +35,13 @@ function buildPulp(i) {
   }
   speakerBack += `</div>`;
 
-  let pulpHtml = `<div id='pulp'>
+  let oldBack = "";
+  if (i > 0 && backgroundIds[i] !== backgroundIds[i - 1] && !frameNarratives.some(fn => fn[3] === i || fn[4] === i)) {
+    let oldBackground = backgrounds[backgroundIds[i - 1]].split(';');
+    oldBack = `<div id='back' class="old-back" style='background-image: url("images/b-${oldBackground[0]}.${imageExt}");${oldBackground.length === 1 ? "" : ("filter:" + oldBackground[1])}'></div>`;
+  }
+
+  let pulpHtml = `<div id='pulp'>${oldBack}
   <div id='back' style='background-image: url("images/b-${background[0]}.${imageExt}");${background.length === 1 ? "" : ("filter:" + background[1])}'></div>
   ${imageHtmls[i]}
   <div id='foot'>

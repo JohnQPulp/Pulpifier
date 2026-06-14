@@ -89,6 +89,14 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
 }
+#back.old-back {
+  opacity: 0;
+  transition: opacity 0.15s linear;
+  z-index: 3;
+}
+#pulp:nth-child(3) #back.old-back {
+  opacity: 1;
+}
 #foot {
   width: 100%;
   font-size: calc(var(--vnFontSize) * var(--vhUnit));
