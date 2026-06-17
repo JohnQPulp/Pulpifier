@@ -92,12 +92,13 @@ function prevPulp() {
 }
 let prevHtmlUpdate = Date.now() - 1000;
 let setHtmlTimeout = 0;
+let skipTimeout = false;
 function setHtml(cb) {
   let nowUpdate = Date.now();
   let diff = nowUpdate - prevHtmlUpdate;
   prevHtmlUpdate = nowUpdate;
   clearTimeout(setHtmlTimeout);
-  if (diff > 90) {
+  if (diff > 90 || skipTimeout) {
     document.getElementById("app").classList.toggle("appblur", false);
     if (cb) {
       cb();
