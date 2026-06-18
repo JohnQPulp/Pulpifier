@@ -386,6 +386,8 @@ public class CompilerTests {
 	[DataRow("Foo.<br>Bar.\n\nFizz. Buzz.\n", "Foo.<br>Bar.\n\n\nFizz.\n\n\nBuzz.\n\n", "<div>Buzz.</div>")]
 	[DataRow("Foo\n", "Foo\nb=foo;f:b:foo=blur(5px)\n", "blur(calc(5 / 15 * var(--vwUnit)))")]
 	[DataRow("Foo\n", "Foo\nn:foo=Foo;c=foo;f:c:foo=blur(3px)\n", "blur(calc(3 / 15 * var(--vwUnit)))")]
+	[DataRow("Foo\n", "Foo\nb=foo;f:b:foo=brightness(85%) blur(5px)\n", "brightness(85%) blur(calc(5 / 15 * var(--vwUnit)))")]
+	[DataRow("Foo\n", "Foo\nb=foo;f:b:foo=blur(5px) brightness(85%)\n", "blur(calc(5 / 15 * var(--vwUnit))) brightness(85%)")]
 	[DataRow("## Foo Bar\n", "## Foo Bar\n\n", "2|Foo Bar")]
 	[DataRow("## Foo<br>Bar\n", "## Foo<br>Bar\n\n", "2|Foo: Bar")]
 	[DataRow("Foo. Bar.\n", "Foo.<f>Footnote.</f> Bar.\n\n", "Foo.<sup>†</sup>")]
