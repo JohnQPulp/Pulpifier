@@ -93,11 +93,12 @@ public static partial class Compiler {
 
 					if (!rawLine.StartsWith(constructedLine, StringComparison.Ordinal)) {
 						int diff = -1;
-						for (int i = 0; diff == - 1 && i < rawLine.Length && i < constructedLine.Length; i++) {
+						for (int i = 0; diff == -1 && i < rawLine.Length && i < constructedLine.Length; i++) {
 							if (rawLine[i] != constructedLine[i]) {
 								diff = i;
 							}
 						}
+
 						throw new Exception($"Mismatched pulp line.\nBook: {rawLine}\n\nPulp: {constructedLine}\n\nDiff Char: {diff}\n");
 					}
 
@@ -120,6 +121,9 @@ public static partial class Compiler {
 						singleQuoteEnding = false;
 						if (constructedLine.Count(c => c == '"') % 2 == 1 && !cleanPulpLine.StartsWith('"')) throw new Exception("Pulp line should continue ongoing quote.");
 						string constructionPulpLine = cleanPulpLine;
+						if (constructionPulpLine.StartsWith('#') && rawLine.StartsWith('#') && constructedLine == "" && constructionPulpLine.Contains("<br>") && !rawLine.Contains("<br>")) {
+							constructionPulpLine = constructionPulpLine.Replace("<br>", ". ");
+						}
 						if ((constructionPulpLine.StartsWith('"') && rawLine[constructedLine.Length] != '"') || (constructionPulpLine.StartsWith('“') && rawLine[constructedLine.Length] != '“')) {
 							constructionPulpLine = constructionPulpLine[1..];
 							if (constructionPulpLine.StartsWith('‘') && rawLine[constructedLine.Length] != '‘') {
