@@ -311,7 +311,7 @@ public static partial class Compiler {
 									if (activeThinker != "" || activeCharacters.Length > 0 || activeObject != "") throw new Exception("Unsupported frame narrative context.");
 									string frameSpeakerName = activeSpeaker == "" ? "" : characterNames[activeSpeaker];
 									string frameSpeakerFile = activeSpeaker == "" ? "" : speakers.Last();
-									if (activeSpeaker != "" && !frameSpeakerFile.StartsWith("c-" + activeSpeaker)) throw new Exception("Bad frame speaker.");
+									if (activeSpeaker != "" && !frameSpeakerFile.StartsWith("c-" + activeSpeaker)) throw new Exception($"Bad frame speaker: \"{frameSpeakerFile}\".");
 									frameNarratives.Push(new FrameNarrative(activeBackground, activeSpeaker, frameSpeakerName, frameSpeakerFile, p / 3));
 									activeBackground = value;
 									backgroundNames.Add(activeBackground);
@@ -401,6 +401,7 @@ public static partial class Compiler {
 					List<string> htmlParts = new();
 					string[] parts = Regex.Split(joinedLine + pulpLine, @"(<e>(.*?)</e>)", RegexOptions.Singleline);
 					bool editorLine = false;
+					int frameNarrativeCount = frameNarratives.Count(fn => !string.IsNullOrEmpty(fn.Speaker));
 					for (int i = 0; i < parts.Length; i++) {
 						string part = parts[i];
 						if (editorLine) {
@@ -417,9 +418,9 @@ public static partial class Compiler {
 							part = Regex.Replace(part, @"\*\*(.*?)\*\*", "<span class='upper'>$1</span>");
 							part = Regex.Replace(part, @"\*(.*?)\*", "<i>$1</i>");
 							if (!part.Contains("<span class='d'>")) {
-								if (frameNarratives.Count == 0) {
+								if (frameNarrativeCount == 0) {
 									part = Regex.Replace(part, @"“(.*?)”", "<span class='d'>“$1”</span>");
-								} else if (frameNarratives.Count == 1) {
+								} else if (frameNarrativeCount == 1) {
 									part = Regex.Replace(part, @"‘([^‘]*)’", "<span class='d'>‘$1’</span>");
 								} else {
 									part = Regex.Replace(part, @"“([^“”]*)”", "<span class='d'>“$1”</span>");
@@ -455,8 +456,8 @@ public static partial class Compiler {
 					sb.Append('`');
 					if (activeSpeaker != "" && activeThinker != "") throw new Exception("Can't have both active speaker and active thinker.");
 					if (activeSpeaker != "" && !(cleanPulpLine.Contains('"') || (cleanPulpLine.Contains('“') && cleanPulpLine.Contains('”')))) throw new Exception("Active speaker on a quote-less line.");
-					if (frameNarratives.Count > 0) {
-						int speakerDepth = frameNarratives.Count + ((activeSpeaker != "" || activeThinker != "") ? 1 : 0);
+					if (frameNarrativeCount > 0) {
+						int speakerDepth = frameNarrativeCount + ((activeSpeaker != "" || activeThinker != "") ? 1 : 0);
 						if (speakerDepth == 1 && !Regex.IsMatch(cleanPulpLine, "“.+”")) throw new Exception("Active level-1 speaker on a quote-less line.");
 						if (speakerDepth == 2 && !Regex.IsMatch(cleanPulpLine, "“[^“]*‘.+’.*”")) throw new Exception("Active level-2 speaker on a (single) quote-less line.");
 						if (speakerDepth == 3 && !Regex.IsMatch(cleanPulpLine, "“[^“]*‘[^‘]*“.+”.*’.*”")) throw new Exception("Active level-3 speaker on a (inner double) quote-less line.");
