@@ -281,7 +281,7 @@ public static partial class Compiler {
 									modifiers.Add(Modifier.Joined);
 								} else if (value == "nospace") {
 									modifiers.Add(Modifier.NoSpace);
-								} else if (value == "allowbreak") {
+								} else if (value == "allowbreak" || value == "break") {
 									modifiers.Add(Modifier.AllowBreak);
 								} else if (value == "dialogue") {
 									modifiers.Add(Modifier.Dialogue);

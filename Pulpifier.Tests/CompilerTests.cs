@@ -24,6 +24,7 @@ public class CompilerTests {
 	[DataRow("Foo, Bar.\n", "Foo,\nm=joined\n\nBar.\nm=\n")]
 	[DataRow("Foo, Bar.\n", "Foo,\nm=allowbreak\n\nBar.\nm=\n")]
 	[DataRow("Foo Bar.\n", "Foo\nm=allowbreak\n\nBar.\nm=\n")]
+	[DataRow("Foo, Bar.\n", "Foo,\nm=break\n\nBar.\nm=\n")]
 	[DataRow("Foo. Bar\n", "Foo. <e>lorem</e>Bar\n\n")]
 	[DataRow("Foo Bar\n", "<e>lorem</e>Foo Bar<e>ipsum</e>\n\n")]
 	[DataRow("Foo Bar\n", "<e>lorem</e>Foo <e>mid</e>Bar<e>ipsum</e>\n\n")]
