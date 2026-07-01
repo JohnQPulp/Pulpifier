@@ -92,14 +92,14 @@ public static partial class Compiler {
 					if (p >= pulpLines.Length - 2) throw new Exception("Early pulp end.");
 
 					if (!rawLine.StartsWith(constructedLine, StringComparison.Ordinal)) {
-						int diff = -1;
-						for (int i = 0; diff == -1 && i < rawLine.Length && i < constructedLine.Length; i++) {
+						string diffError = string.Empty;
+						for (int i = 0; diffError == string.Empty && i < rawLine.Length && i < constructedLine.Length; i++) {
 							if (rawLine[i] != constructedLine[i]) {
-								diff = i;
+								diffError = $"\nDiff: {i}\n\nChar: '{rawLine[i]}' ({(int)rawLine[i]}) vs '{constructedLine[i]}' ({(int)constructedLine[i]})\n";
 							}
 						}
-
-						throw new Exception($"Mismatched pulp line.\nBook: {rawLine}\n\nPulp: {constructedLine}\n\nDiff Char: {diff}\n");
+						string error = constructedLine.StartsWith(rawLine) ? "Paragraph-spanning pulp line." : "Mismatched pulp line.";
+						throw new Exception($"{error}\nBook: {rawLine}\n\nPulp: {constructedLine}\n{diffError}");
 					}
 
 					if (constructedLine != string.Empty && !modifiers.Contains(Modifier.Joined) && !modifiers.Contains(Modifier.AllowBreak) && !(Regex.IsMatch(constructedLine, "[\\.!?:;—…]['’\\\"”\\*\\)\\]]* $") || (constructedLine.EndsWith(", ", StringComparison.Ordinal) && IsOpenQuote(rawLine[constructedLine.Length])))) {
