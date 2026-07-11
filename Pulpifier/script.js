@@ -51,6 +51,7 @@ function buildPulp(i) {
   </div>
 </div>`;
 
+  let pulpFade = false;
   frameNarratives.forEach(fn => {
     if (i >= fn[3] && i < fn[4]) {
       let speakerBackFrame = "<div>";
@@ -60,7 +61,13 @@ function buildPulp(i) {
       speakerBackFrame += "</div>";
       pulpHtml = `<div id='pulp'>` + pulpHtml + `<div id='back' style='background-image: url("images/b-${fn[0]}.${imageExt}");'></div><div id='foot'><div>${speakerBackFrame}</div><div id='text' class='hidden'></div><div></div></div></div>`;
     }
+    if (i === fn[3] || i === fn[4]) {
+      pulpFade = true;
+    }
   });
+  if (pulpFade) {
+    pulpHtml = pulpHtml.replace("<div id='pulp'>", "<div id='pulp' class='pulpfade'>");
+  }
 
   return pulpHtml;
 }

@@ -79,6 +79,12 @@ body {
 #pulp:nth-child(2) #pulp ~ #back, #pulp:nth-child(2) #pulp ~ #foot {
   filter: brightness(60%);
 }
+#pulp:nth-child(3) {
+  opacity: 0;
+}
+#pulp.pulpfade {
+  transition: opacity 0.15s linear;
+}
 #back {
   width: calc(100 * var(--vwUnit));
   height: calc(100 * var(--vhUnit));
