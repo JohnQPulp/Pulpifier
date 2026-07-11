@@ -66,6 +66,7 @@ public static partial class Compiler {
 		string[] activeCharacters = [];
 		HashSet<string> backgroundNames = new();
 		Dictionary<string, string> backgroundFilters = new();
+		string transitionFilter = "";
 		string activeSpeaker = "";
 		string activeThinker = "";
 		string activeBackground = "";
@@ -253,6 +254,11 @@ public static partial class Compiler {
 									SetCharacterAttribute(key.Substring(2), filterValue, characterNames, characterFilters);
 								} else if (key.StartsWith("f:b:")) {
 									SetAttribute(key.Substring(2), filterValue, backgroundNames, backgroundFilters);
+								} else if (key == "f") {
+									if (value != "fade" && value != "lightning") {
+										throw new Exception($"Invalid custom filter name: \"{value}\"");
+									}
+									transitionFilter = value;
 								} else {
 									throw new Exception($"Invalid filter key \"{key}\".");
 								}
@@ -317,6 +323,7 @@ public static partial class Compiler {
 									backgroundNames.Add(activeBackground);
 									activeSpeaker = "";
 								}
+								transitionFilter = "fade";
 								break;
 							default: throw new Exception($"Unrecognized key: '{key}'.");
 						}
@@ -327,7 +334,11 @@ public static partial class Compiler {
 					imageFiles.TryAdd("b-" + backgroundFullName, new ImageMetadata(p));
 					if (activeCharacters.Length > 0) imageFiles["b-" + backgroundFullName].ForegroundPulpLine ??= p;
 					if (backgroundFilters.TryGetValue(activeBackground, out string bfilter) && bfilter != "") {
-						backgroundFullName += ";" +  bfilter;
+						if (transitionFilter != "") throw new Exception("Custom filter and transition filter at the same time not allowed.");
+						backgroundFullName += ";" + bfilter;
+					} else if (transitionFilter != "") {
+						backgroundFullName += ";;" + transitionFilter;
+						transitionFilter = "";
 					}
 					int bIndex = backgrounds.IndexOf(backgroundFullName);
 					if (bIndex == -1) {

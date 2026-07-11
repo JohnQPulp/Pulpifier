@@ -85,6 +85,13 @@ body {
 #pulp.pulpfade {
   transition: opacity 0.15s linear;
 }
+#pulp:nth-child(3).pulplightning > #back {
+  filter: brightness(300%);
+}
+#pulp.pulplightning > #back {
+  filter: brightness(100%);
+  transition: filter 0.45s ease-in;
+}
 #back {
   width: calc(100 * var(--vwUnit));
   height: calc(100 * var(--vhUnit));

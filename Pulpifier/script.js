@@ -19,11 +19,23 @@ if (!Number.isNaN(lVal) && lVal !== 0) {
 }
 onPosUpdate();
 
+function backgroundImage(background) {
+  return `background-image: url("images/b-${background}.${imageExt}");`;
+}
+function getBackground(i) {
+  let background = backgrounds[backgroundIds[i]].split(';');
+  return [
+    backgroundImage(background[0]),
+    background.length > 1 ? `filter:${background[1]}` : "",
+    background.length > 2 ? `class='pulp${background[2]}'` : "",
+  ];
+}
+
 function buildPulp(i) {
   if (i < 0 || i >= htmlArr.length) {
     return `<div id='pulp'></div>`;
   }
-  let background = backgrounds[backgroundIds[i]].split(';');
+  let background = getBackground(i);
   let speakerBack = "<div>";
   if (speakers[i] === `c-author.${imageExt}`) {
     speakerBack += `<div class='speaker-back ed' style='background-image: url(images/c-author-abased.${imageExt})'></div>`;
@@ -36,13 +48,13 @@ function buildPulp(i) {
   speakerBack += `</div>`;
 
   let oldBack = "";
-  if (i > 0 && backgroundIds[i] !== backgroundIds[i - 1] && !frameNarratives.some(fn => fn[3] === i || fn[4] === i)) {
-    let oldBackground = backgrounds[backgroundIds[i - 1]].split(';');
-    oldBack = `<div id='back' class="old-back" style='background-image: url("images/b-${oldBackground[0]}.${imageExt}");${oldBackground.length === 1 ? "" : ("filter:" + oldBackground[1])}'></div>`;
+  if (i > 0 && backgroundIds[i] !== backgroundIds[i - 1] && background[2] === "") {
+    let oldBackground = getBackground(i - 1);
+    oldBack = `<div id='back' class="old-back" style='${oldBackground[0]}${oldBackground[1]}'></div>`;
   }
 
-  let pulpHtml = `<div id='pulp'>${oldBack}
-  <div id='back' style='background-image: url("images/b-${background[0]}.${imageExt}");${background.length === 1 ? "" : ("filter:" + background[1])}'></div>
+  let pulpHtml = `<div id='pulp' ${background[2]}>${oldBack}
+  <div id='back' style='${background[0]}${background[1]}'></div>
   ${imageHtmls[i]}
   <div id='foot'>
     <div>${speakerBack}</div>
@@ -59,15 +71,9 @@ function buildPulp(i) {
         speakerBackFrame += `<div class='speaker-back' style='background-image: url(images/${fn[5]})'></div>`;
       }
       speakerBackFrame += "</div>";
-      pulpHtml = `<div id='pulp'>` + pulpHtml + `<div id='back' style='background-image: url("images/b-${fn[0]}.${imageExt}");'></div><div id='foot'><div>${speakerBackFrame}</div><div id='text' class='hidden'></div><div></div></div></div>`;
-    }
-    if (i === fn[3] || i === fn[4]) {
-      pulpFade = true;
+      pulpHtml = `<div id='pulp' ${background[2]}>` + pulpHtml + `<div id='back' style='${backgroundImage(fn[0])}'></div><div id='foot'><div>${speakerBackFrame}</div><div id='text' class='hidden'></div><div></div></div></div>`;
     }
   });
-  if (pulpFade) {
-    pulpHtml = pulpHtml.replace("<div id='pulp'>", "<div id='pulp' class='pulpfade'>");
-  }
 
   return pulpHtml;
 }
