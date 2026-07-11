@@ -118,6 +118,8 @@ public class CompilerTests {
 	[DataRow("Foo. Foo. “Bar. Bar.” Foo.\n", "Foo.\nb=b1\n\nFoo.\ng=b2\n\n“Bar.”\nn:b=Bar;s=b\n\n“Bar.”\n\n\nFoo.\ns=;g=\n")]
 	[DataRow("Foo. Foo. “Bar. Bar.” Foo.\n", "Foo.\nb=b1\n\nFoo.\n\n\n“Bar.”\nn:b=Bar;g=b2;s=b\n\n“Bar.”\n\n\nFoo.\ns=;g=\n")]
 	[DataRow("Foo. Foo. “Bar. Bar.” Foo.\n", "Foo.\nb=b1\n\nFoo.\n\n\n“Bar.”\nn:b=Bar;s=b\n\n“Bar.”\ng=b2\n\nFoo.\ng=;s=\n")]
+	[DataRow("Foo\n", "Foo\nb=foo;f=lightning\n")]
+	[DataRow("Foo. Bar. Fizz.\n", "Foo.\nb=foo\n\nBar.\n\n\nFizz.\nf=fade\n")]
 	public void Compiler_BuildHtml_GoodText(string rawText, string pulpText) {
 		Compiler.BuildHtml(rawText, pulpText);
 		Assert.IsTrue(Compiler.TryBuildHtml(rawText, pulpText, out string _));
@@ -236,6 +238,8 @@ public class CompilerTests {
 	[DataRow("“Foo. ‘Bar.’”\n\n“‘“Fizz.”’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\nn:s1=S;n:s2=S;n:s3=S;s=s1;b=b1\n\n“‘Bar.’”\ng=;s=s2;b=b2\n\n“‘“Fizz.”’”\n;g=b3;s=s3;b=b3\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\ng=;\n\n“Foo.”\ng=\n")]
 	[DataRow("“Foo. ‘Bar.’”\n\n“‘“Fizz.”’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\nn:s1=S;n:s2=S;n:s3=S;s=s1;b=b1\n\n“‘Bar.’”\ng=b2,;s=s2\n\n“‘“Fizz.”’”\n;g=b3;s=s3;b=b3\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\ng=;\n\n“Foo.”\ng=\n")]
 	[DataRow("Foo\n", "Foo\nb=back,\n")]
+	[DataRow("Foo\n", "Foo\nb=foo;f=bad\n")]
+	[DataRow("Foo\n", "Foo\nb=foo;f=blur(3px)\n")]
 	public void Compiler_BuildHtml_BadText(string rawText, string pulpText) {
 		Assert.IsFalse(Compiler.TryBuildHtml(rawText, pulpText, out string _));
 	}
@@ -401,6 +405,7 @@ public class CompilerTests {
 	[DataRow("Foo\n", "Foo\nn:foo=Foo;c=foo;f:c:foo=blur(3px)\n", "blur(calc(3 / 15 * var(--vwUnit)))")]
 	[DataRow("Foo\n", "Foo\nb=foo;f:b:foo=brightness(85%) blur(5px)\n", "brightness(85%) blur(calc(5 / 15 * var(--vwUnit)))")]
 	[DataRow("Foo\n", "Foo\nb=foo;f:b:foo=blur(5px) brightness(85%)\n", "blur(calc(5 / 15 * var(--vwUnit))) brightness(85%)")]
+	[DataRow("Foo\n", "Foo\nb=foo;f=lightning\n", "'foo;;lightning'")]
 	[DataRow("## Foo Bar\n", "## Foo Bar\n\n", "2|Foo Bar")]
 	[DataRow("## Foo<br>Bar\n", "## Foo<br>Bar\n\n", "2|Foo: Bar")]
 	[DataRow("Foo. Bar.\n", "Foo.<f>Footnote.</f> Bar.\n\n", "Foo.<sup>†</sup>")]
@@ -427,6 +432,7 @@ public class CompilerTests {
 	[DataRow("Foo. Foo. “Bar1. Bar2.” Foo.\n", "Foo.\nb=b1\n\nFoo.\n\n\n“Bar1.”\ng=b2;n:b=B\n\n“Bar2.”\ns=b\n\nFoo.\ns=;g=\n", "<span class='d'>“Bar2")]
 	[DataRow("Foo. Foo. “Bar0. Bar1. Bar2.” Foo.\n", "Foo.\nb=b1\n\nFoo.\n\n\n“Bar0.”\ng=b2;n:b=B;s=b\n\n“Bar1.”\n\n\n“Bar2.”\ne:b=happy\n\nFoo.\ng=;s=\n", "c-b-ehappy-s")]
 	[DataRow("Foo. Foo. “Bar0. Bar1. ‘Bar2.’” Foo.\n", "Foo.\nb=b1\n\nFoo.\n\n\n“Bar0.”\n;n:b=B;s=b\n\n“Bar1.”\n;g=b2\n\n“‘Bar2.’”\ns=b;e:b=happy\n\nFoo.\ng=;s=\n", "c-b-ehappy-s")]
+	[DataRow("Foo. Foo. “Bar1. Bar2.” Foo.\n", "Foo.\nb=b1\n\nFoo.\n\n\n“Bar1.”\ng=b2\n\n“Bar2.”\n\n\nFoo.\ng=\n", "['b1','b2;;fade','b2','b1;;fade']")]
 	public void Compiler_BuildHtml_ContainsHtml(string rawText, string pulpText, string htmlSnippet) {
 		string html = Compiler.BuildHtml(rawText, pulpText);
 		Assert.Contains(htmlSnippet, html);
