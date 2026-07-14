@@ -7,7 +7,7 @@
   "(A )?Connecticut Yankee( in King Arthur's Court)?": "https://www.goodreads.com/book/show/162898.A_Connecticut_Yankee_in_King_Arthur_s_Court",
   "Great Expectations": "https://www.goodreads.com/book/show/2623.Great_Expectations",
   "East of Eden": "https://www.goodreads.com/book/show/4406.East_of_Eden",
-  "A Confederacy of Dunces": "https://www.goodreads.com/book/show/310612.A_Confederacy_of_Dunces",
+  "(A )?Confederacy of Dunces": "https://www.goodreads.com/book/show/310612.A_Confederacy_of_Dunces",
   "The Pearl": "https://www.goodreads.com/book/show/5308.The_Pearl",
   "Dead Souls": "https://www.goodreads.com/book/show/28381.Dead_Souls",
   "Lair of the White Worm": "https://www.goodreads.com/book/show/35819.Lair_of_the_White_Worm",
@@ -135,4 +135,6 @@
   "A Woman of No Importance": "https://www.goodreads.com/book/show/122648.A_Woman_of_No_Importance",
   "An Ideal Husband": "https://www.goodreads.com/book/show/5296.An_Ideal_Husband",
   "The Importance of Being Earnest": "https://www.goodreads.com/book/show/92303.The_Importance_of_Being_Earnest",
+  "(The )?Portrait of a Lady": "https://www.goodreads.com/book/show/264.The_Portrait_of_a_Lady",
+  "(Twenty Thousand)|(20,000) Leagues( Under the Sea)?": "https://www.goodreads.com/book/show/834333.20000_Leagues_Under_the_Sea",
 }
