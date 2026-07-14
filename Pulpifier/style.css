@@ -320,6 +320,16 @@ img.p-3\/4 { left: 75%; }
   max-width: max(7em, 25%);
   text-indent: 0.5em hanging;
 }
+.indent {
+  padding-left: 1em;
+  text-indent: -1em;
+  display: block;
+}
+.indent2 {
+  padding-left: 2em;
+  text-indent: -1em;
+  display: block;
+}
 .italics {
   font-style: italic;
 }
