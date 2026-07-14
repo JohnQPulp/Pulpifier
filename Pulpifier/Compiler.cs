@@ -84,6 +84,9 @@ public static partial class Compiler {
 			while (r < rawLines.Length) {
 				ThrowIfContainsInvalidChars(rawLines[r]);
 				string rawLine = rawLines[r].Replace("\uFEFF", string.Empty).Replace("\u200A…", "…").Replace("\u00a0", " ").Replace("“\u200a’", "“’").Replace("“\u200a‘", "“‘").Replace("’\u200a”", "’”") + ' ';
+				if (!rawLine.StartsWith('#')) {
+					rawLine = rawLine.Replace("<br>", "");
+				}
 				if (rawLine == " ") throw new Exception("Empty raw line.");
 				if (rawLines[r + 1] != string.Empty) throw new Exception("Missing raw line break.");
 				if (joinedLine != "" || modifiers.Contains(Modifier.AllowBreak) || modifiers.Contains(Modifier.Joined)) throw new Exception("Bad modifier across paragraph break.");
@@ -111,8 +114,8 @@ public static partial class Compiler {
 
 					string cleanPulpLine = Regex.Replace(pulpLine, "<[ef]>.*?</[ef]>", "");
 					ThrowIfContainsUnsupportedFontChars(cleanPulpLine);
-					cleanPulpLine = Regex.Replace(cleanPulpLine, "<div( class='[a-z ]+')?>(.*?)</div>", "$2");
-					cleanPulpLine = Regex.Replace(cleanPulpLine, "<span( class='[a-z ]+')?>(.*?)</span>", "$2");
+					cleanPulpLine = Regex.Replace(cleanPulpLine, "<div( class='[\\w ]+')?>(.*?)</div>", "$2");
+					cleanPulpLine = Regex.Replace(cleanPulpLine, "<span( class='[\\w ]+')?>(.*?)</span>", "$2");
 					cleanPulpLine = cleanPulpLine.Replace("&nbsp;", " ");
 					if (cleanPulpLine == "") {
 						if (pulpLine == "") throw new Exception("Should only have empty lines if there are editor's notes.");
@@ -122,8 +125,12 @@ public static partial class Compiler {
 						singleQuoteEnding = false;
 						if (constructedLine.Count(c => c == '"') % 2 == 1 && !cleanPulpLine.StartsWith('"')) throw new Exception("Pulp line should continue ongoing quote.");
 						string constructionPulpLine = cleanPulpLine;
-						if (constructionPulpLine.StartsWith('#') && rawLine.StartsWith('#') && constructedLine == "" && constructionPulpLine.Contains("<br>") && !rawLine.Contains("<br>")) {
-							constructionPulpLine = constructionPulpLine.Replace("<br>", ". ");
+						if (constructionPulpLine.StartsWith('#') && rawLine.StartsWith('#') && constructedLine == "" && constructionPulpLine.Contains("<br>")) {
+							if (!rawLine.Contains("<br>")) {
+								constructionPulpLine = constructionPulpLine.Replace("<br>", ". ");
+							}
+						} else {
+							constructionPulpLine = constructionPulpLine.Replace("<br>", "");
 						}
 						if ((constructionPulpLine.StartsWith('"') && rawLine[constructedLine.Length] != '"') || (constructionPulpLine.StartsWith('“') && rawLine[constructedLine.Length] != '“')) {
 							constructionPulpLine = constructionPulpLine[1..];

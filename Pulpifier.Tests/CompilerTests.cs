@@ -120,6 +120,9 @@ public class CompilerTests {
 	[DataRow("Foo. Foo. “Bar. Bar.” Foo.\n", "Foo.\nb=b1\n\nFoo.\n\n\n“Bar.”\nn:b=Bar;s=b\n\n“Bar.”\ng=b2\n\nFoo.\ng=;s=\n")]
 	[DataRow("Foo\n", "Foo\nb=foo;f=lightning\n")]
 	[DataRow("Foo. Bar. Fizz.\n", "Foo.\nb=foo\n\nBar.\n\n\nFizz.\nf=fade\n")]
+	[DataRow("Foo.<br>Bar.\n", "Foo.<br>Bar.\n\n")]
+	[DataRow("Foo.Bar.\n", "Foo.<br>Bar.\n\n")]
+	[DataRow("Foo.<br>Bar.\n", "<div class='upper'>Foo.</div><div class='upper'>Bar.</div>\n\n")]
 	public void Compiler_BuildHtml_GoodText(string rawText, string pulpText) {
 		Compiler.BuildHtml(rawText, pulpText);
 		Assert.IsTrue(Compiler.TryBuildHtml(rawText, pulpText, out string _));
