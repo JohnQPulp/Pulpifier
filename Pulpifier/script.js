@@ -26,7 +26,7 @@ function getBackground(i) {
   let background = backgrounds[backgroundIds[i]].split(';');
   return [
     backgroundImage(background[0]),
-    background.length > 1 ? `filter:${background[1]}` : "",
+    (background.length > 1 && background[1] !== "") ? `filter:${background[1]}` : "",
     background.length > 2 ? `class='pulp${background[2]}'` : "",
   ];
 }

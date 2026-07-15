@@ -79,11 +79,17 @@ body {
 #pulp:nth-child(2) #pulp ~ #back, #pulp:nth-child(2) #pulp ~ #foot {
   filter: brightness(60%);
 }
-#pulp:nth-child(3) {
+#pulp.pulpfade:nth-child(3) {
+  filter: brightness(0);
   opacity: 0;
 }
 #pulp.pulpfade {
-  transition: opacity 0.15s linear;
+  opacity: 1;
+  filter: brightness(1);
+  transition: opacity 0.15s linear, filter 0.35s linear 0.15s;
+}
+#pulp.pulpfade + #pulp:nth-child(3) {
+  opacity: 0;
 }
 #pulp:nth-child(3).pulplightning > #back {
   filter: brightness(300%);
