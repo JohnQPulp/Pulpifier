@@ -262,7 +262,7 @@ public static partial class Compiler {
 								} else if (key.StartsWith("f:b:")) {
 									SetAttribute(key.Substring(2), filterValue, backgroundNames, backgroundFilters);
 								} else if (key == "f") {
-									if (value != "fade" && value != "lightning") {
+									if (value != "fade" && value != "lightning" && value != "blood" && value != "hit") {
 										throw new Exception($"Invalid custom filter name: \"{value}\"");
 									}
 									transitionFilter = value;

@@ -98,6 +98,25 @@ body {
   filter: brightness(100%);
   transition: filter 0.45s ease-in;
 }
+#pulp:nth-child(2).pulpblood > #back {
+  background-blend-mode: multiply;
+  animation: bloodFrames 1s forwards 0.15s;
+}
+@keyframes bloodFrames {
+  0% { background-color: #f7444400; }
+  50% { background-color: #f74444ff; }
+  65% { background-color: #f74444ff; }
+  100% { background-color: #f7444400; }
+}
+#pulp:nth-child(2).pulphit > #back {
+  animation: hitFrames 0.5s forwards 0.1s;
+}
+@keyframes hitFrames {
+  0% { filter: blur(0px); }
+  50% { filter: blur(5px); }
+  65% { filter: blur(5px); }
+  100% { filter: blur(0px); }
+}
 #back {
   width: calc(100 * var(--vwUnit));
   height: calc(100 * var(--vhUnit));
