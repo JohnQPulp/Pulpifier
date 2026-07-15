@@ -72,7 +72,7 @@ public static partial class Compiler {
 		string activeBackground = "";
 		string activeObject = "";
 		ViewScale? viewScale = null;
-		HashSet<Modifier> modifiers = new();
+		Dictionary<Modifier, int> modifiers = new();
 		string joinedLine = "";
 		Dictionary<string, string> characterCounterOverrides = new();
 		bool singleQuoteEnding = false;
@@ -89,7 +89,7 @@ public static partial class Compiler {
 				}
 				if (rawLine == " ") throw new Exception("Empty raw line.");
 				if (rawLines[r + 1] != string.Empty) throw new Exception("Missing raw line break.");
-				if (joinedLine != "" || modifiers.Contains(Modifier.AllowBreak) || modifiers.Contains(Modifier.Joined)) throw new Exception("Bad modifier across paragraph break.");
+				if (joinedLine != "" || modifiers.ContainsKey(Modifier.AllowBreak) || modifiers.ContainsKey(Modifier.Joined)) throw new Exception("Bad modifier across paragraph break.");
 
 				string constructedLine = string.Empty;
 				while (rawLine != constructedLine || (r + 2 == rawLines.Length && p < pulpLines.Length)) {
@@ -106,7 +106,7 @@ public static partial class Compiler {
 						throw new Exception($"{error}\nBook: {rawLine}\n\nPulp: {constructedLine}\n{diffError}");
 					}
 
-					if (constructedLine != string.Empty && !modifiers.Contains(Modifier.Joined) && !modifiers.Contains(Modifier.AllowBreak) && !(Regex.IsMatch(constructedLine, "[\\.!?:;—…]['’\\\"”\\*\\)\\]]* $") || (constructedLine.EndsWith(", ", StringComparison.Ordinal) && IsOpenQuote(rawLine[constructedLine.Length])))) {
+					if (constructedLine != string.Empty && !modifiers.ContainsKey(Modifier.Joined) && !modifiers.ContainsKey(Modifier.AllowBreak) && !(Regex.IsMatch(constructedLine, "[\\.!?:;—…]['’\\\"”\\*\\)\\]]* $") || (constructedLine.EndsWith(", ", StringComparison.Ordinal) && IsOpenQuote(rawLine[constructedLine.Length])))) {
 						throw new Exception("Line break in the middle of a sentence.");
 					}
 
@@ -156,6 +156,14 @@ public static partial class Compiler {
 
 					string? speakerCounterOverride = null;
 					characterCounterOverrides.Clear();
+
+					foreach (KeyValuePair<Modifier, int> kvp in modifiers.ToList()) {
+						if (kvp.Value == 1) {
+							modifiers.Remove(kvp.Key);
+						} else if (kvp.Value > 1) {
+							modifiers[kvp.Key] = kvp.Value - 1;
+						}
+					}
 
 					string[] metadata = pulpLines[p + 1].Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 					foreach (string data in metadata) {
@@ -288,19 +296,22 @@ public static partial class Compiler {
 								if (value == "no-speaker-counter") speakerCounterEnabled = false;
 								break;
 							case 'm':
-								if (value == "margin") {
-									modifiers.Add(Modifier.Margin);
-								} else if (value == "joined") {
-									modifiers.Add(Modifier.Joined);
-								} else if (value == "nospace") {
-									modifiers.Add(Modifier.NoSpace);
-								} else if (value == "allowbreak" || value == "break") {
-									modifiers.Add(Modifier.AllowBreak);
-								} else if (value == "dialogue") {
-									modifiers.Add(Modifier.Dialogue);
-								} else if (value == "nospeaker") {
-									modifiers.Add(Modifier.NoSpeaker);
-								} else if (value == "" || value == "none") {
+								string[] modValues = value.Split(',');
+								string modKey = modValues[0];
+								int modLen = modValues.Length > 1 ? int.Parse(modValues[1]) : -1;
+								if (modKey == "margin") {
+									modifiers[Modifier.Margin] = modLen;
+								} else if (modKey == "joined") {
+									modifiers[Modifier.Joined] = modLen;
+								} else if (modKey == "nospace") {
+									modifiers[Modifier.NoSpace] = modLen;
+								} else if (modKey == "allowbreak" || modKey == "break") {
+									modifiers[Modifier.AllowBreak] = modLen;
+								} else if (modKey == "dialogue") {
+									modifiers[Modifier.Dialogue] = modLen;
+								} else if (modKey == "nospeaker") {
+									modifiers[Modifier.NoSpeaker] = modLen;
+								} else if (modKey == "" || modKey == "none") {
 									modifiers.Clear();
 								} else throw new Exception("Bad modifier value.");
 								break;
@@ -487,7 +498,7 @@ public static partial class Compiler {
 							sb.Append($"<b class='speaker'>{characterNames[active]}{(activeThinker != "" ? " (Thinking)" : "")}</b>");
 						}
 
-						if (modifiers.Contains(Modifier.NoSpeaker)) {
+						if (modifiers.ContainsKey(Modifier.NoSpeaker)) {
 							speakers.Add("");
 						} else {
 							string file = GetCharacterFile(active, characterAges, characterExpressions, characterExpressionCounters, characterExtras, activeSpeaker, activeThinker, speakerCounterEnabled, characterCounterOverrides);
@@ -502,20 +513,20 @@ public static partial class Compiler {
 					} else {
 						speakers.Add("");
 					}
-					sb.Append(modifiers.Contains(Modifier.Margin) ? "<div class='margin'>" : "<div>");
-					if (modifiers.Contains(Modifier.Dialogue)) sb.Append("<span class='d-signal'></span>");
+					sb.Append(modifiers.ContainsKey(Modifier.Margin) ? "<div class='margin'>" : "<div>");
+					if (modifiers.ContainsKey(Modifier.Dialogue)) sb.Append("<span class='d-signal'></span>");
 					sb.Append(htmlLine);
 					sb.Append("</div>");
 					sb.Append("`, ");
 
-					if (modifiers.Contains(Modifier.Joined)) {
+					if (modifiers.ContainsKey(Modifier.Joined)) {
 						if (activeSpeaker != "") throw new Exception("Don't join speaker lines.");
 						joinedLine += pulpLine + ' ';
 					} else {
 						joinedLine = "";
 					}
 
-					if (modifiers.Contains(Modifier.NoSpace)) {
+					if (modifiers.ContainsKey(Modifier.NoSpace)) {
 						if (joinedLine != "") {
 							if (!joinedLine.EndsWith(' ')) throw new Exception("Unexpected non-space joined line ending.");
 							joinedLine = joinedLine[..^1];
