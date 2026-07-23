@@ -86,7 +86,9 @@ body {
 #pulp.pulpfade {
   opacity: 1;
   filter: brightness(1);
-  transition: opacity 0.15s linear, filter 0.35s linear 0.15s;
+}
+#pulp.pulpfade:nth-child(2) {
+  transition: opacity 0.2s linear, filter 0.4s linear 0.2s;
 }
 #pulp.pulpfade + #pulp:nth-child(3) {
   opacity: 0;
@@ -129,8 +131,10 @@ body {
 }
 #back.old-back {
   opacity: 0;
-  transition: opacity 0.15s linear;
   z-index: 3;
+}
+#pulp:nth-child(2) #back.old-back {
+  transition: opacity 0.4s linear;
 }
 #pulp:nth-child(3) #back.old-back {
   opacity: 1;
