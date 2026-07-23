@@ -132,9 +132,10 @@ body {
 #back.old-back {
   opacity: 0;
   z-index: 3;
+  will-change: opacity;
 }
 #pulp:nth-child(2) #back.old-back {
-  transition: opacity 0.4s linear;
+  transition: opacity 0.4s ease-out;
 }
 #pulp:nth-child(3) #back.old-back {
   opacity: 1;
