@@ -632,12 +632,20 @@ public static partial class Compiler {
 	}
 
 	// If more characters are needed, update this regex, and regenerate the fonts files to match:
-	// pyftsubset "NotoSerif[wdth,wght].ttf" --unicodes="U+0000-017F,U+2000-206f" --layout-features="*" --flavor="woff2" --output-file="NotoSerif-Variable-Pulp.woff2"
-	// pyftsubset "NotoSerif-Italic[wdth,wght].ttf" --unicodes="U+0000-017F,U+2000-206f" --layout-features="*" --flavor="woff2" --output-file="NotoSerif-Italic-Variable-Pulp.woff2"
-	[GeneratedRegex("^[\u0000-\u017f\u2000-\u206f]*$")]
+	// pyftsubset "NotoSerif[wdth,wght].ttf" --unicodes="U+0000-017F,U+2000-206f,U+2150-218b" --layout-features="*" --flavor="woff2" --output-file="NotoSerif-Variable-Pulp.woff2"
+	// pyftsubset "NotoSerif-Italic[wdth,wght].ttf" --unicodes="U+0000-017F,U+2000-206f,U+2150-218b" --layout-features="*" --flavor="woff2" --output-file="NotoSerif-Italic-Variable-Pulp.woff2"
+	[GeneratedRegex("^[\u0000-\u017f\u2000-\u206f\u2150-\u218b]*$")]
 	private static partial Regex SupportedFontChars();
 	private static void ThrowIfContainsUnsupportedFontChars(string line) {
-		if (!SupportedFontChars().IsMatch(line)) throw new Exception("Contains character outside font's supported unicode ranges.");
+		if (!SupportedFontChars().IsMatch(line)) {
+			string error = "Contains character outside font's supported unicode ranges. Non-ASCII chars:";
+			foreach (char c in line) {
+				if (c > 127) {
+					error += $"\n{c} (\\u{((int)c):X4})";
+				}
+			}
+			throw new Exception(error);
+		}
 	}
 
 	private static void ThrowIfBadKey(string key) {
