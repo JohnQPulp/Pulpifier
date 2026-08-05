@@ -425,6 +425,8 @@ public class CompilerTests {
 	[DataRow("## Foo<br>Bar\n", "## Foo<br>Bar\n\n", "2|Foo: Bar")]
 	[DataRow("Foo. Bar.\n", "Foo.<f>Footnote.</f> Bar.\n\n", "Foo.<sup>†</sup>")]
 	[DataRow("Foo. Bar.\n", "Foo.<f>Footnote.</f> Bar.\n\n", "<p class='f'><sup>†</sup>Footnote.</p>")]
+	[DataRow("Foo. Bar.\n", "Foo.<f>My *italics* footnote.</f> Bar.\n\n", "<sup>†</sup>My <i>italics</i> footnote.")]
+	[DataRow("Foo. Bar.\n", "Foo.<f>My <span class='upper'>custom</span> footnote.</f> Bar.\n\n", "<sup>†</sup>My <span class='upper'>custom</span> footnote.")]
 	[DataRow("“Foo. Bar.”\n", "“Foo.<f>Footnote.</f> Bar.”\n\n", "Foo.<sup>†</sup>")]
 	[DataRow("“Foo. Bar.”\n", "“Foo.<f>Footnote.</f> Bar.”\n\n", "<p class='f'><sup>†</sup>Footnote.</p>")]
 	[DataRow("“Foo. Bar.”\n", "“Foo.<f>Footnote.</f> Bar.”\n\n", "<span class='d'")]
