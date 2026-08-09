@@ -129,6 +129,7 @@ public class CompilerTests {
 	[DataRow("Foo.<br>Bar.\n", "Foo.<br>Bar.\n\n")]
 	[DataRow("Foo.Bar.\n", "Foo.<br>Bar.\n\n")]
 	[DataRow("Foo.<br>Bar.\n", "<div class='upper'>Foo.</div><div class='upper'>Bar.</div>\n\n")]
+	[DataRow("Foo.Bar.Fizz.Buzz.\n", "<table><tr><td>Foo.</td><td>Bar.</td></tr><tr><td>Fizz.</td><td>Buzz.</td></tr></table>\n\n")]
 	[DataRow("Ⅰ/Ⅶ = ⅐\n", "Ⅰ/Ⅶ = ⅐\n\n")]
 	public void Compiler_BuildHtml_GoodText(string rawText, string pulpText) {
 		Compiler.BuildHtml(rawText, pulpText);

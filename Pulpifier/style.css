@@ -350,6 +350,10 @@ img.p-3\/4 { left: 75%; }
   max-width: max(7em, 25%);
   text-indent: 0.5em hanging;
 }
+.realtable {
+  margin: 0 auto;
+  border-spacing: 2em 0;
+}
 .indent {
   padding-left: 1em;
   text-indent: -1em;

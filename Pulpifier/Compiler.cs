@@ -116,6 +116,7 @@ public static partial class Compiler {
 					ThrowIfContainsUnsupportedFontChars(cleanPulpLine);
 					cleanPulpLine = Regex.Replace(cleanPulpLine, "<div( class='[\\w ]+')?>(.*?)</div>", "$2");
 					cleanPulpLine = Regex.Replace(cleanPulpLine, "<span( class='[\\w ]+')?>(.*?)</span>", "$2");
+					cleanPulpLine = Regex.Replace(cleanPulpLine, "</?(table|tr|td)( class='[\\w ]+')?>", "");
 					cleanPulpLine = cleanPulpLine.Replace("&nbsp;", " ");
 					if (cleanPulpLine == "") {
 						if (pulpLine == "") throw new Exception("Should only have empty lines if there are editor's notes.");
