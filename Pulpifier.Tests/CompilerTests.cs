@@ -131,6 +131,8 @@ public class CompilerTests {
 	[DataRow("Foo.<br>Bar.\n", "<div class='upper'>Foo.</div><div class='upper'>Bar.</div>\n\n")]
 	[DataRow("Foo.Bar.Fizz.Buzz.\n", "<table><tr><td>Foo.</td><td>Bar.</td></tr><tr><td>Fizz.</td><td>Buzz.</td></tr></table>\n\n")]
 	[DataRow("Ⅰ/Ⅶ = ⅐\n", "Ⅰ/Ⅶ = ⅐\n\n")]
+	[DataRow("m̄.rnlls\n", "m̄.rnlls\n\n")]
+	[DataRow("José\n\nJosé\n", "José\n\n\nJosé\n\n")]
 	public void Compiler_BuildHtml_GoodText(string rawText, string pulpText) {
 		Compiler.BuildHtml(rawText, pulpText);
 		Assert.IsTrue(Compiler.TryBuildHtml(rawText, pulpText, out string _));
@@ -256,6 +258,7 @@ public class CompilerTests {
 	[DataRow("Foo.\n>\nBar.\n", "Foo.\n\n\nBar.\n\n")]
 	[DataRow("Foo.\nBar.\nBar.\n", "Foo.\n\n\nBar.\n\n")]
 	[DataRow("Foo.\nBar.\n", "Foo.\n\n\nBar.\n\n")]
+	[DataRow("José\n\nJosé\n", "José\n\n\nJosé\n\n")]
 	public void Compiler_BuildHtml_BadText(string rawText, string pulpText) {
 		Assert.IsFalse(Compiler.TryBuildHtml(rawText, pulpText, out string _));
 	}

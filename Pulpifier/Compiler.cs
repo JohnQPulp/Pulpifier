@@ -633,9 +633,9 @@ public static partial class Compiler {
 	}
 
 	// If more characters are needed, update this regex, and regenerate the fonts files to match:
-	// pyftsubset "NotoSerif[wdth,wght].ttf" --unicodes="U+0000-017F,U+2000-206f,U+2150-218b" --layout-features="*" --flavor="woff2" --output-file="NotoSerif-Variable-Pulp.woff2"
-	// pyftsubset "NotoSerif-Italic[wdth,wght].ttf" --unicodes="U+0000-017F,U+2000-206f,U+2150-218b" --layout-features="*" --flavor="woff2" --output-file="NotoSerif-Italic-Variable-Pulp.woff2"
-	[GeneratedRegex("^[\u0000-\u017f\u2000-\u206f\u2150-\u218b]*$")]
+	// pyftsubset "NotoSerif[wdth,wght].ttf" --unicodes="U+0000-017F,U+0300-036f,U+2000-206f,U+2150-218b" --layout-features="*" --flavor="woff2" --output-file="NotoSerif-Variable-Pulp.woff2"
+	// pyftsubset "NotoSerif-Italic[wdth,wght].ttf" --unicodes="U+0000-017F,U+0300-036f,U+2000-206f,U+2150-218b" --layout-features="*" --flavor="woff2" --output-file="NotoSerif-Italic-Variable-Pulp.woff2"
+	[GeneratedRegex("^[\u0000-\u017f\u0300-\u036f\u2000-\u206f\u2150-\u218b]*$")]
 	private static partial Regex SupportedFontChars();
 	private static void ThrowIfContainsUnsupportedFontChars(string line) {
 		if (!SupportedFontChars().IsMatch(line)) {
