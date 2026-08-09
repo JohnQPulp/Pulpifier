@@ -255,7 +255,7 @@ b.speaker {
 #pulp:nth-child(2) b.speaker {
   box-shadow: 0 0 0.35em black, 0 0 0.35em black;
 }
-b.speaker + div > span.d, span.d-signal ~ span.d {
+b.speaker + div > span.d, span.d-signal ~ span.d, .dialogue {
   font-weight: var(--vnDialogueFontWeight);
 }
 p.e, p.f {
