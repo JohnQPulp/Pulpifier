@@ -334,8 +334,15 @@ img.p-3\/4 { left: 75%; }
   padding: 0 1.5em;
   box-sizing: border-box;
 }
+.supermargin {
+  padding: 0 4em;
+  box-sizing: border-box;
+}
 .fright {
   float: right;
+}
+.aright {
+  text-align: right;
 }
 .nowrap {
   text-wrap: nowrap;
