@@ -381,6 +381,7 @@ public class CompilerTests {
 	[DataRow("Foo\n", "Foo\no=myobj\n", "o-myobj.webp")]
 	[DataRow("Foo\n", "Foo\no=myobj\n", "class='c'")]
 	[DataRow("Foo\n", "Foo\no=myobj,27\n", "--oHeight: 27")]
+	[DataRow("Foo\n\nBar\n", "Foo\no=o1,50\n\nBar\no=o2\n", "o-o1.webp' class='c' style='--oHeight: 50'")]
 	[DataRow("Foo\n", "Foo\nb=p\n", "'p'")]
 	[DataRow("Foo\n", "Foo\nr=p\n", "'p'")]
 	[DataRow("“Foo” said Foo. “Bar.”\n", "“Foo” said Foo. “Bar.”\nn:f=Foo;s=f\n", "<span class='d'>“Foo”</span> said Foo. <span class='d'>“Bar.”</span>")]
@@ -476,6 +477,7 @@ public class CompilerTests {
 	[DataRow("Foo. Foo. “Bar1. Bar2.” Foo.\n", "Foo.\nb=b1\n\nFoo.\n\n\n“Bar1.”\nn:b=B;s=b\n\n“Bar2.”\ng=b2\n\nFoo.\ng=;s=\n", "<span class='d'>“Bar2")]
 	[DataRow("Foo. Foo. “Bar0. Bar1. Bar2.” Foo.\n", "Foo.\nb=b1\n\nFoo.\n\n\n“Bar0.”\n;n:b=B;s=b\n\n“Bar1.”\n;g=b2\n\n“Bar2.”\ne:b=happy\n\nFoo.\ng=;s=\n", "c-b-ehappy-s")]
 	[DataRow("Foo. Foo. “Bar0. Bar1. ‘Bar2.’” Foo.\n", "Foo.\nb=b1\n\nFoo.\n\n\n“Bar0.”\n;n:b=B;s=b\n\n“Bar1.”\n;g=b2\n\n“‘Bar2.’”\ne:b=happy\n\nFoo.\ng=;s=\n", "c-b-ehappy-s")]
+	[DataRow("Foo\n\nBar\n", "Foo\no=o1,50\n\nBar\no=o2\n", "o-o2.webp' class='c' style='--oHeight: 50'")]
 	public void Compiler_BuildHtml_DoesNotContainsHtml(string rawText, string pulpText, string htmlSnippet) {
 		string html = Compiler.BuildHtml(rawText, pulpText);
 		Assert.DoesNotContain(htmlSnippet, html);

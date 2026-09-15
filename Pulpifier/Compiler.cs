@@ -197,9 +197,7 @@ public static partial class Compiler {
 								string[] ovals = value.Split(',');
 								if (ovals.Length > 2) throw new Exception("Too many object values.");
 								activeObject = ovals[0];
-								if (ovals.Length > 1) {
-									oHeight = int.Parse(ovals[1]);
-								}
+								oHeight = ovals.Length > 1 ? int.Parse(ovals[1]) : null;
 								break;
 							case 'b':
 								ThrowIfBadKey(key);
