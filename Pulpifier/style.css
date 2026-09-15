@@ -53,6 +53,7 @@ body {
   background-color: #f0ddb6;
   z-index: 0;
   overflow: hidden;
+  --oHeight: 60;
 }
 #pulp > #pulp {
   --vwUnit: calc(0.9 * var(--vwRefUnit));
@@ -299,10 +300,10 @@ img.p-1\/4 { left: 25%; }
 img.p-3\/4 { left: 75%; }
 #pulp > img.c {
   position: absolute;
-  transform: translate(-50%, 0%);
-  top: calc(8 * var(--vhUnit));
+  transform: translate(-50%, -50%);
+  top: calc(38 * var(--vhUnit));
   left: calc(50 * var(--vwUnit));
-  height: calc(60 * var(--vhUnit));
+  height: calc(var(--oHeight) * var(--vhUnit));
   filter: opacity(96%);
   border: min(3px, 0.3em) double black;
   box-sizing: border-box;

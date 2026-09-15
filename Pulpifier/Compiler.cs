@@ -78,6 +78,7 @@ public static partial class Compiler {
 		bool singleQuoteEnding = false;
 		Stack<FrameNarrative> frameNarratives = new();
 		List<string> frameNarrativeStrings = new();
+		int? oHeight = null;
 
 		int r = 0, p = 0;
 		try {
@@ -193,7 +194,12 @@ public static partial class Compiler {
 								break;
 							case 'o':
 								ThrowIfBadKey(key);
-								activeObject = value;
+								string[] ovals = value.Split(',');
+								if (ovals.Length > 2) throw new Exception("Too many object values.");
+								activeObject = ovals[0];
+								if (ovals.Length > 1) {
+									oHeight = int.Parse(ovals[1]);
+								}
 								break;
 							case 'b':
 								ThrowIfBadKey(key);
@@ -215,6 +221,7 @@ public static partial class Compiler {
 								activeCharacters = [];
 								viewScale = null;
 								modifiers.Clear();
+								oHeight = null;
 								break;
 							case 'e':
 								if (!Regex.IsMatch(value, "^[a-z]*$")) throw new Exception("Unexpected expression name.");
@@ -423,7 +430,8 @@ public static partial class Compiler {
 					if (activeObject != "") {
 						string file = "o-" + activeObject;
 						imageFiles.TryAdd(file, new ImageMetadata(p));
-						images.Append($"<img src='{directory}{file}.{imageExtension}' class='c' />");
+						string oVar = oHeight.HasValue ? $"style='--oHeight: {oHeight.Value}'" : "";
+						images.Append($"<img src='{directory}{file}.{imageExtension}' class='c' {oVar} />");
 					}
 					imageHtmls.Add(images.ToString());
 

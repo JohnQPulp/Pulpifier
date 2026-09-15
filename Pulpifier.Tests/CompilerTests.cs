@@ -133,6 +133,8 @@ public class CompilerTests {
 	[DataRow("Ⅰ/Ⅶ = ⅐\n", "Ⅰ/Ⅶ = ⅐\n\n")]
 	[DataRow("m̄.rnlls\n", "m̄.rnlls\n\n")]
 	[DataRow("José\n\nJosé\n", "José\n\n\nJosé\n\n")]
+	[DataRow("Foo\n", "Foo\no=foo,1\n")]
+	[DataRow("Foo\n", "Foo\no=foo,101\n")]
 	public void Compiler_BuildHtml_GoodText(string rawText, string pulpText) {
 		Compiler.BuildHtml(rawText, pulpText);
 		Assert.IsTrue(Compiler.TryBuildHtml(rawText, pulpText, out string _));
@@ -259,6 +261,8 @@ public class CompilerTests {
 	[DataRow("Foo.\nBar.\nBar.\n", "Foo.\n\n\nBar.\n\n")]
 	[DataRow("Foo.\nBar.\n", "Foo.\n\n\nBar.\n\n")]
 	[DataRow("José\n\nJosé\n", "José\n\n\nJosé\n\n")]
+	[DataRow("Foo\n", "Foo\no=foo,1,1\n")]
+	[DataRow("Foo\n", "Foo\no=foo,30.5\n")]
 	public void Compiler_BuildHtml_BadText(string rawText, string pulpText) {
 		Assert.IsFalse(Compiler.TryBuildHtml(rawText, pulpText, out string _));
 	}
@@ -376,6 +380,7 @@ public class CompilerTests {
 	[DataRow("\"Foo. Bar.\"\n", "\"Foo.\"\nn:r=R;e:r=g;a:r=foo;x:r=bar\n\n\"Bar.\"\nr=p;s=r\n", "c-r-afoo-s.webp")]
 	[DataRow("Foo\n", "Foo\no=myobj\n", "o-myobj.webp")]
 	[DataRow("Foo\n", "Foo\no=myobj\n", "class='c'")]
+	[DataRow("Foo\n", "Foo\no=myobj,27\n", "--oHeight: 27")]
 	[DataRow("Foo\n", "Foo\nb=p\n", "'p'")]
 	[DataRow("Foo\n", "Foo\nr=p\n", "'p'")]
 	[DataRow("“Foo” said Foo. “Bar.”\n", "“Foo” said Foo. “Bar.”\nn:f=Foo;s=f\n", "<span class='d'>“Foo”</span> said Foo. <span class='d'>“Bar.”</span>")]
