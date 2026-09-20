@@ -48,9 +48,11 @@ function buildPulp(i) {
   speakerBack += `</div>`;
 
   let oldBack = "";
-  if (i > 0 && backgroundIds[i] !== backgroundIds[i - 1] && background[2] === "") {
+  if (i > 0 && backgroundIds[i] !== backgroundIds[i - 1]) {
     let oldBackground = getBackground(i - 1);
-    oldBack = `<div id='back' class="old-back" style='${oldBackground[0]}${oldBackground[1]}'></div>`;
+    if (background[0] !== oldBackground[0] || background[1] !== oldBackground[1]) {
+      oldBack = `<div id='back' class="old-back" style='${oldBackground[0]}${oldBackground[1]}'></div>`;
+    }
   }
 
   let pulpHtml = `<div id='pulp' ${background[2]}>${oldBack}
