@@ -66,7 +66,7 @@ body {
   box-sizing: border-box;
   z-index: 11;
 }
-#pulp:nth-child(2) #pulp {
+#pulp:nth-child(2) #pulp, #pulp.pulpprefade:nth-child(1) #pulp {
   box-shadow: 0 0 1em black, 0 0 1em black;
 }
 #pulp > #pulp > #pulp {
@@ -77,7 +77,7 @@ body {
 #pulp:nth-child(2) {
   z-index: 1;
 }
-#pulp:nth-child(2) #pulp ~ #back, #pulp:nth-child(2) #pulp ~ #foot {
+#pulp:nth-child(2) #pulp ~ #back, #pulp:nth-child(2) #pulp ~ #foot, #pulp.pulpprefade:nth-child(1) #pulp ~ #back, #pulp.pulpprefade:nth-child(1) #pulp ~ #foot {
   filter: brightness(60%);
 }
 #pulp.pulpfade:nth-child(3) {
@@ -160,7 +160,7 @@ body {
   border: min(3px, 0.3em) double black;
   z-index: 20;
 }
-#pulp:nth-child(2) #text {
+#pulp:nth-child(2) #text, #pulp.pulpprefade:nth-child(1) #text {
   box-shadow: 0 0 0.4em black, 0 0 0.4em black;
 }
 #text > div {
@@ -233,6 +233,9 @@ body {
 #pulp:nth-child(2) .speaker-back {
   filter: drop-shadow(0 0 0.75em black) url(#green-desmudger);
 }
+#pulp.pulpprefade:nth-child(1) .speaker-back {
+  filter: drop-shadow(0 0 0.75em black);
+}
 #foot > div:last-child {
   flex-grow: 1;
   max-width: 21em;
@@ -253,7 +256,7 @@ b.speaker {
   background-color: #f8efd4f0;
   border: min(3px, 0.3em) double black;
 }
-#pulp:nth-child(2) b.speaker {
+#pulp:nth-child(2) b.speaker, #pulp.pulpprefade:nth-child(1) b.speaker {
   box-shadow: 0 0 0.35em black, 0 0 0.35em black;
 }
 b.speaker + div > span.d, span.d-signal ~ span.d, .dialogue {
@@ -310,7 +313,7 @@ img.p-3\/4 { left: 75%; }
   background-color: #f1dfbb;
   pointer-events: none;
 }
-#pulp:nth-child(2) img.c {
+#pulp:nth-child(2) img.c, #pulp.pulpprefade:nth-child(1) img.c {
   box-shadow: 0 0 1em black, 0 0 1em black;
 }
 .upper {

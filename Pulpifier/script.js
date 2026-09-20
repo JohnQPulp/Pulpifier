@@ -27,7 +27,7 @@ function getBackground(i) {
   return [
     backgroundImage(background[0]),
     (background.length > 1 && background[1] !== "") ? `filter:${background[1]}` : "",
-    background.length > 2 ? `class='pulp${background[2]}'` : "",
+    background.length > 2 ? `pulp${background[2]}` : "",
   ];
 }
 
@@ -55,7 +55,7 @@ function buildPulp(i) {
     }
   }
 
-  let pulpHtml = `<div id='pulp' ${background[2]}>${oldBack}
+  let pulpHtml = `<div id='pulp' class='${background[2]}'>${oldBack}
   <div id='back' style='${background[0]}${background[1]}'></div>
   ${imageHtmls[i]}
   <div id='foot'>
@@ -73,9 +73,13 @@ function buildPulp(i) {
         speakerBackFrame += `<div class='speaker-back' style='background-image: url(images/${fn[5]})'></div>`;
       }
       speakerBackFrame += "</div>";
-      pulpHtml = `<div id='pulp' ${background[2]}>` + pulpHtml + `<div id='back' style='${backgroundImage(fn[0])}'></div><div id='foot'><div>${speakerBackFrame}</div><div id='text' class='hidden'></div><div></div></div></div>`;
+      pulpHtml = `<div id='pulp' class='${background[2]}'>` + pulpHtml + `<div id='back' style='${backgroundImage(fn[0])}'></div><div id='foot'><div>${speakerBackFrame}</div><div id='text' class='hidden'></div><div></div></div></div>`;
     }
   });
+
+  if (i + 1 < htmlArr.length && getBackground(i + 1)[2] === "pulpfade") {
+    pulpHtml = pulpHtml.replace("id='pulp' class='", "id='pulp' class='pulpprefade ");
+  }
 
   return pulpHtml;
 }
