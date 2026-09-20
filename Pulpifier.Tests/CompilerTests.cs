@@ -460,6 +460,7 @@ public class CompilerTests {
 	[DataRow("Foo. Foo. “Bar0. Bar1. Bar2.” Foo.\n", "Foo.\nb=b1\n\nFoo.\n\n\n“Bar0.”\ng=b2;n:b=B;s=b\n\n“Bar1.”\n\n\n“Bar2.”\ne:b=happy\n\nFoo.\ng=;s=\n", "c-b-ehappy-s")]
 	[DataRow("Foo. Foo. “Bar0. Bar1. ‘Bar2.’” Foo.\n", "Foo.\nb=b1\n\nFoo.\n\n\n“Bar0.”\n;n:b=B;s=b\n\n“Bar1.”\n;g=b2\n\n“‘Bar2.’”\ns=b;e:b=happy\n\nFoo.\ng=;s=\n", "c-b-ehappy-s")]
 	[DataRow("Foo. Foo. “Bar1. Bar2.” Foo.\n", "Foo.\nb=b1\n\nFoo.\n\n\n“Bar1.”\ng=b2\n\n“Bar2.”\n\n\nFoo.\ng=\n", "['b1','b2;;fade','b2','b1;;fade']")]
+	[DataRow("Foo. Bar. Fizz. Buzz.\n", "Foo.\nb=b1\n\nBar.\no=o1\n\nFizz.\nb=b2\n\nBuzz.\no=\n", "['b1','b1;;fade','b2','b2;;fade']")]
 	public void Compiler_BuildHtml_ContainsHtml(string rawText, string pulpText, string htmlSnippet) {
 		string html = Compiler.BuildHtml(rawText, pulpText);
 		Assert.Contains(htmlSnippet, html);

@@ -196,6 +196,9 @@ public static partial class Compiler {
 								ThrowIfBadKey(key);
 								string[] ovals = value.Split(',');
 								if (ovals.Length > 2) throw new Exception("Too many object values.");
+								if (ovals[0] != activeObject) {
+									transitionFilter = "fade";
+								}
 								activeObject = ovals[0];
 								oHeight = ovals.Length > 1 ? int.Parse(ovals[1]) : null;
 								break;
@@ -357,8 +360,11 @@ public static partial class Compiler {
 					imageFiles.TryAdd("b-" + backgroundFullName, new ImageMetadata(p));
 					if (activeCharacters.Length > 0) imageFiles["b-" + backgroundFullName].ForegroundPulpLine ??= p;
 					if (backgroundFilters.TryGetValue(activeBackground, out string bfilter) && bfilter != "") {
-						if (transitionFilter != "") throw new Exception("Custom filter and transition filter at the same time not allowed.");
 						backgroundFullName += ";" + bfilter;
+						if (transitionFilter == "fade") {
+							backgroundFullName += ";fade";
+							transitionFilter = "";
+						} else if (transitionFilter != "") throw new Exception("Custom filter and transition filter at the same time not allowed (except for fade).");
 					} else if (transitionFilter != "") {
 						backgroundFullName += ";;" + transitionFilter;
 						transitionFilter = "";
