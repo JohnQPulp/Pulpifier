@@ -133,6 +133,7 @@ public class CompilerTests {
 	[DataRow("Ⅰ/Ⅶ = ⅐\n", "Ⅰ/Ⅶ = ⅐\n\n")]
 	[DataRow("m̄.rnlls\n", "m̄.rnlls\n\n")]
 	[DataRow("José\n\nJosé\n", "José\n\n\nJosé\n\n")]
+	[DataRow("αβγ\n", "αβγ\n\n")]
 	[DataRow("Foo\n", "Foo\no=foo,1\n")]
 	[DataRow("Foo\n", "Foo\no=foo,101\n")]
 	public void Compiler_BuildHtml_GoodText(string rawText, string pulpText) {
