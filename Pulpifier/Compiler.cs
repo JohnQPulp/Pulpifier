@@ -178,6 +178,7 @@ public static partial class Compiler {
 							case 'n':
 								string name = key.Split(':')[1];
 								if (string.Equals(name, "none", StringComparison.OrdinalIgnoreCase)) throw new Exception("Forbidden name.");
+								if (!Regex.IsMatch(name, "^[a-z0-9]+$")) throw new Exception("Identifier should be entirely lowercase letters and/or numbers. (^[a-z0-9]+$)");
 								characterNames[name] = value;
 								break;
 							case 'c':
