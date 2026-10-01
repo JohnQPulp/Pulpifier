@@ -672,4 +672,7 @@ public static partial class Compiler {
 		using StreamReader reader = new StreamReader(stream);
 		return reader.ReadToEnd();
 	}
+
+	[GeneratedRegex(@"^c-([^-]+)(-a[^-]+)?((-x[^-]+)+)?(-e[^-]+)?(-s?[123]?)?$")]
+	public static partial Regex ImageFilesRegex();
 }
