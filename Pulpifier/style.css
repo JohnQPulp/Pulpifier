@@ -87,6 +87,7 @@ body {
 #pulp.pulpfade {
   opacity: 1;
   filter: brightness(1);
+  will-change: opacity;
 }
 #pulp.pulpfade:nth-child(2) {
   transition: opacity 0.2s linear, filter 0.4s linear 0.2s;
