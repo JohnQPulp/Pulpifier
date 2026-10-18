@@ -27,7 +27,7 @@ public class Metadata {
 	public string? Blurb2 { get; init; }
 	public bool? UseAvif { get; init; }
 	public string ImageExtension => UseAvif == true ? "avif" : "webp";
-	public bool NeedsReediting => !(UseAvif.HasValue && UseAvif.Value);
+	public string[]? Warnings { get; init; }
 	public int? AuthorWidth { get; init; }
 
 	public static Metadata Parse(string json) {
