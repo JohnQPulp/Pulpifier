@@ -232,7 +232,7 @@ body {
   pointer-events: none;
 }
 #pulp:nth-child(2) .speaker-back {
-  filter: drop-shadow(0 0 0.75em black) url(#green-desmudger);
+  filter: drop-shadow(0 0 0.75em black) url(#browsers-suck) url(#green-desmudger);
 }
 #pulp.pulpprefade:nth-child(1) .speaker-back {
   filter: drop-shadow(0 0 0.75em black);
