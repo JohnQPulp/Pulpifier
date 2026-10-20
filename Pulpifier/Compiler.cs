@@ -269,7 +269,7 @@ public static partial class Compiler {
 								int zx = (zvals.Length < 2 || zvals[1] == "") ? 50 : int.Parse(zvals[1]);
 								float zy = (zvals.Length < 3 || zvals[2] == "") ? 9 : int.Parse(zvals[2]) * 0.75f + 9;
 								string zcss = $"background-size: calc({zzoom}em * 3 / 5) {(zn.Contains("-a") ? "!important" : "")}; --offsetX: {zx}% {(zn.Contains("-a") ? "!important" : "")}; --offsetY: {zy}em {(zn.Contains("-a") ? "!important" : "")};";
-								styleBuilder.AppendLine($".speaker-back[style*='background-image: url(images/c-{zn}.'], .speaker-back[style*='background-image: url(images/c-{zn}-'] {{ {zcss}; }}");
+								styleBuilder.AppendLine($".speaker-back[style*='images/c-{zn}.'], .speaker-back[style*='images/c-{zn}-'] {{ {zcss}; }}");
 								break;
 							case 'f':
 								string filterValue = Regex.Replace(value, @"blur\((\d+)px\)", "blur(calc($1 / 15 * var(--vwUnit)))");
