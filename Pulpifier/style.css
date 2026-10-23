@@ -269,6 +269,7 @@ p.e, p.f {
 }
 p.e {
   display: var(--ed);
+  font-variant-numeric: initial;
 }
 .characters {
   width: 100%;
