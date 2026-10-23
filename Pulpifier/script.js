@@ -174,7 +174,9 @@ window.addEventListener("load", e => {
 });
 function onPosUpdate(isAutoNext) {
   localStorage.setItem(getLocalStorageKey("l"), pos);
-  window["handlePosUpdate"] && window["handlePosUpdate"](isAutoNext);
+  window.dispatchEvent(new CustomEvent("posUpdate", {
+    detail: { "isAutoNext": isAutoNext }
+  }));
 }
 function getLocalStorageKey(k) {
   const bookId = window['bookId'];
