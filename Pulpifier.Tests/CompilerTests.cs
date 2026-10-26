@@ -396,6 +396,8 @@ public class CompilerTests {
 	[DataRow("Buzz. “Foo. ‘Bar. “Fizz.” Bar.’ Foo.” Buzz.\n", "Buzz.\n\n\n“Foo.”\nn:f=Foo;s=f\n\n“‘Bar. “Fizz.” Bar.’ Foo.”\ng=b;n:b=Bar;s=b\n\nBuzz.\ng=;s=\n", "<span class='d'>‘Bar. “Fizz.” Bar.’</span>")]
 	[DataRow("Buzz. “Foo. ‘Bar. “F’izz.” Bar.’ Foo.” Buzz.\n", "Buzz.\n\n\n“Foo.”\nn:f=Foo;s=f\n\n“‘Bar. “F’izz.” Bar.’ Foo.”\ng=b;n:b=Bar;s=b\n\nBuzz.\ng=;s=\n", "<span class='d'>‘Bar. “F’izz.” Bar.’</span>")]
 	[DataRow("Buzz. “Foo. ‘Bar. “‘F’izz.” Bar.’ Foo.” Buzz.\n", "Buzz.\n\n\n“Foo.”\nn:f=Foo;s=f\n\n“<span class='d'>‘Bar. “‘F’izz.” Bar.’</span> Foo.”\ng=b;n:b=Bar;s=b\n\nBuzz.\ng=;s=\n", "<span class='d'>‘Bar. “‘F’izz.” Bar.’</span>")]
+	[DataRow("Buzz. “Foo. ‘Bar. Fizz. Bar.’ Foo.” Buzz.\n", "Buzz.\n\n\n“Foo.”\nn:f=Foo\n\n“‘Bar. Fizz. Bar.’ Foo.”\ng=b;n:b=Bar;s=b\n\nBuzz.\ng=;s=\n", "<span class='d'>“‘Bar. Fizz. Bar.’ Foo.”</span>")]
+	[DataRow("Buzz. “Foo. ‘Bar. Fizz. Bar.’ Foo.” Buzz.\n", "Buzz.\n\n\n“Foo.”\nn:f=Foo\n\n“‘Bar. Fizz. Bar.’ Foo.”\ng=b,1;n:b=Bar;s=b\n\nBuzz.\ng=;s=\n", "<span class='d'>‘Bar. Fizz. Bar.’</span>")]
 	[DataRow("Foo\n", "Foo\nn:foo=Foo;c=foo;v=110,120\n", "'width:110%;height:120%;'")]
 	[DataRow("Foo\n", "Foo\nn:foo=Foo;c=foo;v=,120\n", "'height:120%;'")]
 	[DataRow("Foo\n", "Foo\nn:foo=Foo;c=foo;v=110\n", "'width:110%;'")]

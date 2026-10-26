@@ -20,7 +20,7 @@ internal enum Modifier {
 
 public readonly record struct ViewScale(int? Width, int? Height, int? Top);
 
-public readonly record struct FrameNarrative(string Background, string Speaker, string SpeakerName, string SpeakerImage, int Start);
+public readonly record struct FrameNarrative(string Background, string Speaker, string SpeakerName, string SpeakerImage, int Start, int? Depth);
 
 public static partial class Compiler {
 	public static bool TryBuildHtml(string rawText, string pulpText, out string html) {
@@ -346,8 +346,11 @@ public static partial class Compiler {
 									string frameSpeakerName = activeSpeaker == "" ? "" : characterNames[activeSpeaker];
 									string frameSpeakerFile = activeSpeaker == "" ? "" : speakers.Last();
 									if (activeSpeaker != "" && !frameSpeakerFile.StartsWith("c-" + activeSpeaker)) throw new Exception($"Bad frame speaker: \"{frameSpeakerFile}\".");
-									frameNarratives.Push(new FrameNarrative(activeBackground, activeSpeaker, frameSpeakerName, frameSpeakerFile, p / 3));
-									activeBackground = value;
+									string[] gvals = value.Split(',');
+									int? depth = gvals.Length > 1 ? int.Parse(gvals[1]) : null;
+									if (depth.HasValue && depth != 1) throw new Exception("Only depth of 1 supported.");
+									frameNarratives.Push(new FrameNarrative(activeBackground, activeSpeaker, frameSpeakerName, frameSpeakerFile, p / 3, depth));
+									activeBackground = gvals[0];
 									backgroundNames.Add(activeBackground);
 									activeSpeaker = "";
 								}
@@ -444,7 +447,7 @@ public static partial class Compiler {
 					List<string> htmlParts = new();
 					string[] parts = Regex.Split(joinedLine + pulpLine, @"(<e>(.*?)</e>)", RegexOptions.Singleline);
 					bool editorLine = false;
-					int frameNarrativeCount = frameNarratives.Count(fn => !string.IsNullOrEmpty(fn.Speaker));
+					int frameNarrativeCount = frameNarratives.Count(fn => fn.Depth == 1 || !string.IsNullOrEmpty(fn.Speaker));
 					for (int i = 0; i < parts.Length; i++) {
 						string part = parts[i];
 						if (editorLine) {
