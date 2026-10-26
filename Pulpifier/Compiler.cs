@@ -463,6 +463,7 @@ public static partial class Compiler {
 							part = Regex.Replace(part, @"\*\*\*(.*?)\*\*\*", "<i class='upper'>$1</i>");
 							part = Regex.Replace(part, @"\*\*(.*?)\*\*", "<span class='upper'>$1</span>");
 							part = Regex.Replace(part, @"\*(.*?)\*", "<i>$1</i>");
+							part = part.Replace("“‘", "“\u200a‘").Replace("’”", "’\u200a”").Replace("‘“", "‘\u200a“").Replace("”’", "”\u200a’").Replace("“’", "“\u200a’");
 							if (!part.Contains("<span class='d'>")) {
 								if (frameNarrativeCount == 0) {
 									part = Regex.Replace(part, @"“(.*?)”", "<span class='d'>“$1”</span>");

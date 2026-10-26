@@ -395,8 +395,8 @@ public class CompilerTests {
 	[DataRow("Buzz. “Foo. ‘Bar. “Fizz.” Bar.’ Foo.” Buzz.\n", "Buzz. <span class='d'>“Foo. ‘Bar. “Fizz.” Bar.’ Foo.”</span> Buzz.\nn:f=Foo;s=f\n", "<span class='d'>“Foo. ‘Bar. “Fizz.” Bar.’ Foo.”</span>")]
 	[DataRow("Buzz. “Foo. ‘Bar. “Fizz.” Bar.’ Foo.” Buzz.\n", "Buzz.\n\n\n“Foo.”\nn:f=Foo;s=f\n\n“‘Bar. “Fizz.” Bar.’ Foo.”\ng=b;n:b=Bar;s=b\n\nBuzz.\ng=;s=\n", "<span class='d'>‘Bar. “Fizz.” Bar.’</span>")]
 	[DataRow("Buzz. “Foo. ‘Bar. “F’izz.” Bar.’ Foo.” Buzz.\n", "Buzz.\n\n\n“Foo.”\nn:f=Foo;s=f\n\n“‘Bar. “F’izz.” Bar.’ Foo.”\ng=b;n:b=Bar;s=b\n\nBuzz.\ng=;s=\n", "<span class='d'>‘Bar. “F’izz.” Bar.’</span>")]
-	[DataRow("Buzz. “Foo. ‘Bar. “‘F’izz.” Bar.’ Foo.” Buzz.\n", "Buzz.\n\n\n“Foo.”\nn:f=Foo;s=f\n\n“<span class='d'>‘Bar. “‘F’izz.” Bar.’</span> Foo.”\ng=b;n:b=Bar;s=b\n\nBuzz.\ng=;s=\n", "<span class='d'>‘Bar. “‘F’izz.” Bar.’</span>")]
-	[DataRow("Buzz. “Foo. ‘Bar. Fizz. Bar.’ Foo.” Buzz.\n", "Buzz.\n\n\n“Foo.”\nn:f=Foo\n\n“‘Bar. Fizz. Bar.’ Foo.”\ng=b;n:b=Bar;s=b\n\nBuzz.\ng=;s=\n", "<span class='d'>“‘Bar. Fizz. Bar.’ Foo.”</span>")]
+	[DataRow("Buzz. “Foo. ‘Bar. “‘F’izz.” Bar.’ Foo.” Buzz.\n", "Buzz.\n\n\n“Foo.”\nn:f=Foo;s=f\n\n“<span class='d'>‘Bar. “‘F’izz.” Bar.’</span> Foo.”\ng=b;n:b=Bar;s=b\n\nBuzz.\ng=;s=\n", "<span class='d'>‘Bar. “ ‘F’izz.” Bar.’</span>")]
+	[DataRow("Buzz. “Foo. ‘Bar. Fizz. Bar.’ Foo.” Buzz.\n", "Buzz.\n\n\n“Foo.”\nn:f=Foo\n\n“‘Bar. Fizz. Bar.’ Foo.”\ng=b;n:b=Bar;s=b\n\nBuzz.\ng=;s=\n", "<span class='d'>“ ‘Bar. Fizz. Bar.’ Foo.”</span>")]
 	[DataRow("Buzz. “Foo. ‘Bar. Fizz. Bar.’ Foo.” Buzz.\n", "Buzz.\n\n\n“Foo.”\nn:f=Foo\n\n“‘Bar. Fizz. Bar.’ Foo.”\ng=b,1;n:b=Bar;s=b\n\nBuzz.\ng=;s=\n", "<span class='d'>‘Bar. Fizz. Bar.’</span>")]
 	[DataRow("Foo\n", "Foo\nn:foo=Foo;c=foo;v=110,120\n", "'width:110%;height:120%;'")]
 	[DataRow("Foo\n", "Foo\nn:foo=Foo;c=foo;v=,120\n", "'height:120%;'")]
@@ -449,13 +449,13 @@ public class CompilerTests {
 	[DataRow("“Foo. Bar.”\n", "“Foo.<f>Footnote.</f> Bar.”\n\n", "<p class='f'><sup>†</sup>Footnote.</p>")]
 	[DataRow("“Foo. Bar.”\n", "“Foo.<f>Footnote.</f> Bar.”\n\n", "<span class='d'")]
 	[DataRow("“Foo. ‘Bar.’”\n\n“‘“Fizz.”’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\nn:s1=S;n:s2=S;n:s3=S;s=s1;b=b1\n\n“‘Bar.’”\ng=b2;s=s2;b=b2\n\n“‘“Fizz.”’”\n;g=b3;s=s3;b=b3\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\ng=;\n\n“Foo.”\ng=\n", "<span class='d'>“Foo.”</span>")]
-	[DataRow("“Foo. ‘Bar.’”\n\n“‘“Fizz.”’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\nn:s1=S;n:s2=S;n:s3=S;s=s1;b=b1\n\n“‘Bar.’”\ng=b2;s=s2;b=b2\n\n“‘“Fizz.”’”\n;g=b3;s=s3;b=b3\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\ng=;\n\n“Foo.”\ng=\n", "“<span class='d'>‘Bar.’</span>”")]
-	[DataRow("“Foo. ‘Bar,’ bar.”\n\n“‘“Fizz.”’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\nn:s1=S;n:s2=S;n:s3=S;s=s1;b=b1\n\n“‘Bar,’ bar.”\ng=b2;s=s2;b=b2\n\n“‘“Fizz.”’”\n;g=b3;s=s3;b=b3\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\ng=;\n\n“Foo.”\ng=\n", "“<span class='d'>‘Bar,’</span> bar.”")]
-	[DataRow("“Foo. ‘Bar,’ bar, ‘bar.’”\n\n“‘“Fizz.”’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\nn:s1=S;n:s2=S;n:s3=S;s=s1;b=b1\n\n“‘Bar,’ bar, ‘bar.’”\ng=b2;s=s2;b=b2\n\n“‘“Fizz.”’”\n;g=b3;s=s3;b=b3\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\ng=;\n\n“Foo.”\ng=\n", "“<span class='d'>‘Bar,’</span> bar, <span class='d'>‘bar.’</span>”")]
-	[DataRow("“Foo. ‘Bar “bar” bar.’”\n\n“‘“Fizz.”’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\nn:s1=S;n:s2=S;n:s3=S;s=s1;b=b1\n\n“‘Bar “bar” bar.’”\ng=b2;s=s2;b=b2\n\n“‘“Fizz.”’”\n;g=b3;s=s3;b=b3\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\ng=;\n\n“Foo.”\ng=\n", "“<span class='d'>‘Bar “bar” bar.’</span>”")]
-	[DataRow("“Foo. ‘Bar.’”\n\n“‘“Fizz.”’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\nn:s1=S;n:s2=S;n:s3=S;s=s1;b=b1\n\n“‘Bar.’”\ng=b2;s=s2;b=b2\n\n“‘“Fizz.”’”\n;g=b3;s=s3;b=b3\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\ng=;\n\n“Foo.”\ng=\n", "“‘<span class='d'>“Fizz.”</span>’”")]
-	[DataRow("“Foo. ‘Bar.’”\n\n“‘“Fizz,” fizz.’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\nn:s1=S;n:s2=S;n:s3=S;s=s1;b=b1\n\n“‘Bar.’”\ng=b2;s=s2;b=b2\n\n“‘“Fizz,” fizz.’”\n;g=b3;s=s3;b=b3\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\ng=;\n\n“Foo.”\ng=\n", "“‘<span class='d'>“Fizz,”</span> fizz.’”")]
-	[DataRow("“Foo. ‘Bar.’”\n\n“‘“Fizz,” fizz, “fizz.”’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\nn:s1=S;n:s2=S;n:s3=S;s=s1;b=b1\n\n“‘Bar.’”\ng=b2;s=s2;b=b2\n\n“‘“Fizz,” fizz, “fizz.”’”\n;g=b3;s=s3;b=b3\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\ng=;\n\n“Foo.”\ng=\n", "“‘<span class='d'>“Fizz,”</span> fizz, <span class='d'>“fizz.”</span>’”")]
+	[DataRow("“Foo. ‘Bar.’”\n\n“‘“Fizz.”’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\nn:s1=S;n:s2=S;n:s3=S;s=s1;b=b1\n\n“‘Bar.’”\ng=b2;s=s2;b=b2\n\n“‘“Fizz.”’”\n;g=b3;s=s3;b=b3\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\ng=;\n\n“Foo.”\ng=\n", "“ <span class='d'>‘Bar.’</span> ”")]
+	[DataRow("“Foo. ‘Bar,’ bar.”\n\n“‘“Fizz.”’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\nn:s1=S;n:s2=S;n:s3=S;s=s1;b=b1\n\n“‘Bar,’ bar.”\ng=b2;s=s2;b=b2\n\n“‘“Fizz.”’”\n;g=b3;s=s3;b=b3\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\ng=;\n\n“Foo.”\ng=\n", "“ <span class='d'>‘Bar,’</span> bar.”")]
+	[DataRow("“Foo. ‘Bar,’ bar, ‘bar.’”\n\n“‘“Fizz.”’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\nn:s1=S;n:s2=S;n:s3=S;s=s1;b=b1\n\n“‘Bar,’ bar, ‘bar.’”\ng=b2;s=s2;b=b2\n\n“‘“Fizz.”’”\n;g=b3;s=s3;b=b3\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\ng=;\n\n“Foo.”\ng=\n", "“ <span class='d'>‘Bar,’</span> bar, <span class='d'>‘bar.’</span> ”")]
+	[DataRow("“Foo. ‘Bar “bar” bar.’”\n\n“‘“Fizz.”’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\nn:s1=S;n:s2=S;n:s3=S;s=s1;b=b1\n\n“‘Bar “bar” bar.’”\ng=b2;s=s2;b=b2\n\n“‘“Fizz.”’”\n;g=b3;s=s3;b=b3\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\ng=;\n\n“Foo.”\ng=\n", "“ <span class='d'>‘Bar “bar” bar.’</span> ”")]
+	[DataRow("“Foo. ‘Bar.’”\n\n“‘“Fizz.”’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\nn:s1=S;n:s2=S;n:s3=S;s=s1;b=b1\n\n“‘Bar.’”\ng=b2;s=s2;b=b2\n\n“‘“Fizz.”’”\n;g=b3;s=s3;b=b3\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\ng=;\n\n“Foo.”\ng=\n", "“ ‘ <span class='d'>“Fizz.”</span> ’ ”")]
+	[DataRow("“Foo. ‘Bar.’”\n\n“‘“Fizz,” fizz.’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\nn:s1=S;n:s2=S;n:s3=S;s=s1;b=b1\n\n“‘Bar.’”\ng=b2;s=s2;b=b2\n\n“‘“Fizz,” fizz.’”\n;g=b3;s=s3;b=b3\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\ng=;\n\n“Foo.”\ng=\n", "“ ‘ <span class='d'>“Fizz,”</span> fizz.’ ”")]
+	[DataRow("“Foo. ‘Bar.’”\n\n“‘“Fizz,” fizz, “fizz.”’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\nn:s1=S;n:s2=S;n:s3=S;s=s1;b=b1\n\n“‘Bar.’”\ng=b2;s=s2;b=b2\n\n“‘“Fizz,” fizz, “fizz.”’”\n;g=b3;s=s3;b=b3\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\ng=;\n\n“Foo.”\ng=\n", "“ ‘ <span class='d'>“Fizz,”</span> fizz, <span class='d'>“fizz.”</span> ’ ”")]
 	[DataRow("“Foo. ‘Bar.’”\n\n“‘“Fizz.”’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\nn:s1=S;n:s2=S;n:s3=S;s=s1;b=b1\n\n“‘Bar.’”\ng=b2;s=s2\n\n“‘“Fizz.”’”\n;g=b3;s=s3\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\ng=;\n\n“Foo.”\ng=\n", "'b2'")]
 	[DataRow("“Foo. ‘Bar.’”\n\n“‘“Fizz.”’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\nn:s1=S;n:s2=S;n:s3=S;s=s1;b=b1\n\n“‘Bar.’”\ng=b2;s=s2\n\n“‘“Fizz.”’”\n;g=b3;s=s3\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\ng=;\n\n“Foo.”\ng=\n", "'b3'")]
 	[DataRow("“Foo. ‘Bar.’”\n\n“‘“Fizz.”’”\n\n“‘“Buzz.”’”\n\n“‘Bar.’ Foo.”\n", "“Foo.”\nn:s1=S;n:s2=S;n:s3=S;s=s1;b=b1;x:s1=foo;e:s1=bar;\n\n“‘Bar.’”\ng=b2;s=s2\n\n“‘“Fizz.”’”\n;g=b3;s=s3\n\n“‘“Buzz.”’”\n\n\n“‘Bar.’”\ng=;\n\n“Foo.”\ng=\n", "'c-s1-xfoo-ebar-s.webp']")]
@@ -469,6 +469,11 @@ public class CompilerTests {
 	[DataRow("Foo. Foo. “Bar0. Bar1. ‘Bar2.’” Foo.\n", "Foo.\nb=b1\n\nFoo.\n\n\n“Bar0.”\n;n:b=B;s=b\n\n“Bar1.”\n;g=b2\n\n“‘Bar2.’”\ns=b;e:b=happy\n\nFoo.\ng=;s=\n", "c-b-ehappy-s")]
 	[DataRow("Foo. Foo. “Bar1. Bar2.” Foo.\n", "Foo.\nb=b1\n\nFoo.\n\n\n“Bar1.”\ng=b2\n\n“Bar2.”\n\n\nFoo.\ng=\n", "['b1','b2;;fade','b2','b1;;fade']")]
 	[DataRow("Foo. Bar. Fizz. Buzz.\n", "Foo.\nb=b1\n\nBar.\no=o1\n\nFizz.\nb=b2\n\nBuzz.\no=\n", "['b1','b1;;fade','b2','b2;;fade']")]
+	[DataRow("“‘Foo. Bar.’”\n", "“‘Foo. Bar.’”\n\n", "“ ‘Foo. Bar.’ ”")]
+	[DataRow("“‘Foo.’ Bar.”\n", "“‘Foo.’ Bar.”\n\n", "“ ‘Foo.’ Bar.”")]
+	[DataRow("“‘Foo. Bar.’”\n", "“‘Foo.’”\n\n\n“‘Bar.’”\n\n", "“ ‘Foo.’ ”")]
+	[DataRow("“‘Foo. Bar.’”\n", "“‘Foo. Bar.’”\nn:f=F;s=f\n", "“ ‘Foo. Bar.’ ”")]
+	[DataRow("“‘“Foo. Bar.”’”\n", "<span class='d'>“‘“Foo. Bar.”’”</span>\n\n", "“ ‘ “Foo. Bar.” ’ ”")]
 	public void Compiler_BuildHtml_ContainsHtml(string rawText, string pulpText, string htmlSnippet) {
 		string html = Compiler.BuildHtml(rawText, pulpText);
 		Assert.Contains(htmlSnippet, html);
@@ -487,6 +492,8 @@ public class CompilerTests {
 	[DataRow("Foo. Foo. “Bar0. Bar1. Bar2.” Foo.\n", "Foo.\nb=b1\n\nFoo.\n\n\n“Bar0.”\n;n:b=B;s=b\n\n“Bar1.”\n;g=b2\n\n“Bar2.”\ne:b=happy\n\nFoo.\ng=;s=\n", "c-b-ehappy-s")]
 	[DataRow("Foo. Foo. “Bar0. Bar1. ‘Bar2.’” Foo.\n", "Foo.\nb=b1\n\nFoo.\n\n\n“Bar0.”\n;n:b=B;s=b\n\n“Bar1.”\n;g=b2\n\n“‘Bar2.’”\ne:b=happy\n\nFoo.\ng=;s=\n", "c-b-ehappy-s")]
 	[DataRow("Foo\n\nBar\n", "Foo\no=o1,50\n\nBar\no=o2\n", "o-o2.webp' class='c' style='--oHeight: 50'")]
+	[DataRow("“‘Foo. Bar.’”\n", "“‘Foo. Bar.’”\n\n", "“‘Foo. Bar.’”")]
+	[DataRow("“‘“Foo. Bar.”’”\n", "“‘“Foo. Bar.”’”\n\n", "“‘“Foo. Bar.”’”")]
 	public void Compiler_BuildHtml_DoesNotContainsHtml(string rawText, string pulpText, string htmlSnippet) {
 		string html = Compiler.BuildHtml(rawText, pulpText);
 		Assert.DoesNotContain(htmlSnippet, html);
