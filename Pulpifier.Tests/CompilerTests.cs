@@ -474,6 +474,11 @@ public class CompilerTests {
 	[DataRow("“‘Foo. Bar.’”\n", "“‘Foo.’”\n\n\n“‘Bar.’”\n\n", "“ ‘Foo.’ ”")]
 	[DataRow("“‘Foo. Bar.’”\n", "“‘Foo. Bar.’”\nn:f=F;s=f\n", "“ ‘Foo. Bar.’ ”")]
 	[DataRow("“‘“Foo. Bar.”’”\n", "<span class='d'>“‘“Foo. Bar.”’”</span>\n\n", "“ ‘ “Foo. Bar.” ’ ”")]
+	[DataRow("\"Foo.\"\n", "\"Foo.\"\nn:foo=Foo Bar;s=foo\n", "<b class='speaker'>Foo Bar</b>")]
+	[DataRow("\"Foo.\"\n", "\"Foo.\"\nn:foo=Foo Bar;t=foo\n", "<b class='speaker'>Foo Bar (Thinking)</b>")]
+	[DataRow("\"Foo. Bar.\"\n", "\"Foo.\"\nn:foo=?;s=foo\n\n\"Bar.\"\nn:foo=Foo Bar\n", "<b class='speaker'>?</b>")]
+	[DataRow("\"Foo. Bar.\"\n", "\"Foo.\"\nn:foo=?;s=foo\n\n\"Bar.\"\nn:foo=Foo Bar\n", "<b class='speaker'>Foo Bar</b>")]
+	[DataRow("\"Foo.\"\n", "\"Foo.\"\nn:foo=Foo <s>Bar</s>;s=foo\n", "<b class='speaker'>Foo <s>Bar</s></b>")]
 	public void Compiler_BuildHtml_ContainsHtml(string rawText, string pulpText, string htmlSnippet) {
 		string html = Compiler.BuildHtml(rawText, pulpText);
 		Assert.Contains(htmlSnippet, html);
