@@ -150,6 +150,7 @@ body {
   position: absolute;
   bottom: min(var(--vwUnit), 1em);
   justify-content: center;
+  max-height: 80%;
 }
 #text {
   background-color: #f8efd4f0;
@@ -165,13 +166,15 @@ body {
   box-shadow: 0 0 0.4em black, 0 0 0.4em black;
 }
 #text > div {
-  width: calc(100% - 12px);
+  width: calc(100% - 0.4em);
   height: 100%;
   display: flow-root;
   font-size: var(--vnFontSizeReally);
   line-height: var(--vnLineHeight);
   position: relative;
-  margin: 0 0.2em;
+  margin-left: 0.2em;
+  padding-right: 0.2em;
+  overflow-y: auto;
 }
 #text .heading {
   font-variant: small-caps;
@@ -248,7 +251,7 @@ b.speaker {
   left: calc(-1 * min(3px, 0.3em));
   bottom: calc(100% + 0.5em);
   min-width: 2em;
-  max-width: calc(100% - 0.8em);
+  max-width: 80%;
   text-align: center;
   font-size: calc(var(--vnFontSizeReally) * 1.1);
   white-space: nowrap;
