@@ -131,6 +131,9 @@ body {
   background-repeat: no-repeat;
   background-size: cover;
 }
+#app > #pulp:nth-child(1):not(.pulpprefade) #back, #app > #pulp:nth-child(3) #back {
+  filter: none !important;
+}
 #back.old-back {
   opacity: 0;
   z-index: 3;
