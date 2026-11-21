@@ -131,9 +131,11 @@ function setHtml(cb) {
 }
 document.addEventListener("keydown", function (e) {
   if (e.key === "ArrowRight" || e.key === "d" || e.key === "D") {
+    e.preventDefault();
     document.activeElement.blur();
     nextPulp();
   } else if (e.key === "ArrowLeft" || e.key === "a" || e.key === "A") {
+    e.preventDefault();
     document.activeElement.blur();
     prevPulp();
   }
