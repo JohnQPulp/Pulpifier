@@ -95,6 +95,9 @@ body {
 #pulp.pulpfade + #pulp:nth-child(3) {
   opacity: 0;
 }
+#pulp.pulpfade #back.old-back {
+  display: none;
+}
 #pulp:nth-child(3).pulplightning > #back {
   filter: brightness(300%);
 }
